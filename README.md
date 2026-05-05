@@ -67,69 +67,6 @@ CAMELS-PE/
 
 ---
 
-## Example
-
-```r
-library(RCamelsPE)
-
-# Set dataset path
-set_camels_path("D:/DATA/CAMELS-PE")
-
-# ---------------------------
-# Metadata
-# ---------------------------
-stations <- read_metadata()
-
-# Select one catchment
-gauge_id <- stations$gauge_id[1]
-
-# ---------------------------
-# Time series
-# ---------------------------
-ts <- read_timeseries(
-  gauge_id = gauge_id,
-  vars = c("date", "gauge_id", "prec", "flow_obs")
-)
-
-# Plot streamflow
-plot_timeseries(ts, variable = "flow_obs")
-
-# ---------------------------
-# Attributes
-# ---------------------------
-topo <- read_attributes(
-  type = "topographic",
-  gauge_id = gauge_id
-)
-
-head(topo)
-
-# ---------------------------
-# Geospatial data
-# ---------------------------
-catchments <- read_geospatial("catchments")
-gauges <- read_geospatial("gauges")
-
-# Plot selected catchment
-plot_catchments(
-  catchments = catchments,
-  gauges = gauges,
-  gauge_id = gauge_id
-)
-
-# ---------------------------
-# Attribute map
-# ---------------------------
-plot_attribute_map(
-  catchments = catchments,
-  attributes = topo,
-  variable = "area",
-  gauges = gauges
-)
-```
-
----
-
 ## Design Principles
 
 - Efficient reading by catchment
@@ -153,6 +90,6 @@ Creative Commons Attribution 4.0 (CC BY 4.0)
 ## Citation
 
 If you use this package or dataset, please cite:
+<<<<<<< HEAD
 
 Journal / DOI pending
-

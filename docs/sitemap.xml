@@ -1,0 +1,20 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/authors.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/404.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/read_attributes.html</loc></url>
+<url><loc>/reference/read_geospatial.html</loc></url>
+<url><loc>/reference/read_metadata.html</loc></url>
+<url><loc>/reference/set_camels_path.html</loc></url>
+<url><loc>/reference/get_camels_path.html</loc></url>
+<url><loc>/reference/plot_timeseries.html</loc></url>
+<url><loc>/reference/plot_catchments.html</loc></url>
+<url><loc>/reference/read_timeseries.html</loc></url>
+<url><loc>/reference/plot_attribute_map.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/rcamelspe.html</loc></url>
+</urlset>
+
