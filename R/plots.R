@@ -16,6 +16,7 @@
 #' @param date_col Character string. Name of the date column.
 #' @param facet Logical. If \code{TRUE}, creates one panel per gauge ID.
 #' @param scales Character string. Scales passed to \code{ggplot2::facet_wrap()}.
+#'   One of \code{"fixed"}, \code{"free"}, \code{"free_x"}, or \code{"free_y"}.
 #' @param ... Additional arguments passed to \code{ggplot2::geom_line()}.
 #'
 #' @return A \code{ggplot} object.
@@ -27,17 +28,10 @@
 #'   vars = c("date", "gauge_id", "prec", "flow_obs", "flow_sim", "tmean")
 #' )
 #'
-#' # Plot observed streamflow
 #' plot_timeseries(ts, variable = "flow_obs")
-#'
-#' # Plot precipitation with thinner lines
 #' plot_timeseries(ts, variable = "prec", linewidth = 0.4)
-#'
-#' # Plot all selected gauges in one panel
 #' plot_timeseries(ts, variable = "flow_obs", facet = FALSE)
-#'
-#' # Plot a single gauge
-#' plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_221804")
+#' plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_250101")
 #' }
 #'
 #' @export
@@ -50,17 +44,17 @@ plot_timeseries <- function(data,
                             ...) {
 
   # ------------------------------------------------------------------
-  # Checks
+  # Input checks
   # ------------------------------------------------------------------
   if (!is.data.frame(data)) {
     stop("`data` must be a data frame or tibble.", call. = FALSE)
   }
 
-  if (!is.character(variable) || length(variable) != 1) {
+  if (!is.character(variable) || length(variable) != 1L || is.na(variable)) {
     stop("`variable` must be a single character string.", call. = FALSE)
   }
 
-  if (!is.character(date_col) || length(date_col) != 1) {
+  if (!is.character(date_col) || length(date_col) != 1L || is.na(date_col)) {
     stop("`date_col` must be a single character string.", call. = FALSE)
   }
 
@@ -76,38 +70,60 @@ plot_timeseries <- function(data,
     stop("Variable not found in data: ", variable, call. = FALSE)
   }
 
-  if (!is.null(gauge_id) && !is.character(gauge_id)) {
-    stop("`gauge_id` must be a character vector or NULL.", call. = FALSE)
+  if (!is.null(gauge_id) &&
+      (!is.character(gauge_id) || anyNA(gauge_id))) {
+    stop("`gauge_id` must be a character vector without NA values or NULL.",
+         call. = FALSE)
   }
 
-  if (!is.logical(facet) || length(facet) != 1 || is.na(facet)) {
+  if (!is.logical(facet) || length(facet) != 1L || is.na(facet)) {
     stop("`facet` must be TRUE or FALSE.", call. = FALSE)
   }
 
-  if (!is.character(scales) || length(scales) != 1) {
-    stop("`scales` must be a single character string.", call. = FALSE)
+  allowed_scales <- c("fixed", "free", "free_x", "free_y")
+  if (!is.character(scales) ||
+      length(scales) != 1L ||
+      is.na(scales) ||
+      !scales %in% allowed_scales) {
+    stop(
+      "`scales` must be one of: ",
+      paste(allowed_scales, collapse = ", "),
+      call. = FALSE
+    )
   }
 
   # ------------------------------------------------------------------
-  # Filter by gauge_id
+  # Prepare data
   # ------------------------------------------------------------------
+  data <- as.data.frame(data)
+
   if (!is.null(gauge_id)) {
-    data <- dplyr::filter(data, .data$gauge_id %in% gauge_id)
+    data <- data[data[["gauge_id"]] %in% gauge_id, , drop = FALSE]
   }
 
-  if (nrow(data) == 0) {
-    stop("No data available for the selected gauge_id.", call. = FALSE)
+  if (nrow(data) == 0L) {
+    stop("No data available for the selected `gauge_id`.", call. = FALSE)
   }
 
-  # ------------------------------------------------------------------
-  # Prepare date column
-  # ------------------------------------------------------------------
   data[[date_col]] <- as.Date(data[[date_col]])
 
-  if (any(is.na(data[[date_col]]))) {
+  if (anyNA(data[[date_col]])) {
     stop("Date column contains values that cannot be converted to Date.",
          call. = FALSE)
   }
+
+  if (!is.numeric(data[[variable]])) {
+    stop("`variable` must refer to a numeric column.", call. = FALSE)
+  }
+
+  # Do not remove NA values to preserve gaps in time series
+
+  if (nrow(data) == 0L) {
+    stop("No non-missing values available for `variable`.", call. = FALSE)
+  }
+
+  data[["gauge_id"]] <- as.character(data[["gauge_id"]])
+  data <- data[order(data[["gauge_id"]], data[[date_col]]), , drop = FALSE]
 
   # ------------------------------------------------------------------
   # Plot
@@ -121,7 +137,7 @@ plot_timeseries <- function(data,
       )
     ) +
       ggplot2::geom_line(color = "#636EFA", ...) +
-      ggplot2::facet_wrap(~gauge_id, scales = scales)
+      ggplot2::facet_wrap(ggplot2::vars(.data$gauge_id), scales = scales)
   } else {
     p <- ggplot2::ggplot(
       data,
@@ -142,6 +158,7 @@ plot_timeseries <- function(data,
     ) +
     ggplot2::theme_bw()
 }
+
 
 # =========================================================
 # Map plots

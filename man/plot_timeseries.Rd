@@ -26,7 +26,8 @@ before plotting. If \code{NULL}, all available gauges are plotted.}
 
 \item{facet}{Logical. If \code{TRUE}, creates one panel per gauge ID.}
 
-\item{scales}{Character string. Scales passed to \code{ggplot2::facet_wrap()}.}
+\item{scales}{Character string. Scales passed to \code{ggplot2::facet_wrap()}.
+One of \code{"fixed"}, \code{"free"}, \code{"free_x"}, or \code{"free_y"}.}
 
 \item{...}{Additional arguments passed to \code{ggplot2::geom_line()}.}
 }
@@ -46,17 +47,10 @@ ts <- read_timeseries(
   vars = c("date", "gauge_id", "prec", "flow_obs", "flow_sim", "tmean")
 )
 
-# Plot observed streamflow
 plot_timeseries(ts, variable = "flow_obs")
-
-# Plot precipitation with thinner lines
 plot_timeseries(ts, variable = "prec", linewidth = 0.4)
-
-# Plot all selected gauges in one panel
 plot_timeseries(ts, variable = "flow_obs", facet = FALSE)
-
-# Plot a single gauge
-plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_221804")
+plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_250101")
 }
 
 }

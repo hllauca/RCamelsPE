@@ -154,12 +154,5 @@ Creative Commons Attribution 4.0 (CC BY 4.0)
 
 If you use this package or dataset, please cite:
 
-Llauca, H., et al. (2026). CAMELS-PE: A large-sample hydrological dataset for Peru.  
 Journal / DOI pending
 
----
-
-## Author
-
-Harold Llauca  
-hllauca@senamhi.gob.pe
