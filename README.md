@@ -1,51 +1,175 @@
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # RCamelsPE
 
-<!-- badges: start -->
+RCamelsPE is an R package designed to read, process and visualize data from the CAMELS-PE dataset (Catchment Attributes and Meteorology for Large-sample Studies – Peru).
 
-<!-- badges: end -->
+The package provides a simple and efficient interface to work with large-sample hydrological datasets for both research and operational applications.
 
-The goal of RCamelsPE is to …
+⚠️ **Important:**  
+The package does **NOT include the CAMELS-PE dataset**. Data must be stored locally.
+
+---
+
+## Features
+
+- Efficient reading of time series by catchment
+- Access to metadata and attributes
+- Integration with geospatial data (gauges and catchments)
+- Time series visualization (precipitation, streamflow, temperature)
+- Spatial visualization of catchments and attributes
+- Tidyverse-friendly workflow
+- Designed for large-sample and national-scale hydrology
+
+---
 
 ## Installation
 
-You can install the development version of RCamelsPE like so:
+```r
+install.packages("devtools")
+devtools::install_github("hllauca/RCamelsPE")
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+library(RCamelsPE)
 ```
+
+---
+
+## CAMELS-PE Dataset Structure
+
+The dataset must be stored locally with the following structure:
+
+```text
+CAMELS-PE/
+├── 01_metadata/
+│   ├── stations.csv
+│   ├── variable_dictionary.csv
+│   └── attribute_dictionary.csv
+│
+├── 02_attributes/
+│   ├── topographic_attributes.csv
+│   ├── climatic_indices.csv
+│   ├── hydrological_signatures.csv
+│   ├── landcover_attributes.csv
+│   ├── geologic_attributes.csv
+│   ├── soil_attributes.csv
+│   └── human_intervention_attributes.csv
+│
+├── 03_timeseries/
+│   ├── timeseries.csv
+│   └── by_catchment/
+│       ├── PE_XXXX.csv
+│       └── ...
+│
+└── 04_geospatial/
+    ├── camels_pe_gauges.gpkg
+    ├── camels_pe_catchments.gpkg
+    └── by_catchment/
+        └── PE_XXXX/
+```
+
+---
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
+```r
 library(RCamelsPE)
-## basic example code
+
+# Set dataset path
+set_camels_path("D:/DATA/CAMELS-PE")
+
+# Read metadata
+stations <- read_metadata()
+
+# Select catchments
+gauge_sel <- stations$gauge_id[1:2]
+
+# Read time series
+ts <- read_timeseries(
+  gauge_id = gauge_sel,
+  vars = c("date", "gauge_id", "prec", "flow_obs")
+)
+
+head(ts)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+---
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+## Plot Time Series
+
+```r
+plot_timeseries(ts, variable = "flow_obs")
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
+Custom example:
 
-You can also embed plots, for example:
+```r
+plot_timeseries(ts, "flow_obs", linewidth = 0.5) +
+  ggplot2::theme_minimal()
+```
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+---
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+## Read Attributes
+
+```r
+attr <- read_attributes("topographic")
+head(attr)
+```
+
+---
+
+## Map Visualization
+
+```r
+catchments <- read_geospatial("catchments")
+gauges <- read_geospatial("gauges")
+
+plot_catchments(catchments, gauges)
+```
+
+---
+
+## Attribute Map
+
+```r
+plot_attribute_map(
+  catchments = catchments,
+  attributes = attr,
+  variable = "area_km2",
+  gauges = gauges
+)
+```
+
+---
+
+## Design Principles
+
+- Efficient reading by catchment
+- Consistent variable naming (CAMELS convention)
+- No data included in the package
+- Scalable to large datasets
+- Built on tidyverse and sf ecosystem
+
+---
+
+## License
+
+### Package (code)
+GNU General Public License (GPL >= 2)
+
+### Dataset (CAMELS-PE)
+Creative Commons Attribution 4.0 (CC BY 4.0)
+
+---
+
+## Citation
+
+If you use this package or dataset, please cite:
+
+Llauca, H., et al. (2026). CAMELS-PE: A large-sample hydrological dataset for Peru.  
+[Journal / DOI pending]
+
+---
+
+## Author
+
+Harold Llauca  
+hllauca@senamhi.gob.pe
