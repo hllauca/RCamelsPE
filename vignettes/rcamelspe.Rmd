@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = FALSE
+  eval = TRUE
 )
 ```
 
@@ -312,5 +312,4 @@ This makes the package suitable for:
 
 # Notes
 
-This vignette uses `eval = FALSE` because CAMELS-PE must be available locally.\
 To run the examples, download the dataset and set the correct path using `set_camels_path()`.
