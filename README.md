@@ -90,6 +90,4 @@ Creative Commons Attribution 4.0 (CC BY 4.0)
 ## Citation
 
 If you use this package or dataset, please cite:
-<<<<<<< HEAD
-
 Journal / DOI pending
