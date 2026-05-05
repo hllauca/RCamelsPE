@@ -1,37 +1,40 @@
 Package: RCamelsPE
 Type: Package
-Title: Tools for Reading, Processing and Visualizing CAMELS-PE Data
+Title: Access, Process and Visualize CAMELS-PE Data
 Version: 0.1.0
-Author: Harold Llauca <hllauca@senamhi.gob.pe>
-Maintainer: Harold Llauca <hllauca@senamhi.gob.pe>
-Description: Provides tools to efficiently read, process and visualize 
-    hydrological, climatic, physiographic and geospatial data from the 
-    CAMELS-PE dataset (Catchment Attributes and Meteorology for Large-sample 
-    Studies - Peru). The package does not include the dataset and is designed 
-    to work with externally stored CAMELS-PE data. Functions support reading 
-    time series, catchment attributes, metadata, and geospatial data, as well 
-    as basic visualization of time series and spatial patterns.
+Authors@R: 
+    person(
+        given = "Harold",
+        family = "Llauca",
+        role = c("aut", "cre"),
+        email = "hllauca@senamhi.gob.pe"
+    )
+Description: Provides tools to efficiently read, process, and visualize
+    hydrological, climatic, physiographic, and geospatial data from the
+    CAMELS-PE dataset (Catchment Attributes and Meteorology for Large-sample
+    Studies - Peru). The package does not include the dataset and is designed
+    to work with externally stored CAMELS-PE data. Functions support reading
+    time series, catchment attributes, station metadata, and geospatial data,
+    as well as basic visualization of time series and spatial patterns.
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-LazyData: false
-Depends: 
-    R (>= 4.1)
+Depends:
+    R (>= 4.1.0)
 Imports:
     dplyr,
-    readr,
-    tidyr,
-    lubridate,
     ggplot2,
+    lubridate,
+    readr,
     sf,
     terra,
-    rlang
+    tidyr
 Suggests:
-    testthat (>= 3.0.0),
+    devtools,
     knitr,
     rmarkdown,
-    pkgdown
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://github.com/yourusername/RCamelsPE
-BugReports: https://github.com/yourusername/RCamelsPE/issues
+URL: https://github.com/hllauca/RCamelsPE
+BugReports: https://github.com/hllauca/RCamelsPE/issues
 Config/roxygen2/version: 8.0.0

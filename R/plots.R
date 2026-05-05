@@ -78,7 +78,7 @@ plot_timeseries <- function(data,
         y = .data[[variable]]
       )
     ) +
-      ggplot2::geom_line(...) +
+      ggplot2::geom_line(color = "#636EFA", ...)
       ggplot2::facet_wrap(~gauge_id, scales = scales)
   } else {
     p <- ggplot2::ggplot(
@@ -255,7 +255,7 @@ plot_attribute_map <- function(catchments,
     ggplot2::geom_sf(
       data = data,
       ggplot2::aes(fill = .data[[variable]]),
-      color = "grey40",
+      color = "grey70",
       linewidth = 0.15,
       ...
     ) +
@@ -269,7 +269,7 @@ plot_attribute_map <- function(catchments,
       ggplot2::geom_sf(
         data = gauges,
         size = 1,
-        color = "black"
+        color = "#636EFA"
       )
   }
 
