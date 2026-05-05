@@ -10,40 +10,72 @@ read_attributes(type = "all", gauge_id = NULL, path = get_camels_path())
 \item{type}{Character string. Attribute group to read. One of
 \code{"topographic"}, \code{"climatic"}, \code{"hydrological"},
 \code{"landcover"}, \code{"geologic"}, \code{"soil"},
-\code{"human_intervention"}, or \code{"all"}.}
+\code{"human_intervention"}, or \code{"all"}. Default is \code{"all"}.}
 
-\item{gauge_id}{Optional character vector. Gauge IDs used to filter the
-returned attributes.}
+\item{gauge_id}{Character vector or \code{NULL}. Optional gauge identifiers
+used to filter the returned attributes, for example \code{"PE_0001"} or
+\code{c("PE_0001", "PE_0002")}. If \code{NULL}, all available catchments
+are returned.}
 
 \item{path}{Character string. Optional path to the CAMELS-PE root directory.
 If not provided, the path previously defined with \code{set_camels_path()}
 is used.}
 }
 \value{
-A tibble with CAMELS-PE catchment attributes.
+A tibble with CAMELS-PE catchment attributes. The output includes
+one row per catchment and a \code{gauge_id} column used as the main
+identifier. When \code{type = "all"}, attribute groups are joined by
+\code{gauge_id}.
 }
 \description{
 Reads catchment attributes from the CAMELS-PE dataset. Attributes are stored
-by thematic groups, such as topography, climate, hydrological signatures,
+in thematic groups, including topography, climate, hydrological signatures,
 land cover, geology, soil, and human intervention.
 }
 \details{
-Available attribute types are:
+The function can read one attribute group at a time or join all available
+groups by \code{gauge_id}. To inspect the available attribute names,
+descriptions, units, and thematic groups, use
+\code{read_attribute_dictionary()}.
+
+Available attribute groups are:
 
 \itemize{
-\item \code{"topographic"}: topographic attributes.
-\item \code{"climatic"}: climatic indices.
+\item \code{"topographic"}: topographic and physiographic attributes.
+\item \code{"climatic"}: climatic indices and long-term climate descriptors.
 \item \code{"hydrological"}: hydrological signatures.
 \item \code{"landcover"}: land-cover attributes.
-\item \code{"geologic"}: geologic attributes.
+\item \code{"geologic"}: geological attributes.
 \item \code{"soil"}: soil attributes.
-\item \code{"human_intervention"}: human intervention attributes.
+\item \code{"human_intervention"}: human intervention and regulation attributes.
 \item \code{"all"}: all available attribute groups joined by \code{gauge_id}.
+}
+
+Attribute files are expected to be stored in \code{02_attributes/}. Each
+attribute file must contain a \code{gauge_id} column. When
+\code{type = "all"}, missing attribute files are skipped with a warning and
+all available files are joined. If no valid attribute files are found, the
+function stops with an error.
+
+Expected files are:
+
+\itemize{
+\item \code{topographic_attributes.csv}
+\item \code{climatic_indices.csv}
+\item \code{hydrological_signatures.csv}
+\item \code{landcover_attributes.csv}
+\item \code{geologic_attributes.csv}
+\item \code{soil_attributes.csv}
+\item \code{human_intervention_attributes.csv}
 }
 }
 \examples{
 \dontrun{
 set_camels_path("D:/DATA/CAMELS-PE")
+
+# Inspect available attributes
+attr_dict <- read_attribute_dictionary()
+head(attr_dict)
 
 # Read topographic attributes
 topo <- read_attributes(type = "topographic")
@@ -51,10 +83,10 @@ topo <- read_attributes(type = "topographic")
 # Read climatic attributes for selected catchments
 clim <- read_attributes(
   type = "climatic",
-  gauge_id = c("PE_0001", "PE_0002")
+  gauge_id = c("PE_250101", "PE_200907")
 )
 
-# Read all attributes
+# Read all available attribute groups
 attr_all <- read_attributes(type = "all")
 }
 

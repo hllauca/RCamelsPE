@@ -1,7 +1,7 @@
 Package: RCamelsPE
 Type: Package
-Title: Access, Process and Visualize CAMELS-PE Data
-Version: 0.1.0
+Title: Access, Process, and Visualize CAMELS-PE Data
+Version: 0.1.1
 Authors@R: 
     person(
         given = "Harold",
@@ -9,13 +9,14 @@ Authors@R:
         role = c("aut", "cre"),
         email = "hllauca@senamhi.gob.pe"
     )
-Description: Provides tools to efficiently read, process, and visualize
-    hydrological, climatic, physiographic, and geospatial data from the
-    CAMELS-PE dataset (Catchment Attributes and Meteorology for Large-sample
-    Studies - Peru). The package does not include the dataset and is designed
-    to work with externally stored CAMELS-PE data. Functions support reading
-    time series, catchment attributes, station metadata, and geospatial data,
-    as well as basic visualization of time series and spatial patterns.
+Description: Provides tools to read, process, and visualize hydrological,
+    climatic, physiographic, and geospatial data from the CAMELS-PE dataset
+    (Catchment Attributes and Meteorology for Large-sample Studies - Peru).
+    The package is designed to work with externally stored CAMELS-PE data and
+    does not include the dataset itself. Functions support reading time series,
+    catchment attributes, station metadata, geospatial layers, and metadata
+    dictionaries, as well as basic visualization of time series, catchment
+    boundaries, and spatial attribute patterns.
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -24,11 +25,12 @@ Depends:
 Imports:
     dplyr,
     ggplot2,
-    lubridate,
     readr,
+    rlang,
     sf,
-    terra,
-    tidyr
+    stats,
+    tools,
+    utils
 Suggests:
     devtools,
     knitr,

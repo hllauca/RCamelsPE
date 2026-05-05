@@ -4,36 +4,40 @@
 \alias{plot_catchments}
 \title{Plot CAMELS-PE Catchments}
 \usage{
-plot_catchments(catchments, gauges = NULL, fill = NULL, ...)
+plot_catchments(catchments, gauges = NULL, gauge_id = NULL, fill = NULL, ...)
 }
 \arguments{
-\item{catchments}{An \code{sf} object with catchment polygons, typically
-obtained with \code{read_geospatial("catchments")}.}
+\item{catchments}{An \code{sf} object with catchment polygons.}
 
-\item{gauges}{Optional \code{sf} object with gauge point locations, typically
-obtained with \code{read_geospatial("gauges")}.}
+\item{gauges}{Optional \code{sf} object with gauge point locations.}
+
+\item{gauge_id}{Optional character string. Gauge ID used to filter one
+catchment and its gauge before plotting. If \code{NULL}, all catchments are
+plotted.}
 
 \item{fill}{Optional character string. Name of a catchment column used to
-fill polygons. If NULL, catchments are plotted with a constant fill.}
+fill polygons. If \code{NULL}, a constant fill is used.}
 
-\item{...}{Additional arguments passed to \code{ggplot2::geom_sf()} for
-catchments.}
+\item{...}{Additional arguments passed to \code{ggplot2::geom_sf()}.}
 }
 \value{
 A \code{ggplot} object.
 }
 \description{
-Creates a simple map of CAMELS-PE catchments and, optionally, gauge
-locations. This function is useful for quick inspection of the spatial
-distribution of catchments and stations.
+Creates a map of CAMELS-PE catchments and optionally overlays gauge
+locations. If \code{gauge_id} is provided, only one catchment and its outlet
+are plotted, with the gauge ID shown as a panel header.
 }
 \examples{
 \dontrun{
 catchments <- read_geospatial("catchments")
 gauges <- read_geospatial("gauges")
 
-plot_catchments(catchments)
+# Plot all catchments
 plot_catchments(catchments, gauges)
+
+# Plot one catchment and its outlet
+plot_catchments(catchments, gauges, gauge_id = "PE_221804")
 }
 
 }

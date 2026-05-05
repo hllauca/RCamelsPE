@@ -19,13 +19,14 @@ plot_timeseries(
 
 \item{variable}{Character string. Name of the variable to plot.}
 
-\item{gauge_id}{Optional character vector. Gauge IDs to filter before plotting.}
+\item{gauge_id}{Optional character vector. Gauge IDs used to filter the data
+before plotting. If \code{NULL}, all available gauges are plotted.}
 
 \item{date_col}{Character string. Name of the date column.}
 
-\item{facet}{Logical. If TRUE, creates one panel per gauge ID.}
+\item{facet}{Logical. If \code{TRUE}, creates one panel per gauge ID.}
 
-\item{scales}{Character string. Scales passed to \code{facet_wrap()}.}
+\item{scales}{Character string. Scales passed to \code{ggplot2::facet_wrap()}.}
 
 \item{...}{Additional arguments passed to \code{ggplot2::geom_line()}.}
 }
@@ -34,20 +35,28 @@ A \code{ggplot} object.
 }
 \description{
 Creates a time series plot for one CAMELS-PE variable, such as precipitation,
-observed streamflow, or temperature. The function returns a \code{ggplot}
-object, so it can be further customized using standard \code{ggplot2}
-layers.
+observed streamflow, simulated streamflow, or temperature. The function
+returns a \code{ggplot} object, so it can be further customized using standard
+\code{ggplot2} layers.
 }
 \examples{
 \dontrun{
 ts <- read_timeseries(
-  gauge_id = c("PE_0001", "PE_0002"),
-  vars = c("date", "gauge_id", "prec", "flow_obs", "tmean")
+  gauge_id = c("PE_250101", "PE_200907"),
+  vars = c("date", "gauge_id", "prec", "flow_obs", "flow_sim", "tmean")
 )
 
+# Plot observed streamflow
 plot_timeseries(ts, variable = "flow_obs")
+
+# Plot precipitation with thinner lines
 plot_timeseries(ts, variable = "prec", linewidth = 0.4)
+
+# Plot all selected gauges in one panel
 plot_timeseries(ts, variable = "flow_obs", facet = FALSE)
+
+# Plot a single gauge
+plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_221804")
 }
 
 }

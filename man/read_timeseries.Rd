@@ -2,7 +2,7 @@
 % Please edit documentation in R/timeseries.R
 \name{read_timeseries}
 \alias{read_timeseries}
-\title{Read CAMELS-PE time series}
+\title{Read CAMELS-PE Time Series}
 \usage{
 read_timeseries(
   gauge_id = NULL,
@@ -12,42 +12,94 @@ read_timeseries(
 )
 }
 \arguments{
-\item{gauge_id}{Optional character vector of gauge IDs.
-Required if \code{global = FALSE}.}
+\item{gauge_id}{Character vector or \code{NULL}. Gauge identifiers to read,
+for example \code{"PE_0001"} or \code{c("PE_0001", "PE_0002")}.
+This argument is required when \code{global = FALSE}. When
+\code{global = TRUE}, it can be used to filter the global time series file.}
 
-\item{global}{Logical. If TRUE, reads the global file.
-Default is FALSE (recommended for performance).}
+\item{global}{Logical. If \code{TRUE}, reads the global file
+\code{03_timeseries/timeseries.csv}. If \code{FALSE}, reads individual
+catchment files from \code{03_timeseries/by_catchment/}. Default is
+\code{FALSE}.}
 
-\item{vars}{Optional character vector of variables to keep.}
+\item{vars}{Character vector or \code{NULL}. Optional variable names to keep
+in the returned table. If \code{NULL}, all available variables are returned.}
 
-\item{path}{Optional CAMELS-PE root path.}
+\item{path}{Character string. Optional path to the CAMELS-PE root directory.
+If not provided, the path set by \code{set_camels_path()} is used.}
 }
 \value{
-A tibble with time series data.
+A tibble containing CAMELS-PE time series data. The output usually
+includes at least \code{date}, \code{gauge_id}, and the selected
+hydrometeorological variables. If a \code{date} column is available, it is
+converted to class \code{Date}.
 }
 \description{
-Reads time series data from the CAMELS-PE dataset. The function supports
-two modes:
+Reads hydrometeorological time series from the CAMELS-PE dataset. The
+function supports two reading modes:
 }
 \details{
 \itemize{
-\item \strong{Global mode}: reads the full dataset from \code{timeseries.csv}.
-\item \strong{By-catchment mode} (recommended): reads only selected
-catchments from individual files in \code{by_catchment/}.
+\item \strong{Global mode}: reads the full time series table from
+\code{03_timeseries/timeseries.csv}.
+\item \strong{By-catchment mode}: reads one or more catchment-specific
+files from \code{03_timeseries/by_catchment/}. This is the recommended
+mode for large datasets because only the requested catchments are loaded.
 }
+
+The dataset must be available in a local directory previously defined with
+\code{set_camels_path()}, or supplied directly through the \code{path}
+argument.
+
+Available variables typically include:
+
+\itemize{
+\item \code{"date"}: date of observation.
+\item \code{"gauge_id"}: catchment identifier.
+\item \code{"prec"}: precipitation (mm/day).
+\item \code{"prec_var"}: precipitation variability or variance (mm²/day²).
+\item \code{"flow_obs"}: observed streamflow (mm/day).
+\item \code{"flow_sim"}: simulated streamflow (mm/day).
+\item \code{"tmean"}: mean air temperature (°C).
+\item \code{"tmax"}: maximum air temperature (°C).
+\item \code{"tmin"}: minimum air temperature (°C).
+\item \code{"pet"}: potential evapotranspiration (mm/day).
+\item \code{"srad"}: solar radiation (MJ/m²day).
+\item \code{"vprp"}: vapor pressure (hPa).
+}
+
+Available variables may differ depending on the CAMELS-PE dataset version.
+
+In by-catchment mode, each requested gauge is expected to have a file named
+\code{<gauge_id>.csv} inside \code{03_timeseries/by_catchment/}. For example,
+\code{PE_0001} is expected to be stored as
+\code{03_timeseries/by_catchment/PE_0001.csv}.
+
+If one or more requested files are missing, the function issues a warning and
+reads the files that are available. If no valid files are found, the function
+stops with an error.
 }
 \examples{
 \dontrun{
 set_camels_path("D:/DATA/CAMELS-PE")
 
-# Read a single catchment
-ts <- read_timeseries(gauge_id = "PE_0001")
+# Read all variables for one catchment
+ts1 <- read_timeseries(gauge_id = "PE_221804")
 
-# Read multiple catchments
-ts <- read_timeseries(gauge_id = c("PE_0001", "PE_0002"))
+# Read selected variables for multiple catchments
+ts2 <- read_timeseries(
+  gauge_id = c("PE_250101", "PE_200907"),
+  vars = c("date", "gauge_id", "prec", "flow_obs")
+)
 
-# Read global dataset
+# Read the global time series file
 ts_all <- read_timeseries(global = TRUE)
+
+# Read the global file and filter selected gauges
+ts_sel <- read_timeseries(
+  gauge_id = c("PE_250101", "PE_200907"),
+  global = TRUE
+)
 }
 
 }

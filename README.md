@@ -1,11 +1,15 @@
 # RCamelsPE
 
-RCamelsPE is an R package designed to read, process and visualize data from the CAMELS-PE dataset (Catchment Attributes and Meteorology for Large-sample Studies – Peru).
+**RCamelsPE** is an R package to read, process, and visualize data from the **CAMELS-PE dataset** (Catchment Attributes and Meteorology for Large-sample Studies – Peru).
 
-The package provides a simple and efficient interface to work with large-sample hydrological datasets for both research and operational applications.
+It provides a simple and efficient interface to work with large-sample hydrological datasets for both research and operational applications.
 
-⚠️ **Important:**  
-The package does **NOT include the CAMELS-PE dataset**. Data must be stored locally.
+---
+
+## ⚠️ Important
+
+The package **does NOT include the CAMELS-PE dataset**.  
+Data must be stored locally.
 
 ---
 
@@ -14,7 +18,7 @@ The package does **NOT include the CAMELS-PE dataset**. Data must be stored loca
 - Efficient reading of time series by catchment
 - Access to metadata and attributes
 - Integration with geospatial data (gauges and catchments)
-- Time series visualization (precipitation, streamflow, temperature)
+- Time series visualization
 - Spatial visualization of catchments and attributes
 - Tidyverse-friendly workflow
 - Designed for large-sample and national-scale hydrology
@@ -33,8 +37,6 @@ library(RCamelsPE)
 ---
 
 ## CAMELS-PE Dataset Structure
-
-The dataset must be stored locally with the following structure:
 
 ```text
 CAMELS-PE/
@@ -61,8 +63,6 @@ CAMELS-PE/
 └── 04_geospatial/
     ├── camels_pe_gauges.gpkg
     ├── camels_pe_catchments.gpkg
-    └── by_catchment/
-        └── PE_XXXX/
 ```
 
 ---
@@ -75,65 +75,55 @@ library(RCamelsPE)
 # Set dataset path
 set_camels_path("D:/DATA/CAMELS-PE")
 
-# Read metadata
+# ---------------------------
+# Metadata
+# ---------------------------
 stations <- read_metadata()
 
-# Select catchments
-gauge_sel <- stations$gauge_id[1:2]
+# Select one catchment
+gauge_id <- stations$gauge_id[1]
 
-# Read time series
+# ---------------------------
+# Time series
+# ---------------------------
 ts <- read_timeseries(
-  gauge_id = gauge_sel,
+  gauge_id = gauge_id,
   vars = c("date", "gauge_id", "prec", "flow_obs")
 )
 
-head(ts)
-```
-
----
-
-## Plot Time Series
-
-```r
+# Plot streamflow
 plot_timeseries(ts, variable = "flow_obs")
-```
 
-Custom example:
+# ---------------------------
+# Attributes
+# ---------------------------
+topo <- read_attributes(
+  type = "topographic",
+  gauge_id = gauge_id
+)
 
-```r
-plot_timeseries(ts, "flow_obs", linewidth = 0.5) +
-  ggplot2::theme_minimal()
-```
+head(topo)
 
----
-
-## Read Attributes
-
-```r
-attr <- read_attributes("topographic")
-head(attr)
-```
-
----
-
-## Map Visualization
-
-```r
+# ---------------------------
+# Geospatial data
+# ---------------------------
 catchments <- read_geospatial("catchments")
 gauges <- read_geospatial("gauges")
 
-plot_catchments(catchments, gauges)
-```
+# Plot selected catchment
+plot_catchments(
+  catchments = catchments,
+  gauges = gauges,
+  gauge_id = gauge_id
+)
 
----
-
-## Attribute Map
-
-```r
+# ---------------------------
+# Attribute map
+# ---------------------------
 plot_attribute_map(
   catchments = catchments,
-  attributes = attr,
-  variable = "area_km2",
+  attributes = topo,
+  variable = "area",
   gauges = gauges
 )
 ```
@@ -153,7 +143,7 @@ plot_attribute_map(
 ## License
 
 ### Package (code)
-GNU General Public License (GPL >= 2)
+GNU General Public License (GPL ≥ 2)
 
 ### Dataset (CAMELS-PE)
 Creative Commons Attribution 4.0 (CC BY 4.0)
@@ -165,7 +155,7 @@ Creative Commons Attribution 4.0 (CC BY 4.0)
 If you use this package or dataset, please cite:
 
 Llauca, H., et al. (2026). CAMELS-PE: A large-sample hydrological dataset for Peru.  
-[Journal / DOI pending]
+Journal / DOI pending
 
 ---
 
