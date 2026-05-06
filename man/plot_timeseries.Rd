@@ -24,7 +24,7 @@ before plotting. If \code{NULL}, all available gauges are plotted.}
 
 \item{date_col}{Character string. Name of the date column.}
 
-\item{facet}{Logical. If \code{TRUE}, creates one panel per gauge ID.}
+\item{facet}{Logical value. If \code{TRUE}, creates one panel per gauge ID.}
 
 \item{scales}{Character string. Scales passed to \code{ggplot2::facet_wrap()}.
 One of \code{"fixed"}, \code{"free"}, \code{"free_x"}, or \code{"free_y"}.}
@@ -40,8 +40,17 @@ observed streamflow, simulated streamflow, or temperature. The function
 returns a \code{ggplot} object, so it can be further customized using standard
 \code{ggplot2} layers.
 }
+\details{
+Use \code{read_dictionary(category = "timeseries")} to inspect available
+time series variables, descriptions, units, and data sources.
+}
 \examples{
 \dontrun{
+set_camels_path("D:/DATA/CAMELS-PE")
+
+# Inspect available time series variables
+read_dictionary(category = "timeseries")
+
 ts <- read_timeseries(
   gauge_id = c("PE_250101", "PE_200907"),
   vars = c("date", "gauge_id", "prec", "flow_obs", "flow_sim", "tmean")

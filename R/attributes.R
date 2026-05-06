@@ -5,9 +5,9 @@
 #' land cover, geology, soil, and human intervention.
 #'
 #' The function can read one attribute group at a time or join all available
-#' groups by \code{gauge_id}. To inspect the available attribute names,
-#' descriptions, units, and thematic groups, use
-#' \code{read_attribute_dictionary()}.
+#' groups by \code{gauge_id}. Use \code{read_dictionary()} to inspect available
+#' variable names, descriptions, units, categories, source files, and data
+#' sources.
 #'
 #' Available attribute groups are:
 #'
@@ -27,8 +27,8 @@
 #'   \code{"landcover"}, \code{"geologic"}, \code{"soil"},
 #'   \code{"human_intervention"}, or \code{"all"}. Default is \code{"all"}.
 #' @param gauge_id Character vector or \code{NULL}. Optional gauge identifiers
-#'   used to filter the returned attributes, for example \code{"PE_0001"} or
-#'   \code{c("PE_0001", "PE_0002")}. If \code{NULL}, all available catchments
+#'   used to filter the returned attributes, for example \code{"PE_250101"} or
+#'   \code{c("PE_250101", "PE_200907")}. If \code{NULL}, all available catchments
 #'   are returned.
 #' @param path Character string. Optional path to the CAMELS-PE root directory.
 #'   If not provided, the path previously defined with \code{set_camels_path()}
@@ -62,9 +62,9 @@
 #' \dontrun{
 #' set_camels_path("D:/DATA/CAMELS-PE")
 #'
-#' # Inspect available attributes
-#' attr_dict <- read_attribute_dictionary()
-#' head(attr_dict)
+#' # Inspect available topographic attributes
+#' dict <- read_dictionary(category = "topographic")
+#' head(dict)
 #'
 #' # Read topographic attributes
 #' topo <- read_attributes(type = "topographic")
@@ -97,7 +97,8 @@ read_attributes <- function(type = "all",
   if (!type %in% c(names(files), "all")) {
     stop(
       "Invalid attribute type. Use one of: ",
-      paste(c(names(files), "all"), collapse = ", ")
+      paste(c(names(files), "all"), collapse = ", "),
+      call. = FALSE
     )
   }
 
@@ -109,7 +110,11 @@ read_attributes <- function(type = "all",
       file <- file.path(attr_path, files[[attribute_type]])
 
       if (!file.exists(file)) {
-        warning("Attribute file not found: ", files[[attribute_type]])
+        warning(
+          "Attribute file not found: ",
+          files[[attribute_type]],
+          call. = FALSE
+        )
         return(NULL)
       }
 
@@ -118,7 +123,8 @@ read_attributes <- function(type = "all",
       if (!"gauge_id" %in% names(data)) {
         stop(
           "The attribute file '", files[[attribute_type]],
-          "' must contain a 'gauge_id' column."
+          "' must contain a 'gauge_id' column.",
+          call. = FALSE
         )
       }
 
@@ -128,7 +134,7 @@ read_attributes <- function(type = "all",
     data_list <- data_list[!vapply(data_list, is.null, logical(1))]
 
     if (length(data_list) == 0) {
-      stop("No valid attribute files were found.")
+      stop("No valid attribute files were found.", call. = FALSE)
     }
 
     data <- Reduce(function(x, y) {
@@ -140,7 +146,7 @@ read_attributes <- function(type = "all",
     file <- file.path(attr_path, files[[type]])
 
     if (!file.exists(file)) {
-      stop("Attribute file not found: ", files[[type]])
+      stop("Attribute file not found: ", files[[type]], call. = FALSE)
     }
 
     data <- readr::read_csv(file, show_col_types = FALSE)
@@ -148,7 +154,8 @@ read_attributes <- function(type = "all",
     if (!"gauge_id" %in% names(data)) {
       stop(
         "The attribute file '", files[[type]],
-        "' must contain a 'gauge_id' column."
+        "' must contain a 'gauge_id' column.",
+        call. = FALSE
       )
     }
   }

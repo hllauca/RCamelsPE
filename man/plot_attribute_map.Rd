@@ -35,8 +35,17 @@ Creates a thematic map of CAMELS-PE catchments using a selected attribute.
 The function joins attribute data with catchment geometries by
 \code{gauge_id} and returns a \code{ggplot} object.
 }
+\details{
+Use \code{read_dictionary()} to inspect available attributes,
+descriptions, units, categories, source files, and data sources.
+}
 \examples{
 \dontrun{
+set_camels_path("D:/DATA/CAMELS-PE")
+
+# Inspect available topographic attributes
+read_dictionary(category = "topographic")
+
 catchments <- read_geospatial("catchments")
 gauges <- read_geospatial("gauges")
 attr <- read_attributes("topographic")

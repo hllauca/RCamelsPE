@@ -7,7 +7,8 @@
 read_geospatial(type = c("gauges", "catchments"), path = get_camels_path())
 }
 \arguments{
-\item{type}{Character string. Either \code{"gauges"} or \code{"catchments"}.}
+\item{type}{Character string. Either \code{"gauges"} or
+\code{"catchments"}.}
 
 \item{path}{Character string. Optional path to the CAMELS-PE root directory.
 If not provided, the path previously defined with
@@ -22,16 +23,22 @@ and catchment boundaries. The data are stored as GeoPackage files in the
 \code{04_geospatial} directory.
 }
 \details{
-Available types:
+Available types are:
 
 \itemize{
 \item \code{"gauges"}: point locations of gauging stations.
 \item \code{"catchments"}: polygon boundaries of catchments.
 }
+
+Use \code{read_dictionary(category = "geospatial")} to inspect available
+geospatial layers, descriptions, and data sources.
 }
 \examples{
 \dontrun{
 set_camels_path("D:/DATA/CAMELS-PE")
+
+# Inspect available geospatial layers
+read_dictionary(category = "geospatial")
 
 # Read gauges
 gauges <- read_geospatial("gauges")
@@ -40,8 +47,8 @@ gauges <- read_geospatial("gauges")
 catchments <- read_geospatial("catchments")
 
 # Plot
-plot(catchments$geometry)
-plot(gauges$geometry, add = TRUE, col = "red")
+plot(sf::st_geometry(catchments))
+plot(sf::st_geometry(gauges), add = TRUE, col = "red")
 }
 
 }

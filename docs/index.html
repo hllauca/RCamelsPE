@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Access, Process, and Visualize CAMELS-PE Data">
-<meta property="og:description" content="Provides tools to read, process, and visualize hydrological, climatic, physiographic, and geospatial data from the CAMELS-PE dataset (Catchment Attributes and Meteorology for Large-sample Studies - Peru). The package is designed to work with externally stored CAMELS-PE data and does not include the dataset itself. Functions support reading daily time series, catchment attributes, station metadata, metadata dictionaries, and geospatial layers, as well as basic visualization of time series and catchment boundaries.">
+<meta property="og:description" content="Provides tools to read, process, and visualize hydrological, climatic, physiographic, metadata, and geospatial data from the CAMELS-PE dataset (Catchment Attributes and Meteorology for Large-sample Studies - Peru). The package is designed to work with externally stored CAMELS-PE data and does not include the dataset itself. Functions support reading daily time series, catchment attributes, station metadata, metadata dictionaries, and geospatial layers, as well as basic visualization of time series and catchment boundaries.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -77,14 +77,14 @@
 <div class="section level1">
 <div class="page-header"><h1 id="rcamelspe">RCamelsPE<a class="anchor" aria-label="anchor" href="#rcamelspe"></a>
 </h1></div>
-<p><strong>RCamelsPE</strong> is an R package to read, process, and visualize data from the <strong>CAMELS-PE dataset</strong> (Catchment Attributes and Meteorology for Large-sample Studies – Peru).</p>
-<p>It provides a simple and efficient interface to work with large-sample hydrological datasets for both research and operational applications.</p>
+<p><code>RCamelsPE</code> is an R package to read, process, and visualize data from the CAMELS-PE dataset (Catchment Attributes and Meteorology for Large-sample Studies - Peru).</p>
+<p>The package provides a simple and efficient interface to work with large-sample hydrological datasets for research and operational applications.</p>
 <hr>
 <div class="section level2">
-<h2 id="warning-important">⚠️ Important<a class="anchor" aria-label="anchor" href="#warning-important"></a>
+<h2 id="important">Important<a class="anchor" aria-label="anchor" href="#important"></a>
 </h2>
-<p>The package <strong>does NOT include the CAMELS-PE dataset</strong>.<br>
-Data must be stored locally.</p>
+<p>The package does not include the CAMELS-PE dataset.</p>
+<p>Dataset files must be downloaded separately and stored locally before using the package.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -92,7 +92,8 @@ Data must be stored locally.</p>
 </h2>
 <ul>
 <li>Efficient reading of time series by catchment</li>
-<li>Access to metadata and attributes</li>
+<li>Access to metadata and catchment attributes</li>
+<li>Access to data dictionaries and variable descriptions</li>
 <li>Integration with geospatial data (gauges and catchments)</li>
 <li>Time series visualization</li>
 <li>Spatial visualization of catchments and attributes</li>
@@ -105,20 +106,30 @@ Data must be stored locally.</p>
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"hllauca/RCamelsPE"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"hllauca/RCamelsPE"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hllauca/RCamelsPE" class="external-link">RCamelsPE</a></span><span class="op">)</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<ul>
+<li><p>Package website: <a href="https://hllauca.github.io/RCamelsPE/" class="external-link uri">https://hllauca.github.io/RCamelsPE/</a></p></li>
+<li><p>Tutorial vignette: <a href="https://hllauca.github.io/RCamelsPE/articles/rcamelspe.html" class="external-link uri">https://hllauca.github.io/RCamelsPE/articles/rcamelspe.html</a></p></li>
+</ul>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="camels-pe-dataset-structure">CAMELS-PE Dataset Structure<a class="anchor" aria-label="anchor" href="#camels-pe-dataset-structure"></a>
 </h2>
 <pre class="text"><code>CAMELS-PE/
+│
 ├── 01_metadata/
 │   ├── stations.csv
-│   ├── variable_dictionary.csv
-│   └── attribute_dictionary.csv
+│   └── data_dictionary.csv
 │
 ├── 02_attributes/
 │   ├── topographic_attributes.csv
@@ -133,11 +144,45 @@ Data must be stored locally.</p>
 │   ├── timeseries.csv
 │   └── by_catchment/
 │       ├── PE_XXXX.csv
+│       ├── PE_XXXX.csv
 │       └── ...
 │
 └── 04_geospatial/
     ├── camels_pe_gauges.gpkg
-    ├── camels_pe_catchments.gpkg</code></pre>
+    ├── camels_pe_catchments.gpkg
+    └── by_catchment/
+        ├── PE_XXXX/
+        │   ├── PE_XXXX_outlet.gpkg
+        │   └── PE_XXXX_catchment.gpkg
+        ├── PE_XXXX/
+        │   ├── PE_XXXX_outlet.gpkg
+        │   └── PE_XXXX_catchment.gpkg
+        └── ...</code></pre>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hllauca/RCamelsPE" class="external-link">RCamelsPE</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Define CAMELS-PE path</span></span>
+<span><span class="fu"><a href="reference/set_camels_path.html">set_camels_path</a></span><span class="op">(</span><span class="st">"D:/DATA/CAMELS-PE"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Inspect available variables</span></span>
+<span><span class="fu"><a href="reference/read_dictionary.html">read_dictionary</a></span><span class="op">(</span>category <span class="op">=</span> <span class="st">"timeseries"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Read metadata</span></span>
+<span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_metadata.html">read_metadata</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Read time series</span></span>
+<span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_timeseries.html">read_timeseries</a></span><span class="op">(</span></span>
+<span>  gauge_id <span class="op">=</span> <span class="st">"PE_221804"</span>,</span>
+<span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"flow_obs"</span>, <span class="st">"prec"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot streamflow</span></span>
+<span><span class="fu"><a href="reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"flow_obs"</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -145,10 +190,10 @@ Data must be stored locally.</p>
 </h2>
 <ul>
 <li>Efficient reading by catchment</li>
-<li>Consistent variable naming (CAMELS convention)</li>
+<li>Consistent variable naming following CAMELS conventions</li>
 <li>No data included in the package</li>
 <li>Scalable to large datasets</li>
-<li>Built on tidyverse and sf ecosystem</li>
+<li>Built on the tidyverse and sf ecosystem</li>
 </ul>
 <hr>
 </div>
@@ -156,12 +201,12 @@ Data must be stored locally.</p>
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
 <div class="section level3">
-<h3 id="package-code">Package (code)<a class="anchor" aria-label="anchor" href="#package-code"></a>
+<h3 id="package-code">Package code<a class="anchor" aria-label="anchor" href="#package-code"></a>
 </h3>
-<p>GNU General Public License (GPL ≥ 2)</p>
+<p>GNU General Public License (GPL &gt;= 2)</p>
 </div>
 <div class="section level3">
-<h3 id="dataset-camels-pe">Dataset (CAMELS-PE)<a class="anchor" aria-label="anchor" href="#dataset-camels-pe"></a>
+<h3 id="camels-pe-dataset">CAMELS-PE dataset<a class="anchor" aria-label="anchor" href="#camels-pe-dataset"></a>
 </h3>
 <p>Creative Commons Attribution 4.0 (CC BY 4.0)</p>
 <hr>
@@ -170,7 +215,10 @@ Data must be stored locally.</p>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>If you use this package or dataset, please cite: Journal / DOI pending</p>
+<p>If you use this package or dataset, please cite:</p>
+<blockquote>
+<p>CAMELS-PE dataset and RCamelsPE package. DOI and manuscript information will be added after publication.</p>
+</blockquote>
 </div>
 </div>
   </div>

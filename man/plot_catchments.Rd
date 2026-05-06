@@ -28,15 +28,21 @@ Creates a map of CAMELS-PE catchments and optionally overlays gauge
 locations. If \code{gauge_id} is provided, only one catchment and its outlet
 are plotted, with the gauge ID shown as a panel header.
 }
+\details{
+Use \code{read_dictionary(category = "geospatial")} to inspect available
+geospatial layers and their descriptions.
+}
 \examples{
 \dontrun{
+set_camels_path("D:/DATA/CAMELS-PE")
+
+# Inspect available geospatial layers
+read_dictionary(category = "geospatial")
+
 catchments <- read_geospatial("catchments")
 gauges <- read_geospatial("gauges")
 
-# Plot all catchments
 plot_catchments(catchments, gauges)
-
-# Plot one catchment and its outlet
 plot_catchments(catchments, gauges, gauge_id = "PE_221804")
 }
 

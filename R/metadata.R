@@ -1,9 +1,11 @@
 #' Read CAMELS-PE Station Metadata
 #'
 #' Reads the station metadata table from the CAMELS-PE dataset. This file
-#' contains the main information for each gauging station, such as the station
-#' identifier, name, location, drainage area, river, basin, or other available
-#' metadata fields depending on the CAMELS-PE dataset version.
+#' contains the main information for each gauging station and catchment,
+#' including identifiers, station names, geographic coordinates,
+#' hydrographic regions, observation periods, nested catchment information,
+#' and other available metadata fields depending on the CAMELS-PE dataset
+#' version.
 #'
 #' The function reads the file:
 #'
@@ -11,9 +13,12 @@
 #'
 #' from the CAMELS-PE root directory.
 #'
+#' Use \code{read_dictionary()} to inspect available metadata fields,
+#' descriptions, units, and data sources.
+#'
 #' @param path Character string. Optional path to the CAMELS-PE root directory.
-#'   If not provided, the path previously defined with \code{set_camels_path()}
-#'   is used.
+#'   If not provided, the path previously defined with
+#'   \code{set_camels_path()} is used.
 #'
 #' @return A tibble with CAMELS-PE station metadata.
 #'
@@ -21,6 +26,9 @@
 #' \dontrun{
 #' # Define the CAMELS-PE dataset path
 #' set_camels_path("D:/DATA/CAMELS-PE")
+#'
+#' # Inspect available metadata variables
+#' read_dictionary(category = "metadata")
 #'
 #' # Read station metadata
 #' stations <- read_metadata()

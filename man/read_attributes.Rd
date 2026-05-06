@@ -13,8 +13,8 @@ read_attributes(type = "all", gauge_id = NULL, path = get_camels_path())
 \code{"human_intervention"}, or \code{"all"}. Default is \code{"all"}.}
 
 \item{gauge_id}{Character vector or \code{NULL}. Optional gauge identifiers
-used to filter the returned attributes, for example \code{"PE_0001"} or
-\code{c("PE_0001", "PE_0002")}. If \code{NULL}, all available catchments
+used to filter the returned attributes, for example \code{"PE_250101"} or
+\code{c("PE_250101", "PE_200907")}. If \code{NULL}, all available catchments
 are returned.}
 
 \item{path}{Character string. Optional path to the CAMELS-PE root directory.
@@ -34,9 +34,9 @@ land cover, geology, soil, and human intervention.
 }
 \details{
 The function can read one attribute group at a time or join all available
-groups by \code{gauge_id}. To inspect the available attribute names,
-descriptions, units, and thematic groups, use
-\code{read_attribute_dictionary()}.
+groups by \code{gauge_id}. Use \code{read_dictionary()} to inspect available
+variable names, descriptions, units, categories, source files, and data
+sources.
 
 Available attribute groups are:
 
@@ -73,9 +73,9 @@ Expected files are:
 \dontrun{
 set_camels_path("D:/DATA/CAMELS-PE")
 
-# Inspect available attributes
-attr_dict <- read_attribute_dictionary()
-head(attr_dict)
+# Inspect available topographic attributes
+dict <- read_dictionary(category = "topographic")
+head(dict)
 
 # Read topographic attributes
 topo <- read_attributes(type = "topographic")

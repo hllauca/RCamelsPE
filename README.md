@@ -1,22 +1,29 @@
 # RCamelsPE
 
-**RCamelsPE** is an R package to read, process, and visualize data from the **CAMELS-PE dataset** (Catchment Attributes and Meteorology for Large-sample Studies – Peru).
+`RCamelsPE` is an R package to read, process, and visualize data from
+the CAMELS-PE dataset (Catchment Attributes and Meteorology for
+Large-sample Studies - Peru).
 
-It provides a simple and efficient interface to work with large-sample hydrological datasets for both research and operational applications.
+The package provides a simple and efficient interface to work with
+large-sample hydrological datasets for research and operational
+applications.
 
 ---
 
-## ⚠️ Important
+## Important
 
-The package **does NOT include the CAMELS-PE dataset**.  
-Data must be stored locally.
+The package does not include the CAMELS-PE dataset.
+
+Dataset files must be downloaded separately and stored locally before
+using the package.
 
 ---
 
 ## Features
 
 - Efficient reading of time series by catchment
-- Access to metadata and attributes
+- Access to metadata and catchment attributes
+- Access to data dictionaries and variable descriptions
 - Integration with geospatial data (gauges and catchments)
 - Time series visualization
 - Spatial visualization of catchments and attributes
@@ -28,11 +35,22 @@ Data must be stored locally.
 ## Installation
 
 ```r
-install.packages("devtools")
-devtools::install_github("hllauca/RCamelsPE")
+install.packages("remotes")
+
+remotes::install_github("hllauca/RCamelsPE")
 
 library(RCamelsPE)
 ```
+
+---
+
+## Documentation
+
+- Package website:
+  <https://hllauca.github.io/RCamelsPE/>
+
+- Tutorial vignette:
+  <https://hllauca.github.io/RCamelsPE/articles/rcamelspe.html>
 
 ---
 
@@ -40,10 +58,10 @@ library(RCamelsPE)
 
 ```text
 CAMELS-PE/
+│
 ├── 01_metadata/
 │   ├── stations.csv
-│   ├── variable_dictionary.csv
-│   └── attribute_dictionary.csv
+│   └── data_dictionary.csv
 │
 ├── 02_attributes/
 │   ├── topographic_attributes.csv
@@ -58,11 +76,46 @@ CAMELS-PE/
 │   ├── timeseries.csv
 │   └── by_catchment/
 │       ├── PE_XXXX.csv
+│       ├── PE_XXXX.csv
 │       └── ...
 │
 └── 04_geospatial/
     ├── camels_pe_gauges.gpkg
     ├── camels_pe_catchments.gpkg
+    └── by_catchment/
+        ├── PE_XXXX/
+        │   ├── PE_XXXX_outlet.gpkg
+        │   └── PE_XXXX_catchment.gpkg
+        ├── PE_XXXX/
+        │   ├── PE_XXXX_outlet.gpkg
+        │   └── PE_XXXX_catchment.gpkg
+        └── ...
+```
+
+---
+
+## Example
+
+```r
+library(RCamelsPE)
+
+# Define CAMELS-PE path
+set_camels_path("D:/DATA/CAMELS-PE")
+
+# Inspect available variables
+read_dictionary(category = "timeseries")
+
+# Read metadata
+stations <- read_metadata()
+
+# Read time series
+ts <- read_timeseries(
+  gauge_id = "PE_221804",
+  vars = c("date", "flow_obs", "prec")
+)
+
+# Plot streamflow
+plot_timeseries(ts, variable = "flow_obs")
 ```
 
 ---
@@ -70,19 +123,21 @@ CAMELS-PE/
 ## Design Principles
 
 - Efficient reading by catchment
-- Consistent variable naming (CAMELS convention)
+- Consistent variable naming following CAMELS conventions
 - No data included in the package
 - Scalable to large datasets
-- Built on tidyverse and sf ecosystem
+- Built on the tidyverse and sf ecosystem
 
 ---
 
 ## License
 
-### Package (code)
-GNU General Public License (GPL ≥ 2)
+### Package code
 
-### Dataset (CAMELS-PE)
+GNU General Public License (GPL >= 2)
+
+### CAMELS-PE dataset
+
 Creative Commons Attribution 4.0 (CC BY 4.0)
 
 ---
@@ -90,4 +145,6 @@ Creative Commons Attribution 4.0 (CC BY 4.0)
 ## Citation
 
 If you use this package or dataset, please cite:
-Journal / DOI pending
+
+> CAMELS-PE dataset and RCamelsPE package.
+> DOI and manuscript information will be added after publication.

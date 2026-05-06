@@ -13,17 +13,19 @@ read_timeseries(
 }
 \arguments{
 \item{gauge_id}{Character vector or \code{NULL}. Gauge identifiers to read,
-for example \code{"PE_0001"} or \code{c("PE_0001", "PE_0002")}.
+for example \code{"PE_250101"} or \code{c("PE_250101", "PE_200907")}.
 This argument is required when \code{global = FALSE}. When
 \code{global = TRUE}, it can be used to filter the global time series file.}
 
-\item{global}{Logical. If \code{TRUE}, reads the global file
+\item{global}{Logical value. If \code{TRUE}, reads the global file
 \code{03_timeseries/timeseries.csv}. If \code{FALSE}, reads individual
 catchment files from \code{03_timeseries/by_catchment/}. Default is
 \code{FALSE}.}
 
 \item{vars}{Character vector or \code{NULL}. Optional variable names to keep
-in the returned table. If \code{NULL}, all available variables are returned.}
+in the returned table. If \code{NULL}, all available variables are returned.
+Use \code{read_dictionary(category = "timeseries")} to inspect available
+variables.}
 
 \item{path}{Character string. Optional path to the CAMELS-PE root directory.
 If not provided, the path set by \code{set_camels_path()} is used.}
@@ -57,22 +59,25 @@ Available variables typically include:
 \item \code{"date"}: date of observation.
 \item \code{"gauge_id"}: catchment identifier.
 \item \code{"prec"}: precipitation (mm/day).
-\item \code{"prec_var"}: precipitation variability or variance (mm²/day²).
+\item \code{"prec_var"}: precipitation variability or variance
+(mm2/day2).
 \item \code{"flow_obs"}: observed streamflow (mm/day).
 \item \code{"flow_sim"}: simulated streamflow (mm/day).
-\item \code{"tmean"}: mean air temperature (°C).
-\item \code{"tmax"}: maximum air temperature (°C).
-\item \code{"tmin"}: minimum air temperature (°C).
+\item \code{"tmean"}: mean air temperature (degrees C).
+\item \code{"tmax"}: maximum air temperature (degrees C).
+\item \code{"tmin"}: minimum air temperature (degrees C).
 \item \code{"pet"}: potential evapotranspiration (mm/day).
-\item \code{"srad"}: solar radiation (MJ/m²day).
+\item \code{"srad"}: solar radiation (MJ/m2/day).
 \item \code{"vprp"}: vapor pressure (hPa).
 }
 
 Available variables may differ depending on the CAMELS-PE dataset version.
+Use \code{read_dictionary(category = "timeseries")} to inspect the complete
+list of available variables, descriptions, units, and data sources.
 
 In by-catchment mode, each requested gauge is expected to have a file named
 \code{<gauge_id>.csv} inside \code{03_timeseries/by_catchment/}. For example,
-\code{PE_0001} is expected to be stored as
+\code{PE_250101} is expected to be stored as
 \code{03_timeseries/by_catchment/PE_0001.csv}.
 
 If one or more requested files are missing, the function issues a warning and
@@ -82,6 +87,9 @@ stops with an error.
 \examples{
 \dontrun{
 set_camels_path("D:/DATA/CAMELS-PE")
+
+# Inspect available time series variables
+read_dictionary(category = "timeseries")
 
 # Read all variables for one catchment
 ts1 <- read_timeseries(gauge_id = "PE_221804")

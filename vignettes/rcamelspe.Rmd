@@ -13,12 +13,14 @@ knitr::opts_chunk$set(
   comment = "#>",
   eval = TRUE
 )
+
+camels_path <- Sys.getenv("CAMELSPE_PATH")
+has_camels_data <- nzchar(camels_path) && dir.exists(camels_path)
 ```
 
 # Introduction
 
-`RCamelsPE` is an R package designed to read, process, and visualize data from the CAMELS-PE dataset:\
-**Catchment Attributes and Meteorology for Large-sample Studies – Peru**.
+`RCamelsPE` is an R package designed to read, process, and visualize data from the CAMELS-PE dataset: **Catchment Attributes and Meteorology for Large-sample Studies - Peru**.
 
 This vignette provides a practical introduction to the package, guiding users through a typical workflow:
 
@@ -30,14 +32,20 @@ This vignette provides a practical introduction to the package, guiding users th
 
 ## Installation
 
-Before using the package, you need to install it from GitHub. This step only needs to be done once.
+Install the package from CRAN when available:
 
-```{r}
+```{r, eval = FALSE}
+install.packages("RCamelsPE")
+```
+
+The development version can be installed from GitHub:
+
+```{r, eval = FALSE}
 # install.packages("remotes")
 remotes::install_github("hllauca/RCamelsPE")
 ```
 
-Once installed, load the package into your R session:
+Load the package:
 
 ```{r setup}
 library(RCamelsPE)
@@ -47,31 +55,60 @@ library(RCamelsPE)
 
 ## Set the CAMELS-PE dataset path
 
-CAMELS-PE is not included in the package, so you must specify the location of the dataset on your local system. This allows all functions to automatically locate the data.
+CAMELS-PE is not included in the package. Dataset files must be downloaded separately and stored locally.
+
+For reproducible use in this vignette, the dataset path is read from the environment variable `CAMELSPE_PATH`.
 
 ```{r}
-set_camels_path("C:/Users/hllauca/Documents/CAMELS-PE")
+if (has_camels_data) {
+  set_camels_path(camels_path)
+}
+```
+
+For interactive use, set your local path manually:
+
+```{r, eval = FALSE}
+set_camels_path("path/to/CAMELS-PE")
+```
+
+------------------------------------------------------------------------
+
+## Explore the data dictionary
+
+The data dictionary describes available metadata fields, attributes, geospatial layers, time series variables, units, source files, and data sources.
+
+```{r, eval = has_camels_data}
+dict <- read_dictionary()
+head(dict)
+```
+
+Time series variables can be inspected with:
+
+```{r, eval = has_camels_data}
+read_dictionary(category = "timeseries")
+```
+
+Topographic attributes can be inspected with:
+
+```{r, eval = has_camels_data}
+read_dictionary(category = "topographic")
 ```
 
 ------------------------------------------------------------------------
 
 ## Explore available stations
 
-We begin by loading the metadata, which contains all available gauging stations. This table is the entry point to the dataset.
+The station metadata table contains the available gauging stations and catchments. Each row represents a catchment identified by a unique `gauge_id`.
 
-```{r}
+```{r, eval = has_camels_data}
 stations <- read_metadata()
-
 head(stations)
 ```
 
-Each row represents a catchment, identified by a unique `gauge_id`.
+Select one basin to work with:
 
-We select one basin to work with:
-
-```{r}
-gauge_id <- 'PE_472935F2'
-
+```{r, eval = has_camels_data}
+gauge_id <- stations$gauge_id[1]
 gauge_id
 ```
 
@@ -79,20 +116,16 @@ gauge_id
 
 ## Read geospatial data
 
-CAMELS-PE also includes spatial data for catchments and gauges.
+CAMELS-PE includes spatial data for catchments and gauges.
 
-These layers allow geographic visualization.
-
-```{r}
+```{r, eval = has_camels_data}
 catchments <- read_geospatial("catchments")
-gauges     <- read_geospatial("gauges")
+gauges <- read_geospatial("gauges")
 ```
 
 ## Plot catchment location
 
-Finally, we visualize the selected basin in its spatial context.
-
-```{r}
+```{r, eval = has_camels_data}
 plot_catchments(
   catchments = catchments,
   gauges = gauges,
@@ -100,43 +133,37 @@ plot_catchments(
 )
 ```
 
-This helps understand:
-
--   where the basin is located
-
--   its geographic setting
-
--   its relation to other basins
+This helps identify the basin location, geographic setting, and relation to other basins.
 
 ------------------------------------------------------------------------
 
 ## Explore catchment attributes
 
-CAMELS-PE includes multiple groups of attributes describing each basin. These attributes are essential for understanding hydrological behavior.
+CAMELS-PE includes multiple groups of attributes describing each basin.
 
-```{r}
+```{r, eval = has_camels_data}
 topo <- read_attributes("topographic")
 head(topo)
 ```
 
-```{r}
+```{r, eval = has_camels_data}
 clim <- read_attributes("climatic")
 head(clim)
 ```
 
 Other available attribute groups include:
 
-```{r}
-hyd   <- read_attributes(type = "hydrological")
-land  <- read_attributes(type = "landcover")
-geo   <- read_attributes(type = "geologic")
-soil  <- read_attributes(type = "soil")
+```{r, eval = has_camels_data}
+hyd <- read_attributes(type = "hydrological")
+land <- read_attributes(type = "landcover")
+geo <- read_attributes(type = "geologic")
+soil <- read_attributes(type = "soil")
 human <- read_attributes(type = "human_intervention")
 ```
 
-Now we extract the attributes corresponding to the selected basin:
+Extract the attributes for the selected basin:
 
-```{r}
+```{r, eval = has_camels_data}
 topo_sel <- topo[topo$gauge_id == gauge_id, ]
 clim_sel <- clim[clim$gauge_id == gauge_id, ]
 
@@ -144,21 +171,18 @@ topo_sel
 clim_sel
 ```
 
-These variables provide insight into the system:
+These variables help describe the hydrological system:
 
--   **Topography** controls flow pathways and energy gradients
-
--   **Climate** defines water input and atmospheric demand
+-   topography controls flow pathways and energy gradients
+-   climate defines water input and atmospheric demand
 
 ------------------------------------------------------------------------
 
 ## Read hydroclimatic time series
 
-Next, we load daily time series for the selected catchment.
+Daily time series may include precipitation, temperature, potential evapotranspiration, observed streamflow, simulated streamflow, solar radiation, and vapor pressure.
 
-This includes key hydroclimatic variables such as precipitation, temperature, evapotranspiration, and streamflow. Additional variables are also available in CAMELS-PE (e.g., air temperature, potential evapotranspiraton, simulated streamflow, solar radiation and vapor pressure), and can be selected using the `vars` argument.
-
-```{r}
+```{r, eval = has_camels_data}
 ts <- read_timeseries(
   gauge_id = gauge_id,
   vars = c("date", "gauge_id", "prec", "flow_obs")
@@ -169,62 +193,39 @@ head(ts)
 
 ### Plot precipitation
 
-We first explore precipitation, which is the main driver of the hydrological system.
-
-```{r}
+```{r, eval = has_camels_data}
 plot_timeseries(ts, variable = "prec", linewidth = 0.4)
 ```
 
-This plot helps identify:
-
--   seasonal patterns
-
--   variability across years
-
--   extreme events
-
 ### Plot streamflow
 
-Now we analyze observed streamflow, which integrates all basin processes.
-
-```{r}
+```{r, eval = has_camels_data}
 plot_timeseries(ts, variable = "flow_obs")
 ```
 
-Streamflow reflects:
-
--   rainfall input
-
--   soil moisture dynamics
-
--   groundwater contributions
-
--   river routing
+------------------------------------------------------------------------
 
 ## Units of streamflow
 
-In CAMELS-PE, both observed and simulated streamflow (`flow_obs` and `flow_sim`) are expressed in **mm/day**.
+In CAMELS-PE, observed and simulated streamflow (`flow_obs` and `flow_sim`) are expressed in **mm/day**.
 
-This unit represents runoff depth over the catchment area and is commonly used in hydrology because it allows comparison between basins of different sizes.
+This unit represents runoff depth over the catchment area and allows comparison between basins of different sizes.
 
-However, in many applications, streamflow is required in **m³/s**.\
-To convert from mm/day to m³/s, the catchment area must be used:
+In many applications, streamflow is required in **m3/s**. To convert from mm/day to m3/s, the catchment area must be used:
 
 $$
-Q_{m^3/s} = \frac{Q_{mm/day} \times A_{km^2} \times 10^6}{1000 \times 86400}
+Q_{m3/s} = \frac{Q_{mm/day} \times A_{km2} \times 10^6}{1000 \times 86400}
 $$
 
-Where:
+where:
 
--   $Q_{mm/day}$ = streamflow in mm/day\
--   $A_{km^2}$ = catchment area in km²\
--   86400 = seconds per day
+-   $Q_{mm/day}$ is streamflow in mm/day
+-   $A_{km2}$ is catchment area in km2
+-   86400 is the number of seconds per day
 
-```{r}
-# Read catchment area from topographic attributes
+```{r, eval = has_camels_data}
 area_km2 <- topo_sel$area
 
-# Convert flow from mm/day to m3/s
 ts$flow_m3s <- ts$flow_obs * area_km2 * 1e6 / (1000 * 86400)
 
 plot_timeseries(ts, variable = "flow_m3s")
@@ -234,34 +235,26 @@ plot_timeseries(ts, variable = "flow_m3s")
 
 ## Compare multiple catchments
 
-To understand spatial variability, we can analyze several basins at once.
-
-```{r}
+```{r, eval = has_camels_data}
 ts_multi <- read_timeseries(
-  gauge_id = c("PE_472A9204", "PE_210003"),
+  gauge_id = stations$gauge_id[1:2],
   vars = c("date", "gauge_id", "prec")
 )
 ```
 
-Plot them using faceting:
-
-```{r}
+```{r, eval = has_camels_data}
 plot_timeseries(ts_multi, variable = "prec", facet = TRUE)
 ```
-
-Each panel represents a different catchment, allowing comparison of hydrological regimes.
 
 ------------------------------------------------------------------------
 
 ## Filter a specific catchment
 
-Even when working with multiple basins, you can easily focus on one.
-
-```{r}
+```{r, eval = has_camels_data}
 plot_timeseries(
   ts_multi,
   variable = "prec",
-  gauge_id = "PE_472A9204"
+  gauge_id = stations$gauge_id[1]
 )
 ```
 
@@ -269,12 +262,12 @@ plot_timeseries(
 
 # Typical workflow
 
-A minimal workflow with `RCamelsPE` is:
-
-```{r}
+```{r, eval = FALSE}
 library(RCamelsPE)
 
-set_camels_path("C:/Users/hllauca/Documents/CAMELS-PE")
+set_camels_path("path/to/CAMELS-PE")
+
+read_dictionary(category = "timeseries")
 
 stations <- read_metadata()
 
@@ -292,24 +285,13 @@ plot_timeseries(ts, variable = "flow_obs")
 
 With `RCamelsPE`, users can:
 
--   access hydroclimatic data quickly
-
+-   access hydroclimatic data
 -   explore basin characteristics
-
 -   visualize time series and spatial data
-
 -   compare multiple catchments
 
-This makes the package suitable for:
-
--   hydrological analysis
-
--   teaching and training
-
--   model development
-
--   large-sample hydrology studies
+This makes the package suitable for hydrological analysis, teaching, model development, and large-sample hydrology studies.
 
 # Notes
 
-To run the examples, download the dataset and set the correct path using `set_camels_path()`.
+To run the examples with real data, download the CAMELS-PE dataset and set the `CAMELSPE_PATH` environment variable or use `set_camels_path()` in an interactive R session.

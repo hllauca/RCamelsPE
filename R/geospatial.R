@@ -4,14 +4,18 @@
 #' and catchment boundaries. The data are stored as GeoPackage files in the
 #' \code{04_geospatial} directory.
 #'
-#' Available types:
+#' Available types are:
 #'
 #' \itemize{
 #'   \item \code{"gauges"}: point locations of gauging stations.
 #'   \item \code{"catchments"}: polygon boundaries of catchments.
 #' }
 #'
-#' @param type Character string. Either \code{"gauges"} or \code{"catchments"}.
+#' Use \code{read_dictionary(category = "geospatial")} to inspect available
+#' geospatial layers, descriptions, and data sources.
+#'
+#' @param type Character string. Either \code{"gauges"} or
+#'   \code{"catchments"}.
 #' @param path Character string. Optional path to the CAMELS-PE root directory.
 #'   If not provided, the path previously defined with
 #'   \code{set_camels_path()} is used.
@@ -22,6 +26,9 @@
 #' \dontrun{
 #' set_camels_path("D:/DATA/CAMELS-PE")
 #'
+#' # Inspect available geospatial layers
+#' read_dictionary(category = "geospatial")
+#'
 #' # Read gauges
 #' gauges <- read_geospatial("gauges")
 #'
@@ -29,8 +36,8 @@
 #' catchments <- read_geospatial("catchments")
 #'
 #' # Plot
-#' plot(catchments$geometry)
-#' plot(gauges$geometry, add = TRUE, col = "red")
+#' plot(sf::st_geometry(catchments))
+#' plot(sf::st_geometry(gauges), add = TRUE, col = "red")
 #' }
 #'
 #' @export
@@ -48,16 +55,16 @@ read_geospatial <- function(type = c("gauges", "catchments"),
   file <- file.path(path, "04_geospatial", file_name)
 
   if (!file.exists(file)) {
-    stop("Geospatial file not found: ", file_name)
+    stop("Geospatial file not found: ", file_name, call. = FALSE)
   }
 
   data <- sf::st_read(file, quiet = TRUE)
 
-  # Validate key column
   if (!"gauge_id" %in% names(data)) {
     warning(
       "Column 'gauge_id' not found in geospatial data. ",
-      "Ensure consistency with CAMELS-PE structure."
+      "Ensure consistency with CAMELS-PE structure.",
+      call. = FALSE
     )
   }
 

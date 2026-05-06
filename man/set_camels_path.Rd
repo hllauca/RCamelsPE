@@ -7,11 +7,38 @@
 set_camels_path(path)
 }
 \arguments{
-\item{path}{Character. Path to the CAMELS-PE root directory.}
+\item{path}{Character string. Path to the CAMELS-PE root directory.}
 }
 \value{
-Invisibly returns the normalized path.
+Invisibly returns the normalized CAMELS-PE path.
 }
 \description{
-Set CAMELS-PE dataset path
+Defines the root directory of the local CAMELS-PE dataset. The function
+validates that the provided directory exists and contains the required
+CAMELS-PE folder structure.
+}
+\details{
+Expected folders are:
+
+\itemize{
+\item \code{01_metadata}
+\item \code{02_attributes}
+\item \code{03_timeseries}
+\item \code{04_geospatial}
+}
+
+Once defined, the path is internally stored and automatically used by
+functions such as \code{read_metadata()},
+\code{read_attributes()}, \code{read_timeseries()},
+\code{read_geospatial()}, and \code{read_dictionary()}.
+}
+\examples{
+\dontrun{
+# Define CAMELS-PE root directory
+set_camels_path("D:/DATA/CAMELS-PE")
+
+# Check the stored path
+get_camels_path()
+}
+
 }

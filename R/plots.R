@@ -1,7 +1,3 @@
-# =========================================================
-# Time series plots
-# =========================================================
-
 #' Plot CAMELS-PE Time Series
 #'
 #' Creates a time series plot for one CAMELS-PE variable, such as precipitation,
@@ -9,12 +5,15 @@
 #' returns a \code{ggplot} object, so it can be further customized using standard
 #' \code{ggplot2} layers.
 #'
+#' Use \code{read_dictionary(category = "timeseries")} to inspect available
+#' time series variables, descriptions, units, and data sources.
+#'
 #' @param data A data frame or tibble containing CAMELS-PE time series.
 #' @param variable Character string. Name of the variable to plot.
 #' @param gauge_id Optional character vector. Gauge IDs used to filter the data
 #'   before plotting. If \code{NULL}, all available gauges are plotted.
 #' @param date_col Character string. Name of the date column.
-#' @param facet Logical. If \code{TRUE}, creates one panel per gauge ID.
+#' @param facet Logical value. If \code{TRUE}, creates one panel per gauge ID.
 #' @param scales Character string. Scales passed to \code{ggplot2::facet_wrap()}.
 #'   One of \code{"fixed"}, \code{"free"}, \code{"free_x"}, or \code{"free_y"}.
 #' @param ... Additional arguments passed to \code{ggplot2::geom_line()}.
@@ -23,6 +22,11 @@
 #'
 #' @examples
 #' \dontrun{
+#' set_camels_path("D:/DATA/CAMELS-PE")
+#'
+#' # Inspect available time series variables
+#' read_dictionary(category = "timeseries")
+#'
 #' ts <- read_timeseries(
 #'   gauge_id = c("PE_250101", "PE_200907"),
 #'   vars = c("date", "gauge_id", "prec", "flow_obs", "flow_sim", "tmean")
@@ -160,15 +164,14 @@ plot_timeseries <- function(data,
 }
 
 
-# =========================================================
-# Map plots
-# =========================================================
-
 #' Plot CAMELS-PE Catchments
 #'
 #' Creates a map of CAMELS-PE catchments and optionally overlays gauge
 #' locations. If \code{gauge_id} is provided, only one catchment and its outlet
 #' are plotted, with the gauge ID shown as a panel header.
+#'
+#' Use \code{read_dictionary(category = "geospatial")} to inspect available
+#' geospatial layers and their descriptions.
 #'
 #' @param catchments An \code{sf} object with catchment polygons.
 #' @param gauges Optional \code{sf} object with gauge point locations.
@@ -183,13 +186,15 @@ plot_timeseries <- function(data,
 #'
 #' @examples
 #' \dontrun{
+#' set_camels_path("D:/DATA/CAMELS-PE")
+#'
+#' # Inspect available geospatial layers
+#' read_dictionary(category = "geospatial")
+#'
 #' catchments <- read_geospatial("catchments")
 #' gauges <- read_geospatial("gauges")
 #'
-#' # Plot all catchments
 #' plot_catchments(catchments, gauges)
-#'
-#' # Plot one catchment and its outlet
 #' plot_catchments(catchments, gauges, gauge_id = "PE_221804")
 #' }
 #'
@@ -295,15 +300,14 @@ plot_catchments <- function(catchments,
 }
 
 
-# =========================================================
-# Attribute map
-# =========================================================
-
 #' Plot CAMELS-PE Attribute Map
 #'
 #' Creates a thematic map of CAMELS-PE catchments using a selected attribute.
 #' The function joins attribute data with catchment geometries by
 #' \code{gauge_id} and returns a \code{ggplot} object.
+#'
+#' Use \code{read_dictionary()} to inspect available attributes,
+#' descriptions, units, categories, source files, and data sources.
 #'
 #' @param catchments An \code{sf} object with catchment polygons.
 #' @param attributes A data frame or tibble with CAMELS-PE attributes.
@@ -317,6 +321,11 @@ plot_catchments <- function(catchments,
 #'
 #' @examples
 #' \dontrun{
+#' set_camels_path("D:/DATA/CAMELS-PE")
+#'
+#' # Inspect available topographic attributes
+#' read_dictionary(category = "topographic")
+#'
 #' catchments <- read_geospatial("catchments")
 #' gauges <- read_geospatial("gauges")
 #' attr <- read_attributes("topographic")

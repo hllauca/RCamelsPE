@@ -7,8 +7,19 @@
 get_camels_path()
 }
 \value{
-Character path to the CAMELS-PE root directory.
+Character string with the CAMELS-PE root directory.
 }
 \description{
-Get CAMELS-PE dataset path
+Returns the CAMELS-PE root directory previously defined with
+\code{set_camels_path()}.
+}
+\examples{
+\dontrun{
+# Define CAMELS-PE root directory
+set_camels_path("D:/DATA/CAMELS-PE")
+
+# Retrieve the stored path
+get_camels_path()
+}
+
 }
