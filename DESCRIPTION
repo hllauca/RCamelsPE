@@ -20,6 +20,7 @@ Description: Provides tools to read, process, visualize, and download
     series and catchment boundaries.
 License: GPL (>= 2)
 Encoding: UTF-8
+Language: en-US
 Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 4.1.0)
