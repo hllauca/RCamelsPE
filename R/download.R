@@ -1,0 +1,134 @@
+#' Download CAMELS-PE dataset from Zenodo
+#'
+#' Downloads and optionally extracts the CAMELS-PE dataset
+#' hosted on Zenodo.
+#'
+#' @param path Character. Directory where the dataset will be stored.
+#'   Default is the current working directory.
+#' @param version Character. Dataset version.
+#'   Default is "1.0".
+#' @param unzip Logical. If TRUE, extracted files will be automatically
+#'   uncompressed.
+#' @param overwrite Logical. If TRUE, existing zip files will be overwritten.
+#' @param set_path Logical. If TRUE, automatically sets the CAMELS-PE path
+#'   using `set_camels_path()` after extraction.
+#'
+#' @return Invisibly returns the downloaded zip file path.
+#'
+#' @details
+#' The CAMELS-PE dataset is distributed separately from the package
+#' through Zenodo:
+#'
+#' https://doi.org/10.5281/zenodo.20058779
+#'
+#' @examples
+#' \dontrun{
+#' download_camels_pe(path = "my/path")
+#' }
+#'
+#' @export
+
+download_camels_pe <- function(path = getwd(),
+                               version = "1.0",
+                               unzip = TRUE,
+                               overwrite = FALSE,
+                               set_path = TRUE) {
+
+  # Create destination directory
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE)
+  }
+
+  # Zenodo download URLs
+  urls <- c(
+    "1.0" = "https://zenodo.org/records/20058779/files/CAMELS-PE_v1.0.zip?download=1"
+  )
+
+  # Validate version
+  if (!version %in% names(urls)) {
+    stop(
+      "Unsupported CAMELS-PE version. Available versions: ",
+      paste(names(urls), collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  # Download URL
+  url <- urls[[version]]
+
+  # Output zip file
+  zip_file <- file.path(
+    path,
+    paste0("CAMELS-PE_v", version, ".zip")
+  )
+
+  # Prevent overwrite
+  if (file.exists(zip_file) && !overwrite) {
+    stop(
+      "File already exists: ",
+      zip_file,
+      "\nUse overwrite = TRUE to overwrite the existing file.",
+      call. = FALSE
+    )
+  }
+
+  # Download dataset
+  status <- tryCatch(
+    {
+      utils::download.file(
+        url = url,
+        destfile = zip_file,
+        mode = "wb",
+        quiet = FALSE
+      )
+      TRUE
+    },
+    error = function(e) FALSE
+  )
+
+  # Validate download
+  if (!status || !file.exists(zip_file)) {
+    stop(
+      "Failed to download CAMELS-PE dataset from Zenodo.\n",
+      "The dataset may still be restricted or temporarily unavailable.",
+      call. = FALSE
+    )
+  }
+
+  message("Download completed: ", zip_file)
+
+  # Extract dataset
+  if (unzip) {
+
+    utils::unzip(
+      zipfile = zip_file,
+      exdir = path,
+      overwrite = overwrite
+    )
+
+    message("Dataset extracted to: ", path)
+
+    # Detect CAMELS-PE root folder
+    extracted_path <- file.path(path, "CAMELS-PE")
+
+    if (!dir.exists(extracted_path)) {
+      warning(
+        "Dataset extracted, but CAMELS-PE root folder was not detected.",
+        call. = FALSE
+      )
+    }
+
+    # Set CAMELS-PE path
+    if (set_path && dir.exists(extracted_path)) {
+
+      set_camels_path(extracted_path)
+
+      message(
+        "CAMELS-PE path set to: ",
+        extracted_path
+      )
+    }
+  }
+
+  invisible(zip_file)
+}

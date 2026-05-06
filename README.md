@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # RCamelsPE
 
 `RCamelsPE` is an R package to read, process, and visualize data from
@@ -18,10 +12,15 @@ applications.
 
 ## Important
 
-The package does not include the CAMELS-PE dataset.
+The `RCamelsPE` package does not include the CAMELS-PE dataset.
 
-Dataset files must be downloaded separately and stored locally before
-using the package.
+Dataset files can be downloaded separately from Zenodo using
+`download_camels_pe()` or manually from: https://doi.org/10.5281/zenodo.20058779
+
+The dataset is currently temporarily restricted while the associated
+scientific article is under preparation.
+
+The dataset must be stored locally before using the package.
 
 ------------------------------------------------------------------------
 

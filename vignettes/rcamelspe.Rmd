@@ -53,22 +53,39 @@ library(RCamelsPE)
 
 ------------------------------------------------------------------------
 
-## Set the CAMELS-PE dataset path
+## Download the CAMELS-PE dataset
 
-CAMELS-PE is not included in the package. Dataset files must be downloaded separately and stored locally.
+The CAMELS-PE dataset is distributed separately from the package and is available from Zenodo:
 
-For reproducible use in this vignette, the dataset path is read from the environment variable `CAMELSPE_PATH`.
+<https://doi.org/10.5281/zenodo.20058779>
+
+***The dataset is currently temporarily restricted while the associated scientific article is under preparation.***
+
+The dataset can be downloaded automatically with:
+
+```{r, eval = FALSE}
+download_camels_pe(path = "my/path")
+```
+
+This function downloads and extracts the dataset, and automatically\
+defines the CAMELS-PE dataset path for the current R session.
+
+------------------------------------------------------------------------
+
+## Set the CAMELS-PE dataset path manually
+
+If the dataset has already been downloaded manually, define the local CAMELS-PE path with:
+
+```{r, eval = FALSE}
+set_camels_path("path/to/CAMELS-PE")
+```
+
+For reproducible execution of this vignette, the dataset path is read from the `CAMELSPE_PATH` environment variable.
 
 ```{r}
 if (has_camels_data) {
   set_camels_path(camels_path)
 }
-```
-
-For interactive use, set your local path manually:
-
-```{r, eval = FALSE}
-set_camels_path("path/to/CAMELS-PE")
 ```
 
 ------------------------------------------------------------------------
@@ -265,6 +282,9 @@ plot_timeseries(
 ```{r, eval = FALSE}
 library(RCamelsPE)
 
+# Optional: download dataset from Zenodo
+# download_camels_pe(path = "my/path")
+
 set_camels_path("path/to/CAMELS-PE")
 
 read_dictionary(category = "timeseries")
@@ -294,4 +314,8 @@ This makes the package suitable for hydrological analysis, teaching, model devel
 
 # Notes
 
-To run the examples with real data, download the CAMELS-PE dataset and set the `CAMELSPE_PATH` environment variable or use `set_camels_path()` in an interactive R session.
+To run the examples with real data, download the CAMELS-PE dataset using `download_camels_pe()` or manually from Zenodo.
+
+The `download_camels_pe()` function automatically defines the dataset path for the current R session.
+
+If the dataset was downloaded manually, or in a previous R session, define the local dataset path using `set_camels_path()`.

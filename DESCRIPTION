@@ -1,7 +1,7 @@
 Package: RCamelsPE
 Type: Package
 Title: Access, Process, and Visualize CAMELS-PE Data
-Version: 0.1.1
+Version: 1.0.0
 Authors@R: 
     person(
         given = "Harold",
@@ -9,15 +9,15 @@ Authors@R:
         role = c("aut", "cre"),
         email = "hllauca@senamhi.gob.pe"
     )
-Description: Provides tools to read, process, and visualize
+Description: Provides tools to read, process, visualize, and download
     hydrological, climatic, physiographic, metadata, and geospatial
     data from the CAMELS-PE dataset (Catchment Attributes and
     Meteorology for Large-sample Studies - Peru). The package is
     designed to work with externally stored CAMELS-PE data and does
     not include the dataset itself. Functions support reading daily
     time series, catchment attributes, station metadata, metadata
-    dictionaries, and geospatial layers, as well as basic
-    visualization of time series and catchment boundaries.
+    dictionaries, geospatial layers, and basic visualization of time
+    series and catchment boundaries.
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -36,7 +36,7 @@ Suggests:
 Config/testthat/edition: 3
 URL: https://github.com/hllauca/RCamelsPE,
     https://hllauca.github.io/RCamelsPE/,
-    https://hllauca.github.io/RCamelsPE/articles/rcamelspe.html
+    https://doi.org/10.5281/zenodo.20058779
 BugReports: https://github.com/hllauca/RCamelsPE/issues
 Config/roxygen2/version: 8.0.0
 VignetteBuilder: knitr
