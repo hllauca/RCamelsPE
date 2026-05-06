@@ -85,7 +85,7 @@ set_camels_path <- function(path) {
 #' @examples
 #' \dontrun{
 #' # Define CAMELS-PE root directory
-#' set_camels_path("D:/DATA/CAMELS-PE")
+#' set_camels_path("path/to/CAMELS-PE")
 #'
 #' # Retrieve the stored path
 #' get_camels_path()

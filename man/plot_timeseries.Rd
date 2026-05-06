@@ -46,7 +46,7 @@ time series variables, descriptions, units, and data sources.
 }
 \examples{
 \dontrun{
-set_camels_path("D:/DATA/CAMELS-PE")
+set_camels_path("path/to/CAMELS-PE")
 
 # Inspect available time series variables
 read_dictionary(category = "timeseries")
