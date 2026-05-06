@@ -27,11 +27,8 @@ Imports:
     dplyr,
     ggplot2,
     readr,
-    rlang,
     sf,
-    stats,
-    tools,
-    utils
+    tools
 Suggests:
     knitr,
     rmarkdown,
