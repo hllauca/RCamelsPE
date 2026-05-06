@@ -64,7 +64,7 @@ The returned table includes:
 }
 \examples{
 \dontrun{
-set_camels_path("D:/DATA/CAMELS-PE")
+set_camels_path("path/to/CAMELS-PE")
 
 # Read complete dictionary
 dict <- read_dictionary()

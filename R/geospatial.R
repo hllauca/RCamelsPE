@@ -24,7 +24,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' set_camels_path("D:/DATA/CAMELS-PE")
+#' set_camels_path("path/to/CAMELS-PE")
 #'
 #' # Inspect available geospatial layers
 #' read_dictionary(category = "geospatial")

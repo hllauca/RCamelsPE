@@ -71,7 +71,7 @@ Expected files are:
 }
 \examples{
 \dontrun{
-set_camels_path("D:/DATA/CAMELS-PE")
+set_camels_path("path/to/CAMELS-PE")
 
 # Inspect available topographic attributes
 dict <- read_dictionary(category = "topographic")

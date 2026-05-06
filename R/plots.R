@@ -321,7 +321,7 @@ plot_catchments <- function(catchments,
 #'
 #' @examples
 #' \dontrun{
-#' set_camels_path("D:/DATA/CAMELS-PE")
+#' set_camels_path("path/to/CAMELS-PE")
 #'
 #' # Inspect available topographic attributes
 #' read_dictionary(category = "topographic")

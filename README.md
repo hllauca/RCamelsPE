@@ -100,7 +100,7 @@ CAMELS-PE/
 library(RCamelsPE)
 
 # Define CAMELS-PE path
-set_camels_path("D:/DATA/CAMELS-PE")
+set_camels_path("path/to/CAMELS-PE")
 
 # Inspect available variables
 read_dictionary(category = "timeseries")

@@ -25,7 +25,7 @@
 #' @examples
 #' \dontrun{
 #' # Define the CAMELS-PE dataset path
-#' set_camels_path("D:/DATA/CAMELS-PE")
+#' set_camels_path("path/to/CAMELS-PE")
 #'
 #' # Inspect available metadata variables
 #' read_dictionary(category = "metadata")
