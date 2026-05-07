@@ -17,18 +17,19 @@ download_camels_pe(
 Default is the current working directory.}
 
 \item{version}{Character. Dataset version.
-Default is "1.0".}
+Default is \code{"1.0"}.}
 
-\item{unzip}{Logical. If TRUE, extracted files will be automatically
-uncompressed.}
+\item{unzip}{Logical. If \code{TRUE}, the downloaded ZIP file is
+automatically extracted.}
 
-\item{overwrite}{Logical. If TRUE, existing zip files will be overwritten.}
+\item{overwrite}{Logical. If \code{TRUE}, existing ZIP files will be
+overwritten.}
 
-\item{set_path}{Logical. If TRUE, automatically sets the CAMELS-PE path
-using \code{set_camels_path()} after extraction.}
+\item{set_path}{Logical. If \code{TRUE}, automatically sets the
+CAMELS-PE root directory using \code{set_camels_path()} after extraction.}
 }
 \value{
-Invisibly returns the downloaded zip file path.
+Invisibly returns the path to the downloaded ZIP file.
 }
 \description{
 Downloads and optionally extracts the CAMELS-PE dataset
@@ -38,11 +39,11 @@ hosted on Zenodo.
 The CAMELS-PE dataset is distributed separately from the package
 through Zenodo:
 
-https://doi.org/10.5281/zenodo.20058779
+\url{https://doi.org/10.5281/zenodo.20058778}
 }
 \examples{
 \dontrun{
-download_camels_pe(path = "my/path")
+download_camels_pe(path = "D:/CAMELS")
 }
 
 }

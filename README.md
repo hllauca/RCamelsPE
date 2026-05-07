@@ -39,9 +39,11 @@ The dataset must be stored locally before using the package.
 
 ## Installation
 
-``` r
-install.packages("remotes")
+```r
+# Install from CRAN (when available)
+install.packages("RCamelsPE")
 
+# Development version
 remotes::install_github("hllauca/RCamelsPE")
 
 library(RCamelsPE)

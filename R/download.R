@@ -6,24 +6,25 @@
 #' @param path Character. Directory where the dataset will be stored.
 #'   Default is the current working directory.
 #' @param version Character. Dataset version.
-#'   Default is "1.0".
-#' @param unzip Logical. If TRUE, extracted files will be automatically
-#'   uncompressed.
-#' @param overwrite Logical. If TRUE, existing zip files will be overwritten.
-#' @param set_path Logical. If TRUE, automatically sets the CAMELS-PE path
-#'   using `set_camels_path()` after extraction.
+#'   Default is `"1.0"`.
+#' @param unzip Logical. If `TRUE`, the downloaded ZIP file is
+#'   automatically extracted.
+#' @param overwrite Logical. If `TRUE`, existing ZIP files will be
+#'   overwritten.
+#' @param set_path Logical. If `TRUE`, automatically sets the
+#'   CAMELS-PE root directory using `set_camels_path()` after extraction.
 #'
-#' @return Invisibly returns the downloaded zip file path.
+#' @return Invisibly returns the path to the downloaded ZIP file.
 #'
 #' @details
 #' The CAMELS-PE dataset is distributed separately from the package
 #' through Zenodo:
 #'
-#' https://doi.org/10.5281/zenodo.20058779
+#' \url{https://doi.org/10.5281/zenodo.20058778}
 #'
 #' @examples
 #' \dontrun{
-#' download_camels_pe(path = "my/path")
+#' download_camels_pe(path = "D:/CAMELS")
 #' }
 #'
 #' @export
@@ -36,27 +37,43 @@ download_camels_pe <- function(path = getwd(),
 
   # Create destination directory
   if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE)
+
+    dir.create(
+      path,
+      recursive = TRUE
+    )
+
   }
+
+  path <- normalizePath(
+    path,
+    winslash = "/",
+    mustWork = FALSE
+  )
 
   # Zenodo download URLs
   urls <- c(
-    "1.0" = "https://zenodo.org/records/20058779/files/CAMELS-PE_v1.0.zip?download=1"
+    "1.0" = paste0(
+      "https://zenodo.org/records/20058779/files/",
+      "CAMELS-PE_v1.0.zip?download=1"
+    )
   )
 
   # Validate version
   if (!version %in% names(urls)) {
+
     stop(
       "Unsupported CAMELS-PE version. Available versions: ",
       paste(names(urls), collapse = ", "),
       call. = FALSE
     )
+
   }
 
   # Download URL
   url <- urls[[version]]
 
-  # Output zip file
+  # Output ZIP file
   zip_file <- file.path(
     path,
     paste0("CAMELS-PE_v", version, ".zip")
@@ -64,16 +81,33 @@ download_camels_pe <- function(path = getwd(),
 
   # Prevent overwrite
   if (file.exists(zip_file) && !overwrite) {
+
     stop(
-      "File already exists: ",
+      "File already exists:\n",
       zip_file,
       "\nUse overwrite = TRUE to overwrite the existing file.",
       call. = FALSE
     )
+
   }
+
+  message("Downloading CAMELS-PE dataset...")
+
+  # Increase timeout for large downloads
+  old_timeout <- getOption("timeout")
+
+  options(
+    timeout = max(300, old_timeout)
+  )
+
+  on.exit(
+    options(timeout = old_timeout),
+    add = TRUE
+  )
 
   # Download dataset
   status <- tryCatch(
+
     {
       utils::download.file(
         url = url,
@@ -81,41 +115,61 @@ download_camels_pe <- function(path = getwd(),
         mode = "wb",
         quiet = FALSE
       )
+
       TRUE
     },
-    error = function(e) FALSE
+
+    error = function(e) {
+
+      message(e$message)
+
+      FALSE
+
+    }
+
   )
 
   # Validate download
   if (!status || !file.exists(zip_file)) {
+
     stop(
       "Failed to download CAMELS-PE dataset from Zenodo.\n",
-      "The dataset may still be restricted or temporarily unavailable.",
+      "The dataset may be temporarily unavailable.",
       call. = FALSE
     )
+
   }
 
-  message("Download completed: ", zip_file)
+  message("Download completed:")
+  message(zip_file)
 
   # Extract dataset
   if (unzip) {
 
+    message("Extracting dataset...")
+
     utils::unzip(
       zipfile = zip_file,
-      exdir = path,
-      overwrite = overwrite
+      exdir = path
     )
 
-    message("Dataset extracted to: ", path)
+    message("Dataset extracted to:")
+    message(path)
 
     # Detect CAMELS-PE root folder
-    extracted_path <- file.path(path, "CAMELS-PE")
+    extracted_path <- file.path(
+      path,
+      "CAMELS-PE"
+    )
 
     if (!dir.exists(extracted_path)) {
+
       warning(
-        "Dataset extracted, but CAMELS-PE root folder was not detected.",
+        "Dataset extracted, but the CAMELS-PE root folder ",
+        "was not detected automatically.",
         call. = FALSE
       )
+
     }
 
     # Set CAMELS-PE path
@@ -123,12 +177,13 @@ download_camels_pe <- function(path = getwd(),
 
       set_camels_path(extracted_path)
 
-      message(
-        "CAMELS-PE path set to: ",
-        extracted_path
-      )
+      message("CAMELS-PE path set to:")
+      message(extracted_path)
+
     }
+
   }
 
   invisible(zip_file)
+
 }
