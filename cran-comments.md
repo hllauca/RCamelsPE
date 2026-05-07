@@ -13,3 +13,11 @@
   unable to verify current time
 
   This appears to be related to the check environment and not to the package source.
+
+## Comments
+
+The package provides tools to access, process, visualize, and download
+the CAMELS-PE dataset for Peru.
+
+The dataset itself is distributed separately through Zenodo and is not
+included in the package.
