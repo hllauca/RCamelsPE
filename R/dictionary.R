@@ -108,23 +108,29 @@ read_dictionary <- function(category = NULL,
   }
 
   if (!is.null(category)) {
+    category_filter <- category
+
     dict <- dplyr::filter(
       dict,
-      .data$category %in% .env$category
+      .data$category %in% category_filter
     )
   }
 
   if (!is.null(variable)) {
+    variable_filter <- variable
+
     dict <- dplyr::filter(
       dict,
-      .data$variable %in% .env$variable
+      .data$variable %in% variable_filter
     )
   }
 
   if (!is.null(file)) {
+    file_filter <- file
+
     dict <- dplyr::filter(
       dict,
-      .data$file %in% .env$file
+      .data$file %in% file_filter
     )
   }
 

@@ -39,7 +39,7 @@ hosted on Zenodo.
 The CAMELS-PE dataset is distributed separately from the package
 through Zenodo:
 
-\url{https://doi.org/10.5281/zenodo.20058778}
+\doi{10.5281/zenodo.20058778}
 }
 \examples{
 \dontrun{

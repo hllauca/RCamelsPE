@@ -1,19 +1,15 @@
-## R CMD check results
-
-0 errors | 0 warnings | 0 notes
-
 ## Test environments
 
 * local Windows 10, R 4.5.0
-* win-builder (devel)
-* win-builder (release)
+* win-builder (release and devel)
 
-## Comments
+## R CMD check results
 
-This is the initial CRAN submission of RCamelsPE.
+0 errors | 0 warnings | 2 notes
 
-The package provides tools to access, process, visualize, and download
-hydrological and geospatial data from the CAMELS-PE dataset for Peru.
+* This is a new submission.
 
-The package does not include the dataset itself.
-CAMELS-PE data are hosted externally on Zenodo.
+* checking for future file timestamps ... NOTE
+  unable to verify current time
+
+  This appears to be related to the check environment and not to the package source.
