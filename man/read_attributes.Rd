@@ -13,8 +13,8 @@ read_attributes(type = "all", gauge_id = NULL, path = get_camels_path())
 \code{"human_intervention"}, or \code{"all"}. Default is \code{"all"}.}
 
 \item{gauge_id}{Character vector or \code{NULL}. Optional gauge identifiers
-used to filter the returned attributes, for example \code{"PE_250101"} or
-\code{c("PE_250101", "PE_200907")}. If \code{NULL}, all available catchments
+used to filter the returned attributes, for example \code{"PE_212900"} or
+\code{c("PE_212900", "PE_200907")}. If \code{NULL}, all available catchments
 are returned.}
 
 \item{path}{Character string. Optional path to the CAMELS-PE root directory.
@@ -70,24 +70,36 @@ Expected files are:
 }
 }
 \examples{
-\dontrun{
-set_camels_path("path/to/CAMELS-PE")
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 
 # Inspect available topographic attributes
-dict <- read_dictionary(category = "topographic")
+dict <- read_dictionary(
+  category = "topographic",
+  path = path
+)
+
 head(dict)
 
 # Read topographic attributes
-topo <- read_attributes(type = "topographic")
+topo <- read_attributes(
+  type = "topographic",
+  path = path
+)
 
 # Read climatic attributes for selected catchments
 clim <- read_attributes(
   type = "climatic",
-  gauge_id = c("PE_250101", "PE_200907")
+  gauge_id = c("PE_212900", "PE_200907"),
+  path = path
 )
 
 # Read all available attribute groups
-attr_all <- read_attributes(type = "all")
-}
-
+attr_all <- read_attributes(
+  type = "all",
+  path = path
+)
 }

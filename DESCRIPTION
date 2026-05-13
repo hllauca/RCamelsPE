@@ -17,7 +17,9 @@ Description: Provides tools to read, process, visualize, and download
     not include the dataset itself. Functions support reading daily
     time series, catchment attributes, station metadata, metadata
     dictionaries, geospatial layers, and basic visualization of time
-    series and catchment boundaries.
+    series and catchment boundaries. CAMELS-PE data are available at
+    <doi:10.5281/zenodo.20058779> and package documentation is
+    available at <https://hllauca.github.io/RCamelsPE/>.
 License: GPL (>= 2)
 Encoding: UTF-8
 Language: en-US
@@ -35,10 +37,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://github.com/hllauca/RCamelsPE,
-    https://hllauca.github.io/RCamelsPE/,
-    https://doi.org/10.5281/zenodo.20058779
+URL: https://github.com/hllauca/RCamelsPE
 BugReports: https://github.com/hllauca/RCamelsPE/issues
 Config/roxygen2/version: 8.0.0
 VignetteBuilder: knitr
-RoxygenNote: 7.3.2
+RoxygenNote: 8.0.0

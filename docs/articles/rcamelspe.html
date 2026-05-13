@@ -93,13 +93,8 @@
 <p><code>RCamelsPE</code> is an R package designed to read, process, and
 visualize data from the CAMELS-PE dataset: <strong>Catchment Attributes
 and Meteorology for Large-sample Studies - Peru</strong>.</p>
-<p>This vignette provides a practical introduction to the package,
-guiding users through a typical workflow:</p>
-<ul>
-<li>explore available basins</li>
-<li>inspect their physical and climatic characteristics</li>
-<li>analyze hydroclimatic time series</li>
-</ul>
+<p>This vignette provides a practical introduction to the package using
+a small example dataset included in the package.</p>
 <hr>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -126,7 +121,7 @@ is available from Zenodo:</p>
 associated scientific article is under preparation.</em></strong></p>
 <p>The dataset can be downloaded automatically with:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/download_camels_pe.html">download_camels_pe</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"my/path"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/download_camels_pe.html">download_camels_pe</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This function downloads and extracts the dataset, and
 automatically<br>
 defines the CAMELS-PE dataset path for the current R session.</p>
@@ -139,12 +134,10 @@ defines the CAMELS-PE dataset path for the current R session.</p>
 CAMELS-PE path with:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/set_camels_path.html">set_camels_path</a></span><span class="op">(</span><span class="st">"path/to/CAMELS-PE"</span><span class="op">)</span></span></code></pre></div>
-<p>For reproducible execution of this vignette, the dataset path is read
-from the <code>CAMELSPE_PATH</code> environment variable.</p>
+<p>For reproducibility, this vignette uses the small example dataset
+included in the package:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="va">has_camels_data</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="../reference/set_camels_path.html">set_camels_path</a></span><span class="op">(</span><span class="va">camels_path</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/set_camels_path.html">set_camels_path</a></span><span class="op">(</span><span class="va">camels_path</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -207,24 +200,18 @@ and catchments. Each row represents a catchment identified by a unique
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_metadata.html">read_metadata</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stations</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 15</span></span></span>
-<span><span class="co">#&gt;   gauge_id    gauge_name             gauge_region gauge_lat gauge_lon gauge_elev</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_472A9204 Chilca                 Atlantic         -<span style="color: #BB0000;">13.2</span>     -<span style="color: #BB0000;">72.3</span>       <span style="text-decoration: underline;">2</span>770</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_210003   Huancasaya             Titicaca         -<span style="color: #BB0000;">15.1</span>     -<span style="color: #BB0000;">69.2</span>       <span style="text-decoration: underline;">4</span>327</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> PE_204617   Huatiapa               Pacific          -<span style="color: #BB0000;">16.0</span>     -<span style="color: #BB0000;">72.5</span>        684</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> PE_472935F2 Intihuatana Km105      Atlantic         -<span style="color: #BB0000;">13.2</span>     -<span style="color: #BB0000;">72.5</span>       <span style="text-decoration: underline;">2</span>166</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> PE_210406   Puente Isla Cabanillas Titicaca         -<span style="color: #BB0000;">15.5</span>     -<span style="color: #BB0000;">70.2</span>       <span style="text-decoration: underline;">3</span>837</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> PE_270503   Puente Zapatilla       Titicaca         -<span style="color: #BB0000;">16.1</span>     -<span style="color: #BB0000;">69.6</span>       <span style="text-decoration: underline;">3</span>836</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 15</span></span></span>
+<span><span class="co">#&gt;   gauge_id  gauge_name gauge_region gauge_lat gauge_lon gauge_elev</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900 La Capilla Pacific         -<span style="color: #BB0000;">12.5</span>      -<span style="color: #BB0000;">76.5</span>        423</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907 Racarumi   Pacific          -<span style="color: #BB0000;">6.63</span>     -<span style="color: #BB0000;">79.3</span>        265</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: gauge_record_start &lt;date&gt;, gauge_record_end &lt;date&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   gauge_perc_obs &lt;dbl&gt;, name_cat &lt;chr&gt;, is_nested &lt;lgl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   nested_group_id &lt;chr&gt;, nested_group_size &lt;dbl&gt;, downstream_gauge_id &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   upstream_gauge_id &lt;chr&gt;</span></span></span></code></pre></div>
 <p>Select one basin to work with:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gauge_id</span> <span class="op">&lt;-</span> <span class="va">stations</span><span class="op">$</span><span class="va">gauge_id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="va">gauge_id</span></span>
-<span><span class="co">#&gt; [1] "PE_472A9204"</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">gauge_id</span> <span class="op">&lt;-</span> <span class="st">'PE_212900'</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -244,7 +231,7 @@ and catchments. Each row represents a catchment identified by a unique
 <span>  gauges <span class="op">=</span> <span class="va">gauges</span>,</span>
 <span>  gauge_id <span class="op">=</span> <span class="va">gauge_id</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
 <p>This helps identify the basin location, geographic setting, and
 relation to other basins.</p>
 <hr>
@@ -257,27 +244,19 @@ basin.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">topo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_attributes.html">read_attributes</a></span><span class="op">(</span><span class="st">"topographic"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">topo</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
-<span><span class="co">#&gt;   gauge_id     area perimeter elev_min elev_max elev_mean elev_median slope_mean</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_472A92…  <span style="text-decoration: underline;">9</span>188.     284.     <span style="text-decoration: underline;">2</span>762     <span style="text-decoration: underline;">6</span>317.     <span style="text-decoration: underline;">4</span>210.       <span style="text-decoration: underline;">4</span>216.      11.3 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_210003   <span style="text-decoration: underline;">2</span>009.     230.     <span style="text-decoration: underline;">4</span>312.    <span style="text-decoration: underline;">6</span>030.     <span style="text-decoration: underline;">4</span>659.       <span style="text-decoration: underline;">4</span>620.      17.8 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> PE_204617  <span style="text-decoration: underline;">13</span>225.    <span style="text-decoration: underline;">1</span>959.      685.    <span style="text-decoration: underline;">6</span>415.     <span style="text-decoration: underline;">4</span>213.       <span style="text-decoration: underline;">4</span>496.      12.7 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> PE_472935…  <span style="text-decoration: underline;">9</span>576.      98.7    <span style="text-decoration: underline;">2</span>144     <span style="text-decoration: underline;">6</span>317.     <span style="text-decoration: underline;">4</span>197.       <span style="text-decoration: underline;">4</span>208.      11.5 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> PE_210406   <span style="text-decoration: underline;">2</span>867.     164.     <span style="text-decoration: underline;">3</span>826.    <span style="text-decoration: underline;">5</span>426.     <span style="text-decoration: underline;">4</span>467.       <span style="text-decoration: underline;">4</span>452.       3.24</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> PE_270503    391.     149.     <span style="text-decoration: underline;">3</span>825.    <span style="text-decoration: underline;">4</span>616.     <span style="text-decoration: underline;">3</span>991.       <span style="text-decoration: underline;">3</span>954.       3.96</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
+<span><span class="co">#&gt;   gauge_id   area perimeter elev_min elev_max elev_mean elev_median slope_mean</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900 <span style="text-decoration: underline;">2</span>123.      191.     398.    <span style="text-decoration: underline;">5</span>870.     <span style="text-decoration: underline;">3</span>539.       <span style="text-decoration: underline;">3</span>920.       28.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907 <span style="text-decoration: underline;">2</span>363.     <span style="text-decoration: underline;">7</span>422.     266.    <span style="text-decoration: underline;">4</span>097      <span style="text-decoration: underline;">2</span>349.       <span style="text-decoration: underline;">2</span>312.       11.5</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_attributes.html">read_attributes</a></span><span class="op">(</span><span class="st">"climatic"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">clim</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 11</span></span></span>
-<span><span class="co">#&gt;   gauge_id    p_mean pet_mean aridity p_seasonality high_prec_freq high_prec_dur</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_472A9204   2.30     3.36    1.46         0.99            7.11          1.38</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_210003     1.84     2.91    1.58         0.98            7.78          1.35</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> PE_204617     1.50     3.64    2.42         0.934          19.6           2.00</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> PE_472935F2   2.30     3.35    1.46         0.991           6.58          1.38</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> PE_210406     2.06     3.35    1.63         0.96           16.4           1.44</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> PE_270503     2.18     3.19    1.46         0.954          17.2           1.54</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 11</span></span></span>
+<span><span class="co">#&gt;   gauge_id  p_mean pet_mean aridity p_seasonality high_prec_freq high_prec_dur</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900   1.57     3.48    2.21         0.938           14.7          1.79</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907   3.01     3.19    1.06         0.997           11.8          1.42</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: high_prec_timing &lt;chr&gt;, low_prec_freq &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   low_prec_dur &lt;dbl&gt;, low_prec_timing &lt;chr&gt;</span></span></span></code></pre></div>
 <p>Other available attribute groups include:</p>
@@ -294,14 +273,14 @@ basin.</p>
 <span></span>
 <span><span class="va">topo_sel</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 8</span></span></span>
-<span><span class="co">#&gt;   gauge_id     area perimeter elev_min elev_max elev_mean elev_median slope_mean</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_472A9204 <span style="text-decoration: underline;">9</span>188.      284.     <span style="text-decoration: underline;">2</span>762    <span style="text-decoration: underline;">6</span>317.     <span style="text-decoration: underline;">4</span>210.       <span style="text-decoration: underline;">4</span>216.       11.3</span></span>
+<span><span class="co">#&gt;   gauge_id   area perimeter elev_min elev_max elev_mean elev_median slope_mean</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900 <span style="text-decoration: underline;">2</span>123.      191.     398.    <span style="text-decoration: underline;">5</span>870.     <span style="text-decoration: underline;">3</span>539.       <span style="text-decoration: underline;">3</span>920.       28.0</span></span>
 <span><span class="va">clim_sel</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 11</span></span></span>
-<span><span class="co">#&gt;   gauge_id    p_mean pet_mean aridity p_seasonality high_prec_freq high_prec_dur</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_472A9204   2.30     3.36    1.46          0.99           7.11          1.38</span></span>
+<span><span class="co">#&gt;   gauge_id  p_mean pet_mean aridity p_seasonality high_prec_freq high_prec_dur</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900   1.57     3.48    2.21         0.938           14.7          1.79</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: high_prec_timing &lt;chr&gt;, low_prec_freq &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   low_prec_dur &lt;dbl&gt;, low_prec_timing &lt;chr&gt;</span></span></span></code></pre></div>
 <p>These variables help describe the hydrological system:</p>
@@ -325,29 +304,27 @@ radiation, and vapor pressure.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
-<span><span class="co">#&gt;   date       gauge_id     prec flow_obs</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1981-01-01 PE_472A9204  3.78       <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1981-01-02 PE_472A9204  3.66       <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1981-01-03 PE_472A9204  4.89       <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1981-01-04 PE_472A9204  9.42       <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1981-01-05 PE_472A9204  2.41       <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1981-01-06 PE_472A9204  3.23       <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   date       gauge_id   prec flow_obs</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1981-01-01 PE_212900 0.135    0.326</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1981-01-02 PE_212900 0.403    0.277</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1981-01-03 PE_212900 0.606    0.199</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1981-01-04 PE_212900 5.34     0.169</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1981-01-05 PE_212900 2.63     0.444</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1981-01-06 PE_212900 1.11     0.731</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="plot-precipitation">Plot precipitation<a class="anchor" aria-label="anchor" href="#plot-precipitation"></a>
 </h4>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"prec"</span>, linewidth <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="plot-streamflow">Plot streamflow<a class="anchor" aria-label="anchor" href="#plot-streamflow"></a>
 </h4>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"flow_obs"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 14605 rows containing missing values or values outside the scale range</span></span>
-<span><span class="co">#&gt; (`geom_line()`).</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"flow_obs"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="700"></p>
 <hr>
 </div>
 </div>
@@ -380,10 +357,8 @@ is catchment area in km2</li>
 <span></span>
 <span><span class="va">ts</span><span class="op">$</span><span class="va">flow_m3s</span> <span class="op">&lt;-</span> <span class="va">ts</span><span class="op">$</span><span class="va">flow_obs</span> <span class="op">*</span> <span class="va">area_km2</span> <span class="op">*</span> <span class="fl">1e6</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1000</span> <span class="op">*</span> <span class="fl">86400</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"flow_m3s"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 14605 rows containing missing values or values outside the scale range</span></span>
-<span><span class="co">#&gt; (`geom_line()`).</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
+<span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"flow_m3s"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="700"></p>
 <hr>
 </div>
 <div class="section level3">
@@ -396,7 +371,7 @@ is catchment area in km2</li>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts_multi</span>, variable <span class="op">=</span> <span class="st">"prec"</span>, facet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="" width="700"></p>
 <hr>
 </div>
 <div class="section level3">
@@ -408,7 +383,7 @@ is catchment area in km2</li>
 <span>  variable <span class="op">=</span> <span class="st">"prec"</span>,</span>
 <span>  gauge_id <span class="op">=</span> <span class="va">stations</span><span class="op">$</span><span class="va">gauge_id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-24-1.png" width="700"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="700"></p>
 <hr>
 </div>
 </div>
@@ -419,7 +394,7 @@ is catchment area in km2</li>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hllauca/RCamelsPE" class="external-link">RCamelsPE</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Optional: download dataset from Zenodo</span></span>
-<span><span class="co"># download_camels_pe(path = "my/path")</span></span>
+<span><span class="co"># download_camels_pe(path = tempdir())</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/set_camels_path.html">set_camels_path</a></span><span class="op">(</span><span class="st">"path/to/CAMELS-PE"</span><span class="op">)</span></span>
 <span></span>
@@ -476,7 +451,7 @@ define the local dataset path using <code><a href="../reference/set_camels_path.
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

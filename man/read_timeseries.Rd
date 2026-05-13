@@ -13,7 +13,7 @@ read_timeseries(
 }
 \arguments{
 \item{gauge_id}{Character vector or \code{NULL}. Gauge identifiers to read,
-for example \code{"PE_250101"} or \code{c("PE_250101", "PE_200907")}.
+for example \code{"PE_212900"} or \code{c("PE_212900", "PE_200907")}.
 This argument is required when \code{global = FALSE}. When
 \code{global = TRUE}, it can be used to filter the global time series file.}
 
@@ -77,37 +77,49 @@ list of available variables, descriptions, units, and data sources.
 
 In by-catchment mode, each requested gauge is expected to have a file named
 \code{<gauge_id>.csv} inside \code{03_timeseries/by_catchment/}. For example,
-\code{PE_250101} is expected to be stored as
-\code{03_timeseries/by_catchment/PE_0001.csv}.
+\code{PE_212900} is expected to be stored as
+\code{03_timeseries/by_catchment/PE_212900.csv}.
 
 If one or more requested files are missing, the function issues a warning and
 reads the files that are available. If no valid files are found, the function
 stops with an error.
 }
 \examples{
-\dontrun{
-set_camels_path("path/to/CAMELS-PE")
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 
 # Inspect available time series variables
-read_dictionary(category = "timeseries")
+read_dictionary(
+  category = "timeseries",
+  path = path
+)
 
 # Read all variables for one catchment
-ts1 <- read_timeseries(gauge_id = "PE_221804")
+ts1 <- read_timeseries(
+  gauge_id = "PE_212900",
+  path = path
+)
 
 # Read selected variables for multiple catchments
 ts2 <- read_timeseries(
-  gauge_id = c("PE_250101", "PE_200907"),
-  vars = c("date", "gauge_id", "prec", "flow_obs")
+  gauge_id = c("PE_212900", "PE_200907"),
+  vars = c("date", "gauge_id", "prec", "flow_obs"),
+  path = path
 )
 
 # Read the global time series file
-ts_all <- read_timeseries(global = TRUE)
+ts_all <- read_timeseries(
+  global = TRUE,
+  path = path
+)
 
 # Read the global file and filter selected gauges
 ts_sel <- read_timeseries(
-  gauge_id = c("PE_250101", "PE_200907"),
-  global = TRUE
+  gauge_id = c("PE_212900", "PE_200907"),
+  global = TRUE,
+  path = path
 )
-}
-
 }

@@ -33,12 +33,15 @@ functions such as \code{read_metadata()},
 \code{read_geospatial()}, and \code{read_dictionary()}.
 }
 \examples{
-\dontrun{
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
+
 # Define CAMELS-PE root directory
-set_camels_path("path/to/CAMELS-PE")
+set_camels_path(path)
 
 # Check the stored path
 get_camels_path()
-}
-
 }

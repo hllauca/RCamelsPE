@@ -101,20 +101,50 @@ descriptions, units, and data sources.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># Define the CAMELS-PE dataset path</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="set_camels_path.html">set_camels_path</a></span><span class="op">(</span><span class="st">"path/to/CAMELS-PE"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"extdata"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"sample_camels_pe"</span>,</span></span>
+<span class="r-in"><span>  package <span class="op">=</span> <span class="st">"RCamelsPE"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect available metadata variables</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="read_dictionary.html">read_dictionary</a></span><span class="op">(</span>category <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="read_dictionary.html">read_dictionary</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  category <span class="op">=</span> <span class="st">"metadata"</span>,</span></span>
+<span class="r-in"><span>  path <span class="op">=</span> <span class="va">path</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    folder      file         category variable           description unit  source</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 01_metadata stations.csv metadata gauge_id           <span style="color: #949494;">"</span>Catchment… -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 01_metadata stations.csv metadata gauge_name         <span style="color: #949494;">"</span>Gauge nam… -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 01_metadata stations.csv metadata gauge_region       <span style="color: #949494;">"</span>Hydrograp… -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 01_metadata stations.csv metadata gauge_lat          <span style="color: #949494;">"</span>Gauge lat… degN  SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 01_metadata stations.csv metadata gauge_lon          <span style="color: #949494;">"</span>Gauge lon… degE  SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 01_metadata stations.csv metadata gauge_elev         <span style="color: #949494;">"</span>Gauge ele… m_asl SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 01_metadata stations.csv metadata gauge_record_start <span style="color: #949494;">"</span>Start dat… -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 01_metadata stations.csv metadata gauge_record_end   <span style="color: #949494;">"</span>End date … -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 01_metadata stations.csv metadata gauge_perc_obs     <span style="color: #949494;">"</span>Percentag… %     Deriv…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 01_metadata stations.csv metadata name_cat           <span style="color: #949494;">"</span>Official … -     ANA   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 01_metadata stations.csv metadata is_nested          <span style="color: #949494;">"</span>Indicates… logi… Deriv…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 01_metadata stations.csv metadata nested_group_id    <span style="color: #949494;">"</span>Gauge ide… -     Deriv…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 01_metadata stations.csv metadata nested_group_size  <span style="color: #949494;">"</span>Number of… -     Deriv…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 01_metadata stations.csv metadata downstream_gauge_… <span style="color: #949494;">"</span>Gauge ide… -     Deriv…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 01_metadata stations.csv metadata upstream_gauge_id  <span style="color: #949494;">"</span>Gauge ide… <span style="color: #BB0000;">NA</span>    Deriv…</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Read station metadata</span></span></span>
-<span class="r-in"><span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">read_metadata</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">read_metadata</span><span class="op">(</span>path <span class="op">=</span> <span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Preview the first rows</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stations</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 15</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   gauge_id  gauge_name gauge_region gauge_lat gauge_lon gauge_elev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> PE_212900 La Capilla Pacific         -<span style="color: #BB0000;">12.5</span>      -<span style="color: #BB0000;">76.5</span>        423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> PE_200907 Racarumi   Pacific          -<span style="color: #BB0000;">6.63</span>     -<span style="color: #BB0000;">79.3</span>        265</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9 more variables: gauge_record_start &lt;date&gt;, gauge_record_end &lt;date&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   gauge_perc_obs &lt;dbl&gt;, name_cat &lt;chr&gt;, is_nested &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   nested_group_id &lt;chr&gt;, nested_group_size &lt;dbl&gt;, downstream_gauge_id &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   upstream_gauge_id &lt;chr&gt;</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -129,7 +159,7 @@ descriptions, units, and data sources.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

@@ -45,21 +45,33 @@ Use \code{read_dictionary(category = "timeseries")} to inspect available
 time series variables, descriptions, units, and data sources.
 }
 \examples{
-\dontrun{
-set_camels_path("path/to/CAMELS-PE")
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 
 # Inspect available time series variables
-read_dictionary(category = "timeseries")
+read_dictionary(
+  category = "timeseries",
+  path = path
+)
 
 ts <- read_timeseries(
-  gauge_id = c("PE_250101", "PE_200907"),
-  vars = c("date", "gauge_id", "prec", "flow_obs", "flow_sim", "tmean")
+  gauge_id = c("PE_212900", "PE_200907"),
+  vars = c(
+    "date",
+    "gauge_id",
+    "prec",
+    "flow_obs",
+    "flow_sim",
+    "tmean"
+  ),
+  path = path
 )
 
 plot_timeseries(ts, variable = "flow_obs")
 plot_timeseries(ts, variable = "prec", linewidth = 0.4)
 plot_timeseries(ts, variable = "flow_obs", facet = FALSE)
-plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_250101")
-}
-
+plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_212900")
 }

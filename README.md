@@ -102,26 +102,37 @@ CAMELS-PE/
 
 ## Example
 
-``` r
+```r
 library(RCamelsPE)
 
-# Define CAMELS-PE path
-set_camels_path("path/to/CAMELS-PE")
+# Path to the example CAMELS-PE dataset
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 
 # Inspect available variables
-read_dictionary(category = "timeseries")
+read_dictionary(
+  category = "timeseries",
+  path = path
+)
 
 # Read metadata
-stations <- read_metadata()
+stations <- read_metadata(path = path)
 
 # Read time series
 ts <- read_timeseries(
-  gauge_id = "PE_221804",
-  vars = c("date", "flow_obs", "prec")
+  gauge_id = "PE_212900",
+  vars = c("date", "flow_obs", "prec"),
+  path = path
 )
 
 # Plot streamflow
-plot_timeseries(ts, variable = "flow_obs")
+plot_timeseries(
+  ts,
+  variable = "flow_obs"
+)
 ```
 
 ------------------------------------------------------------------------

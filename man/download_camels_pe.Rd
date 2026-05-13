@@ -5,7 +5,7 @@
 \title{Download CAMELS-PE dataset from Zenodo}
 \usage{
 download_camels_pe(
-  path = getwd(),
+  path,
   version = "1.0",
   unzip = TRUE,
   overwrite = FALSE,
@@ -13,11 +13,10 @@ download_camels_pe(
 )
 }
 \arguments{
-\item{path}{Character. Directory where the dataset will be stored.
-Default is the current working directory.}
+\item{path}{Character. Directory where the dataset will be stored. This
+argument is required. In examples, use \code{tempdir()}.}
 
-\item{version}{Character. Dataset version.
-Default is \code{"1.0"}.}
+\item{version}{Character. Dataset version. Default is \code{"1.0"}.}
 
 \item{unzip}{Logical. If \code{TRUE}, the downloaded ZIP file is
 automatically extracted.}
@@ -25,25 +24,27 @@ automatically extracted.}
 \item{overwrite}{Logical. If \code{TRUE}, existing ZIP files will be
 overwritten.}
 
-\item{set_path}{Logical. If \code{TRUE}, automatically sets the
-CAMELS-PE root directory using \code{set_camels_path()} after extraction.}
+\item{set_path}{Logical. If \code{TRUE}, automatically sets the CAMELS-PE
+root directory using \code{set_camels_path()} after extraction.}
 }
 \value{
 Invisibly returns the path to the downloaded ZIP file.
 }
 \description{
-Downloads and optionally extracts the CAMELS-PE dataset
-hosted on Zenodo.
+Downloads and optionally extracts the CAMELS-PE dataset hosted on Zenodo.
 }
 \details{
-The CAMELS-PE dataset is distributed separately from the package
-through Zenodo:
+The CAMELS-PE dataset is distributed separately from the package through
+Zenodo:
 
-\doi{10.5281/zenodo.20058778}
+\doi{10.5281/zenodo.20058779}
 }
 \examples{
 \dontrun{
-download_camels_pe(path = "D:/CAMELS")
+download_camels_pe(
+  path = tempdir(),
+  unzip = FALSE
+)
 }
 
 }

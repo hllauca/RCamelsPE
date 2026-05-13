@@ -33,18 +33,21 @@ Use \code{read_dictionary()} to inspect available metadata fields,
 descriptions, units, and data sources.
 }
 \examples{
-\dontrun{
-# Define the CAMELS-PE dataset path
-set_camels_path("path/to/CAMELS-PE")
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 
 # Inspect available metadata variables
-read_dictionary(category = "metadata")
+read_dictionary(
+  category = "metadata",
+  path = path
+)
 
 # Read station metadata
-stations <- read_metadata()
+stations <- read_metadata(path = path)
 
 # Preview the first rows
 head(stations)
-}
-
 }

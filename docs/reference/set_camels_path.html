@@ -97,14 +97,18 @@ functions such as <code><a href="read_metadata.html">read_metadata()</a></code>,
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"extdata"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"sample_camels_pe"</span>,</span></span>
+<span class="r-in"><span>  package <span class="op">=</span> <span class="st">"RCamelsPE"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Define CAMELS-PE root directory</span></span></span>
-<span class="r-in"><span><span class="fu">set_camels_path</span><span class="op">(</span><span class="st">"path/to/CAMELS-PE"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">set_camels_path</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Check the stored path</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="get_camels_path.html">get_camels_path</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:/Users/hllauca/AppData/Local/Temp/Rtmp8iarUQ/temp_libpath33447e213921/RCamelsPE/extdata/sample_camels_pe"</span>
 </code></pre></div>
     </div>
   </div>
@@ -119,7 +123,7 @@ functions such as <code><a href="read_metadata.html">read_metadata()</a></code>,
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

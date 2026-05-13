@@ -1,0 +1,3 @@
+gauge_id,gauge_name,gauge_region,gauge_lat,gauge_lon,gauge_elev,gauge_record_start,gauge_record_end,gauge_perc_obs,name_cat,is_nested,nested_group_id,nested_group_size,downstream_gauge_id,upstream_gauge_id
+PE_212900,La Capilla,Pacific,-12.521,-76.496,423,1981-01-01,2025-12-31,75.4,Cuenca Mala,FALSE,PE_212900,1,NONE,NONE
+PE_200907,Racarumi,Pacific,-6.633,-79.317,265,1981-01-01,2023-08-31,94.51,Cuenca Chancay-Lambayeque,TRUE,PE_200907,6,NONE,PE_47E1D6C2

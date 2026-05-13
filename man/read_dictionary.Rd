@@ -63,20 +63,30 @@ The returned table includes:
 }
 }
 \examples{
-\dontrun{
-set_camels_path("path/to/CAMELS-PE")
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 
 # Read complete dictionary
-dict <- read_dictionary()
+dict <- read_dictionary(path = path)
 
 # Inspect topographic variables
-topo_dict <- read_dictionary(category = "topographic")
+topo_dict <- read_dictionary(
+  category = "topographic",
+  path = path
+)
 
 # Search for a specific variable
-flow_dict <- read_dictionary(variable = "flow_obs")
+flow_dict <- read_dictionary(
+  variable = "flow_obs",
+  path = path
+)
 
 # Inspect variables from a specific file
-stations_dict <- read_dictionary(file = "stations.csv")
-}
-
+stations_dict <- read_dictionary(
+  file = "stations.csv",
+  path = path
+)
 }

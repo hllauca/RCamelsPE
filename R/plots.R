@@ -21,23 +21,35 @@
 #' @return A \code{ggplot} object.
 #'
 #' @examples
-#' \dontrun{
-#' set_camels_path("path/to/CAMELS-PE")
+#' path <- system.file(
+#'   "extdata",
+#'   "sample_camels_pe",
+#'   package = "RCamelsPE"
+#' )
 #'
 #' # Inspect available time series variables
-#' read_dictionary(category = "timeseries")
+#' read_dictionary(
+#'   category = "timeseries",
+#'   path = path
+#' )
 #'
 #' ts <- read_timeseries(
-#'   gauge_id = c("PE_250101", "PE_200907"),
-#'   vars = c("date", "gauge_id", "prec", "flow_obs", "flow_sim", "tmean")
+#'   gauge_id = c("PE_212900", "PE_200907"),
+#'   vars = c(
+#'     "date",
+#'     "gauge_id",
+#'     "prec",
+#'     "flow_obs",
+#'     "flow_sim",
+#'     "tmean"
+#'   ),
+#'   path = path
 #' )
 #'
 #' plot_timeseries(ts, variable = "flow_obs")
 #' plot_timeseries(ts, variable = "prec", linewidth = 0.4)
 #' plot_timeseries(ts, variable = "flow_obs", facet = FALSE)
-#' plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_250101")
-#' }
-#'
+#' plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_212900")
 #' @export
 plot_timeseries <- function(data,
                             variable = "flow_obs",
@@ -185,19 +197,35 @@ plot_timeseries <- function(data,
 #' @return A \code{ggplot} object.
 #'
 #' @examples
-#' \dontrun{
-#' set_camels_path("path/to/CAMELS-PE")
+#' path <- system.file(
+#'   "extdata",
+#'   "sample_camels_pe",
+#'   package = "RCamelsPE"
+#' )
 #'
 #' # Inspect available geospatial layers
-#' read_dictionary(category = "geospatial")
+#' read_dictionary(
+#'   category = "geospatial",
+#'   path = path
+#' )
 #'
-#' catchments <- read_geospatial("catchments")
-#' gauges <- read_geospatial("gauges")
+#' catchments <- read_geospatial(
+#'   type = "catchments",
+#'   path = path
+#' )
+#'
+#' gauges <- read_geospatial(
+#'   type = "gauges",
+#'   path = path
+#' )
 #'
 #' plot_catchments(catchments, gauges)
-#' plot_catchments(catchments, gauges, gauge_id = "PE_221804")
-#' }
 #'
+#' plot_catchments(
+#'   catchments,
+#'   gauges,
+#'   gauge_id = "PE_212900"
+#' )
 #' @export
 plot_catchments <- function(catchments,
                             gauges = NULL,
@@ -320,24 +348,39 @@ plot_catchments <- function(catchments,
 #' @return A \code{ggplot} object.
 #'
 #' @examples
-#' \dontrun{
-#' set_camels_path("path/to/CAMELS-PE")
+#' path <- system.file(
+#'   "extdata",
+#'   "sample_camels_pe",
+#'   package = "RCamelsPE"
+#' )
 #'
 #' # Inspect available topographic attributes
-#' read_dictionary(category = "topographic")
+#' read_dictionary(
+#'   category = "topographic",
+#'   path = path
+#' )
 #'
-#' catchments <- read_geospatial("catchments")
-#' gauges <- read_geospatial("gauges")
-#' attr <- read_attributes("topographic")
+#' catchments <- read_geospatial(
+#'   type = "catchments",
+#'   path = path
+#' )
+#'
+#' gauges <- read_geospatial(
+#'   type = "gauges",
+#'   path = path
+#' )
+#'
+#' attr <- read_attributes(
+#'   type = "topographic",
+#'   path = path
+#' )
 #'
 #' plot_attribute_map(
 #'   catchments = catchments,
 #'   attributes = attr,
-#'   variable = "area_km2",
+#'   variable = "area",
 #'   gauges = gauges
 #' )
-#' }
-#'
 #' @export
 plot_attribute_map <- function(catchments,
                                attributes,

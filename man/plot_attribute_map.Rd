@@ -40,22 +40,37 @@ Use \code{read_dictionary()} to inspect available attributes,
 descriptions, units, categories, source files, and data sources.
 }
 \examples{
-\dontrun{
-set_camels_path("path/to/CAMELS-PE")
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 
 # Inspect available topographic attributes
-read_dictionary(category = "topographic")
+read_dictionary(
+  category = "topographic",
+  path = path
+)
 
-catchments <- read_geospatial("catchments")
-gauges <- read_geospatial("gauges")
-attr <- read_attributes("topographic")
+catchments <- read_geospatial(
+  type = "catchments",
+  path = path
+)
+
+gauges <- read_geospatial(
+  type = "gauges",
+  path = path
+)
+
+attr <- read_attributes(
+  type = "topographic",
+  path = path
+)
 
 plot_attribute_map(
   catchments = catchments,
   attributes = attr,
-  variable = "area_km2",
+  variable = "area",
   gauges = gauges
 )
-}
-
 }

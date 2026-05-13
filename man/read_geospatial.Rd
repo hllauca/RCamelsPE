@@ -34,21 +34,31 @@ Use \code{read_dictionary(category = "geospatial")} to inspect available
 geospatial layers, descriptions, and data sources.
 }
 \examples{
-\dontrun{
-set_camels_path("path/to/CAMELS-PE")
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 
 # Inspect available geospatial layers
-read_dictionary(category = "geospatial")
+read_dictionary(
+  category = "geospatial",
+  path = path
+)
 
 # Read gauges
-gauges <- read_geospatial("gauges")
+gauges <- read_geospatial(
+  type = "gauges",
+  path = path
+)
 
 # Read catchments
-catchments <- read_geospatial("catchments")
+catchments <- read_geospatial(
+  type = "catchments",
+  path = path
+)
 
 # Plot
 plot(sf::st_geometry(catchments))
 plot(sf::st_geometry(gauges), add = TRUE, col = "red")
-}
-
 }

@@ -26,14 +26,17 @@
 #' @return Invisibly returns the normalized CAMELS-PE path.
 #'
 #' @examples
-#' \dontrun{
+#' path <- system.file(
+#'   "extdata",
+#'   "sample_camels_pe",
+#'   package = "RCamelsPE"
+#' )
+#'
 #' # Define CAMELS-PE root directory
-#' set_camels_path("path/to/CAMELS-PE")
+#' set_camels_path(path)
 #'
 #' # Check the stored path
 #' get_camels_path()
-#' }
-#'
 #' @export
 set_camels_path <- function(path) {
 
@@ -83,14 +86,17 @@ set_camels_path <- function(path) {
 #' @return Character string with the CAMELS-PE root directory.
 #'
 #' @examples
-#' \dontrun{
+#' path <- system.file(
+#'   "extdata",
+#'   "sample_camels_pe",
+#'   package = "RCamelsPE"
+#' )
+#'
 #' # Define CAMELS-PE root directory
-#' set_camels_path("path/to/CAMELS-PE")
+#' set_camels_path(path)
 #'
 #' # Retrieve the stored path
 #' get_camels_path()
-#' }
-#'
 #' @export
 get_camels_path <- function() {
 

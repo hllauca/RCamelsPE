@@ -14,19 +14,18 @@ knitr::opts_chunk$set(
   eval = TRUE
 )
 
-camels_path <- Sys.getenv("CAMELSPE_PATH")
-has_camels_data <- nzchar(camels_path) && dir.exists(camels_path)
+camels_path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
 ```
 
 # Introduction
 
 `RCamelsPE` is an R package designed to read, process, and visualize data from the CAMELS-PE dataset: **Catchment Attributes and Meteorology for Large-sample Studies - Peru**.
 
-This vignette provides a practical introduction to the package, guiding users through a typical workflow:
-
--   explore available basins
--   inspect their physical and climatic characteristics
--   analyze hydroclimatic time series
+This vignette provides a practical introduction to the package using a small example dataset included in the package.
 
 ------------------------------------------------------------------------
 
@@ -64,7 +63,7 @@ The CAMELS-PE dataset is distributed separately from the package and is availabl
 The dataset can be downloaded automatically with:
 
 ```{r, eval = FALSE}
-download_camels_pe(path = "my/path")
+download_camels_pe(path = tempdir())
 ```
 
 This function downloads and extracts the dataset, and automatically\
@@ -80,13 +79,12 @@ If the dataset has already been downloaded manually, define the local CAMELS-PE 
 set_camels_path("path/to/CAMELS-PE")
 ```
 
-For reproducible execution of this vignette, the dataset path is read from the `CAMELSPE_PATH` environment variable.
+For reproducibility, this vignette uses the small example dataset included in the package:
 
 ```{r}
-if (has_camels_data) {
-  set_camels_path(camels_path)
-}
+set_camels_path(camels_path)
 ```
+
 
 ------------------------------------------------------------------------
 
@@ -94,20 +92,20 @@ if (has_camels_data) {
 
 The data dictionary describes available metadata fields, attributes, geospatial layers, time series variables, units, source files, and data sources.
 
-```{r, eval = has_camels_data}
+```{r}
 dict <- read_dictionary()
 head(dict)
 ```
 
 Time series variables can be inspected with:
 
-```{r, eval = has_camels_data}
+```{r}
 read_dictionary(category = "timeseries")
 ```
 
 Topographic attributes can be inspected with:
 
-```{r, eval = has_camels_data}
+```{r}
 read_dictionary(category = "topographic")
 ```
 
@@ -117,16 +115,15 @@ read_dictionary(category = "topographic")
 
 The station metadata table contains the available gauging stations and catchments. Each row represents a catchment identified by a unique `gauge_id`.
 
-```{r, eval = has_camels_data}
+```{r}
 stations <- read_metadata()
 head(stations)
 ```
 
 Select one basin to work with:
 
-```{r, eval = has_camels_data}
-gauge_id <- stations$gauge_id[1]
-gauge_id
+```{r}
+gauge_id <- 'PE_212900'
 ```
 
 ------------------------------------------------------------------------
@@ -135,14 +132,14 @@ gauge_id
 
 CAMELS-PE includes spatial data for catchments and gauges.
 
-```{r, eval = has_camels_data}
+```{r}
 catchments <- read_geospatial("catchments")
 gauges <- read_geospatial("gauges")
 ```
 
 ## Plot catchment location
 
-```{r, eval = has_camels_data}
+```{r}
 plot_catchments(
   catchments = catchments,
   gauges = gauges,
@@ -158,19 +155,19 @@ This helps identify the basin location, geographic setting, and relation to othe
 
 CAMELS-PE includes multiple groups of attributes describing each basin.
 
-```{r, eval = has_camels_data}
+```{r}
 topo <- read_attributes("topographic")
 head(topo)
 ```
 
-```{r, eval = has_camels_data}
+```{r}
 clim <- read_attributes("climatic")
 head(clim)
 ```
 
 Other available attribute groups include:
 
-```{r, eval = has_camels_data}
+```{r}
 hyd <- read_attributes(type = "hydrological")
 land <- read_attributes(type = "landcover")
 geo <- read_attributes(type = "geologic")
@@ -180,7 +177,7 @@ human <- read_attributes(type = "human_intervention")
 
 Extract the attributes for the selected basin:
 
-```{r, eval = has_camels_data}
+```{r}
 topo_sel <- topo[topo$gauge_id == gauge_id, ]
 clim_sel <- clim[clim$gauge_id == gauge_id, ]
 
@@ -199,7 +196,7 @@ These variables help describe the hydrological system:
 
 Daily time series may include precipitation, temperature, potential evapotranspiration, observed streamflow, simulated streamflow, solar radiation, and vapor pressure.
 
-```{r, eval = has_camels_data}
+```{r}
 ts <- read_timeseries(
   gauge_id = gauge_id,
   vars = c("date", "gauge_id", "prec", "flow_obs")
@@ -210,13 +207,13 @@ head(ts)
 
 ### Plot precipitation
 
-```{r, eval = has_camels_data}
+```{r}
 plot_timeseries(ts, variable = "prec", linewidth = 0.4)
 ```
 
 ### Plot streamflow
 
-```{r, eval = has_camels_data}
+```{r}
 plot_timeseries(ts, variable = "flow_obs")
 ```
 
@@ -240,7 +237,7 @@ where:
 -   $A_{km2}$ is catchment area in km2
 -   86400 is the number of seconds per day
 
-```{r, eval = has_camels_data}
+```{r}
 area_km2 <- topo_sel$area
 
 ts$flow_m3s <- ts$flow_obs * area_km2 * 1e6 / (1000 * 86400)
@@ -252,14 +249,14 @@ plot_timeseries(ts, variable = "flow_m3s")
 
 ## Compare multiple catchments
 
-```{r, eval = has_camels_data}
+```{r}
 ts_multi <- read_timeseries(
   gauge_id = stations$gauge_id[1:2],
   vars = c("date", "gauge_id", "prec")
 )
 ```
 
-```{r, eval = has_camels_data}
+```{r}
 plot_timeseries(ts_multi, variable = "prec", facet = TRUE)
 ```
 
@@ -267,7 +264,7 @@ plot_timeseries(ts_multi, variable = "prec", facet = TRUE)
 
 ## Filter a specific catchment
 
-```{r, eval = has_camels_data}
+```{r}
 plot_timeseries(
   ts_multi,
   variable = "prec",
@@ -283,7 +280,7 @@ plot_timeseries(
 library(RCamelsPE)
 
 # Optional: download dataset from Zenodo
-# download_camels_pe(path = "my/path")
+# download_camels_pe(path = tempdir())
 
 set_camels_path("path/to/CAMELS-PE")
 

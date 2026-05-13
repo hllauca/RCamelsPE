@@ -14,12 +14,15 @@ Returns the CAMELS-PE root directory previously defined with
 \code{set_camels_path()}.
 }
 \examples{
-\dontrun{
+path <- system.file(
+  "extdata",
+  "sample_camels_pe",
+  package = "RCamelsPE"
+)
+
 # Define CAMELS-PE root directory
-set_camels_path("path/to/CAMELS-PE")
+set_camels_path(path)
 
 # Retrieve the stored path
 get_camels_path()
-}
-
 }
