@@ -58,8 +58,6 @@ The CAMELS-PE dataset is distributed separately from the package and is availabl
 
 <https://doi.org/10.5281/zenodo.20058779>
 
-***The dataset is currently temporarily restricted while the associated scientific article is under preparation.***
-
 The dataset can be downloaded automatically with:
 
 ```{r, eval = FALSE}

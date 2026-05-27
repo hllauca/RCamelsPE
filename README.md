@@ -17,9 +17,6 @@ The `RCamelsPE` package does not include the CAMELS-PE dataset.
 Dataset files can be downloaded separately from Zenodo using
 `download_camels_pe()` or manually from: https://doi.org/10.5281/zenodo.20058779
 
-The dataset is currently temporarily restricted while the associated
-scientific article is under preparation.
-
 The dataset must be stored locally before using the package.
 
 ------------------------------------------------------------------------
