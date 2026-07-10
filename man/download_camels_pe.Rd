@@ -6,7 +6,7 @@
 \usage{
 download_camels_pe(
   path,
-  version = "1.0",
+  version = "1",
   unzip = TRUE,
   overwrite = FALSE,
   set_path = TRUE
@@ -16,7 +16,7 @@ download_camels_pe(
 \item{path}{Character. Directory where the dataset will be stored. This
 argument is required. In examples, use \code{tempdir()}.}
 
-\item{version}{Character. Dataset version. Default is \code{"1.0"}.}
+\item{version}{Character. Dataset version. Default is \code{"1"}.}
 
 \item{unzip}{Logical. If \code{TRUE}, the downloaded ZIP file is
 automatically extracted.}
@@ -37,7 +37,7 @@ Downloads and optionally extracts the CAMELS-PE dataset hosted on Zenodo.
 The CAMELS-PE dataset is distributed separately from the package through
 Zenodo:
 
-\doi{10.5281/zenodo.20058779}
+\doi{10.5281/zenodo.21195425}
 }
 \examples{
 \dontrun{

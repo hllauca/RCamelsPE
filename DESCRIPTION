@@ -18,7 +18,7 @@ Description: Provides tools to read, process, visualize, and download
     time series, catchment attributes, station metadata, metadata
     dictionaries, geospatial layers, and basic visualization of time
     series and catchment boundaries. CAMELS-PE data are available at
-    <doi:10.5281/zenodo.20058779> and package documentation is
+    <doi:10.5281/zenodo.21195425> and package documentation is
     available at <https://hllauca.github.io/RCamelsPE/>.
 License: GPL (>= 2)
 Encoding: UTF-8

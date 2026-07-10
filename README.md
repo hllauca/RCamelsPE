@@ -15,7 +15,7 @@ applications.
 The `RCamelsPE` package does not include the CAMELS-PE dataset.
 
 Dataset files can be downloaded separately from Zenodo using
-`download_camels_pe()` or manually from: https://doi.org/10.5281/zenodo.20058779
+`download_camels_pe()` or manually from: https://doi.org/10.5281/zenodo.21195425
 
 The dataset must be stored locally before using the package.
 
@@ -158,23 +158,24 @@ Creative Commons Attribution 4.0 (CC BY 4.0)
 
 ## Citation
 
-If you use CAMELS-PE or the RCamelsPE package, please cite:
+If you use the CAMELS-PE product, please cite:
 
-### CAMELS-PE dataset
+### Scientific article
+
+Llauca, H., Montesinos-Caceres, C., Gutierrez-Reynaga, M., &
+Lavado-Casimiro, W. (2026). *CAMELS-PE: Hydrometeorological time series
+and catchment attributes for 136 catchments in Peru* [Preprint]. Earth
+System Science Data Discussions.
+<https://doi.org/10.5194/essd-2026-386>
+
+### Dataset
 
 Llauca, H., Montesinos-Caceres, C., Gutierrez-Reynaga, M., &
 Lavado-Casimiro, W. (2026). *CAMELS-PE: Catchment Attributes and
-Meteorology for Large-sample Studies in Peru* (Version 1.0) [Dataset].
-Zenodo. <https://doi.org/10.5281/zenodo.20058778>
+Meteorology for Large-sample Studies in Peru* (Version 1.0.1) [Data
+set]. Zenodo. <https://doi.org/10.5281/zenodo.21195425>
 
 ### RCamelsPE package
 
 Llauca, H. (2026). *RCamelsPE: R package for the CAMELS-PE hydrological
 dataset*. GitHub repository. <https://github.com/hllauca/RCamelsPE>
-
-### Article
-
-Llauca, H., Montesinos-Caceres, C., Gutierrez-Reynaga, M., &
-Lavado-Casimiro, W. (2026). *CAMELS-PE: Hydrometeorological time series
-and catchment attributes for 136 catchments in Peru*. Earth System
-Science Data, in preparation.
