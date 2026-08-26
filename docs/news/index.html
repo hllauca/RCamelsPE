@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCamelsPE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -58,6 +58,19 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="1.0.1" id="rcamelspe-101">RCamelsPE 1.0.1<a class="anchor" aria-label="anchor" href="#rcamelspe-101"></a></h2>
+<div class="section level3">
+<h3 id="changes-1-0-1">Changes<a class="anchor" aria-label="anchor" href="#changes-1-0-1"></a></h3>
+<ul><li>
+<code><a href="../reference/download_camels_pe.html">download_camels_pe()</a></code> now points to CAMELS-PE v1.0.1 on Zenodo (<a href="doi:10.5281/zenodo.21195425" class="uri">doi:10.5281/zenodo.21195425</a>), which is freely accessible.</li>
+<li>
+<code><a href="../reference/download_camels_pe.html">download_camels_pe()</a></code> now requires an explicit <code>path</code> argument (previously defaulted to the current working directory).</li>
+<li>Added a bundled example dataset (<code>inst/extdata/sample_camels_pe</code>) used by the vignette and package examples.</li>
+<li>Added <code>utils</code> to <code>Imports</code> (already used internally via <code><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">utils::download.file()</a></code>, <code><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">utils::unzip()</a></code>, and <code><a href="https://rdrr.io/r/utils/globalVariables.html" class="external-link">utils::globalVariables()</a></code>).</li>
+<li>Fixed documentation inconsistencies: corrected the example variable name in <code><a href="../reference/plot_attribute_map.html">plot_attribute_map()</a></code> and the example file name in <code><a href="../reference/read_timeseries.html">read_timeseries()</a></code>.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="rcamelspe-100">RCamelsPE 1.0.0<a class="anchor" aria-label="anchor" href="#rcamelspe-100"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
@@ -81,7 +94,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer></div>

@@ -1,7 +1,7 @@
 Package: RCamelsPE
 Type: Package
 Title: Access, Process, and Visualize CAMELS-PE Data
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     person(
         given = "Harold",
@@ -31,7 +31,8 @@ Imports:
     ggplot2,
     readr,
     sf,
-    tools
+    tools,
+    utils
 Suggests:
     knitr,
     rmarkdown,
@@ -39,6 +40,5 @@ Suggests:
 Config/testthat/edition: 3
 URL: https://github.com/hllauca/RCamelsPE
 BugReports: https://github.com/hllauca/RCamelsPE/issues
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 VignetteBuilder: knitr
-RoxygenNote: 8.0.0
