@@ -40,7 +40,7 @@ Zenodo:
 \doi{10.5281/zenodo.21195425}
 }
 \examples{
-\dontrun{
+\donttest{
 download_camels_pe(
   path = tempdir(),
   unzip = FALSE
