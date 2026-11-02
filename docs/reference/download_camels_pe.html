@@ -106,28 +106,33 @@ root directory using <code><a href="set_camels_path.html">set_camels_path()</a><
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Invisibly returns the path to the downloaded ZIP file.</p>
+    <p>Invisibly returns the path to the downloaded ZIP file, or
+<code>NULL</code> if the download failed.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>The CAMELS-PE dataset is distributed separately from the package through
 Zenodo. The concept DOI <a href="https://doi.org/10.5281/zenodo.20058778" class="external-link">doi:10.5281/zenodo.20058778</a>
  refers to all
-versions and resolves to the latest one. The DOIs of the individual
-versions are:</p>
-<ul><li><p>v2.0: <a href="https://doi.org/10.5281/zenodo.23890227" class="external-link">doi:10.5281/zenodo.23890227</a></p></li>
-<li><p>v1.0.1: <a href="https://doi.org/10.5281/zenodo.21195425" class="external-link">doi:10.5281/zenodo.21195425</a></p></li>
-<li><p>v1.0: <a href="https://doi.org/10.5281/zenodo.20058779" class="external-link">doi:10.5281/zenodo.20058779</a></p></li>
-</ul></div>
+versions and resolves to the latest one; earlier versions are listed in
+the Zenodo record.</p>
+<p>If Zenodo cannot be reached or the file is not available, the function
+does not stop: it removes any partially downloaded file, reports the
+problem with a message and returns <code>NULL</code> invisibly.</p>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu">download_camels_pe</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  unzip <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading CAMELS-PE dataset...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> cannot open URL 'https://zenodo.org/records/23890227/files/CAMELS-PE_v2.0.zip?download=1': HTTP status was '404 Not Found'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Failed to download CAMELS-PE v2.0 from Zenodo.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The dataset may be temporarily unavailable. Please try again later or download it manually from https://doi.org/10.5281/zenodo.20058778</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -72,8 +72,13 @@
 </ul></div>
 <div class="section level3">
 <h3 id="changes-1-1-0">Changes<a class="anchor" aria-label="anchor" href="#changes-1-1-0"></a></h3>
-<ul><li>The package now works with CAMELS-PE v2.0 (<a href="doi:10.5281/zenodo.23890227" class="uri">doi:10.5281/zenodo.23890227</a>). <code><a href="../reference/download_camels_pe.html">download_camels_pe()</a></code> downloads v2.0 by default; versions 1.0.1 and 1.0 remain available through the <code>version</code> argument.</li>
+<ul><li>The package now works with CAMELS-PE v2.0. <code><a href="../reference/download_camels_pe.html">download_camels_pe()</a></code> downloads v2.0 by default; versions 1.0.1 and 1.0 remain available through the <code>version</code> argument.</li>
 <li>References to the dataset use the Zenodo concept DOI (<a href="doi:10.5281/zenodo.20058778" class="uri">doi:10.5281/zenodo.20058778</a>), which resolves to the latest version.</li>
+<li>The example of <code><a href="../reference/download_camels_pe.html">download_camels_pe()</a></code> uses <code>\donttest{}</code> instead of <code>\dontrun{}</code>, as requested by CRAN.</li>
+<li>
+<code><a href="../reference/download_camels_pe.html">download_camels_pe()</a></code> fails gracefully: if Zenodo cannot be reached, it reports the problem with a message and returns <code>NULL</code> instead of an error.</li>
+<li>
+<code>utils</code> added to <code>Imports</code> (used through <code><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">utils::download.file()</a></code>, <code><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">utils::unzip()</a></code> and <code><a href="https://rdrr.io/r/utils/globalVariables.html" class="external-link">utils::globalVariables()</a></code>).</li>
 <li>Documentation updated to the new CAMELS-PE variable names (e.g. <code>prec_pisco</code>, <code>prec_sd_pisco</code>, <code>pet_hs</code>, <code>flow_obs_flag</code>, <code>flow_sim_m3s</code>).</li>
 <li>
 <code><a href="../reference/read_timeseries.html">read_timeseries()</a></code> reads columns with fixed types, so the quality-control columns (<code>flow_obs_flag</code>, <code>flow_obs_qc_test</code>) are always read correctly, and only reads the columns requested in <code>vars</code>.</li>

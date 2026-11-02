@@ -16,19 +16,18 @@
 #' @param set_path Logical. If \code{TRUE}, automatically sets the CAMELS-PE
 #'   root directory using \code{set_camels_path()} after extraction.
 #'
-#' @return Invisibly returns the path to the downloaded ZIP file.
+#' @return Invisibly returns the path to the downloaded ZIP file, or
+#'   \code{NULL} if the download failed.
 #'
 #' @details
 #' The CAMELS-PE dataset is distributed separately from the package through
 #' Zenodo. The concept DOI \doi{10.5281/zenodo.20058778} refers to all
-#' versions and resolves to the latest one. The DOIs of the individual
-#' versions are:
+#' versions and resolves to the latest one; earlier versions are listed in
+#' the Zenodo record.
 #'
-#' \itemize{
-#'   \item v2.0: \doi{10.5281/zenodo.23890227}
-#'   \item v1.0.1: \doi{10.5281/zenodo.21195425}
-#'   \item v1.0: \doi{10.5281/zenodo.20058779}
-#' }
+#' If Zenodo cannot be reached or the file is not available, the function
+#' does not stop: it removes any partially downloaded file, reports the
+#' problem with a message and returns \code{NULL} invisibly.
 #'
 #' @examples
 #' \donttest{
@@ -107,6 +106,7 @@ download_camels_pe <- function(path,
   options(timeout = max(300, old_timeout))
   on.exit(options(timeout = old_timeout), add = TRUE)
 
+  # Fail gracefully (CRAN policy on Internet resources): no error or warning
   status <- tryCatch(
     {
       utils::download.file(
@@ -114,21 +114,28 @@ download_camels_pe <- function(path,
         destfile = zip_file,
         mode = "wb",
         quiet = FALSE
-      )
-      TRUE
+      ) == 0L
+    },
+    warning = function(w) {
+      message(conditionMessage(w))
+      FALSE
     },
     error = function(e) {
-      message(e$message)
+      message(conditionMessage(e))
       FALSE
     }
   )
 
-  if (!status || !file.exists(zip_file)) {
-    stop(
-      "Failed to download CAMELS-PE dataset from Zenodo.\n",
-      "The dataset may be temporarily unavailable.",
-      call. = FALSE
+  if (!isTRUE(status) || !file.exists(zip_file)) {
+    if (file.exists(zip_file)) {
+      unlink(zip_file)
+    }
+    message(
+      "Failed to download CAMELS-PE v", version, " from Zenodo.\n",
+      "The dataset may be temporarily unavailable. Please try again later ",
+      "or download it manually from https://doi.org/10.5281/zenodo.20058778"
     )
+    return(invisible(NULL))
   }
 
   message("Download completed:")

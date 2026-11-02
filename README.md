@@ -183,7 +183,7 @@ If you use CAMELS-PE or the RCamelsPE package, please cite:
 Llauca, H., Montesinos-Caceres, C., Gutierrez-Reynaga, M., &
 Lavado-Casimiro, W. (2026). *CAMELS-PE: Catchment Attributes and
 Meteorology for Large-sample Studies in Peru* (Version 2.0) [Dataset].
-Zenodo. <https://doi.org/10.5281/zenodo.23890227>
+Zenodo. <https://doi.org/10.5281/zenodo.20058778>
 
 ### RCamelsPE package
 

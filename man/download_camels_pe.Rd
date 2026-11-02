@@ -32,7 +32,8 @@ overwritten.}
 root directory using \code{set_camels_path()} after extraction.}
 }
 \value{
-Invisibly returns the path to the downloaded ZIP file.
+Invisibly returns the path to the downloaded ZIP file, or
+\code{NULL} if the download failed.
 }
 \description{
 Downloads and optionally extracts the CAMELS-PE dataset hosted on Zenodo.
@@ -40,14 +41,12 @@ Downloads and optionally extracts the CAMELS-PE dataset hosted on Zenodo.
 \details{
 The CAMELS-PE dataset is distributed separately from the package through
 Zenodo. The concept DOI \doi{10.5281/zenodo.20058778} refers to all
-versions and resolves to the latest one. The DOIs of the individual
-versions are:
+versions and resolves to the latest one; earlier versions are listed in
+the Zenodo record.
 
-\itemize{
-\item v2.0: \doi{10.5281/zenodo.23890227}
-\item v1.0.1: \doi{10.5281/zenodo.21195425}
-\item v1.0: \doi{10.5281/zenodo.20058779}
-}
+If Zenodo cannot be reached or the file is not available, the function
+does not stop: it removes any partially downloaded file, reports the
+problem with a message and returns \code{NULL} invisibly.
 }
 \examples{
 \donttest{

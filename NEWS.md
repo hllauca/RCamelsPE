@@ -12,13 +12,15 @@
 
 ## Changes
 
-* The package now works with CAMELS-PE v2.0 (<doi:10.5281/zenodo.23890227>).
+* The package now works with CAMELS-PE v2.0.
   `download_camels_pe()` downloads v2.0 by default; versions 1.0.1 and 1.0
   remain available through the `version` argument.
 * References to the dataset use the Zenodo concept DOI
   (<doi:10.5281/zenodo.20058778>), which resolves to the latest version.
 * The example of `download_camels_pe()` uses `\donttest{}` instead of
   `\dontrun{}`, as requested by CRAN.
+* `download_camels_pe()` fails gracefully: if Zenodo cannot be reached, it
+  reports the problem with a message and returns `NULL` instead of an error.
 * `utils` added to `Imports` (used through `utils::download.file()`,
   `utils::unzip()` and `utils::globalVariables()`).
 * Documentation updated to the new CAMELS-PE variable names (e.g.
