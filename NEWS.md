@@ -17,6 +17,10 @@
   remain available through the `version` argument.
 * References to the dataset use the Zenodo concept DOI
   (<doi:10.5281/zenodo.20058778>), which resolves to the latest version.
+* The example of `download_camels_pe()` uses `\donttest{}` instead of
+  `\dontrun{}`, as requested by CRAN.
+* `utils` added to `Imports` (used through `utils::download.file()`,
+  `utils::unzip()` and `utils::globalVariables()`).
 * Documentation updated to the new CAMELS-PE variable names (e.g.
   `prec_pisco`, `prec_sd_pisco`, `pet_hs`, `flow_obs_flag`, `flow_sim_m3s`).
 * `read_timeseries()` reads columns with fixed types, so the quality-control

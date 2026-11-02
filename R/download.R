@@ -31,7 +31,7 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' download_camels_pe(
 #'   path = tempdir(),
 #'   unzip = FALSE

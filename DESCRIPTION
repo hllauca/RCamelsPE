@@ -33,7 +33,8 @@ Imports:
     readr,
     sf,
     stats,
-    tools
+    tools,
+    utils
 Suggests:
     knitr,
     rmarkdown,
