@@ -194,5 +194,6 @@ dataset*. GitHub repository. <https://github.com/hllauca/RCamelsPE>
 
 Llauca, H., Montesinos-Caceres, C., Gutierrez-Reynaga, M., &
 Lavado-Casimiro, W. (2026). *CAMELS-PE: Hydrometeorological time series
-and catchment attributes for 136 catchments in Peru*. Earth System
-Science Data, in preparation.
+and catchment attributes for 136 catchments in Peru* [Preprint]. Earth
+System Science Data Discussions.
+<https://doi.org/10.5194/essd-2026-386>
