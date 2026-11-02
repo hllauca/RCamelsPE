@@ -19,7 +19,7 @@ gauge_id and returns a ggplot object."><!-- mathjax --><script src="https://cdnj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCamelsPE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -129,16 +129,17 @@ descriptions, units, categories, source files, and data sources.</p>
 <span class="r-in"><span>  category <span class="op">=</span> <span class="st">"topographic"</span>,</span></span>
 <span class="r-in"><span>  path <span class="op">=</span> <span class="va">path</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   folder        file                  category variable description unit  source</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 02_attributes topographic_attribut… topogra… area     Catchment … km2   FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 02_attributes topographic_attribut… topogra… perimet… Catchment … km    FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 02_attributes topographic_attribut… topogra… elev_min Catchment … m_asl FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 02_attributes topographic_attribut… topogra… elev_max Catchment … m_asl FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 02_attributes topographic_attribut… topogra… elev_me… Catchment … m_asl FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 02_attributes topographic_attribut… topogra… elev_me… Catchment … m_asl FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 02_attributes topographic_attribut… topogra… slope_m… Catchment … m/km  FABDE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 02_attributes topographic_attribut… topogra… gauge_id Unique gau… -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 02_attributes topographic_attribut… topogra… area     Catchment … km2   Catch…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 02_attributes topographic_attribut… topogra… perimet… Catchment … km    Catch…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 02_attributes topographic_attribut… topogra… elev_min Minimum ca… m_asl FABDE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 02_attributes topographic_attribut… topogra… elev_max Maximum ca… m_asl FABDE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 02_attributes topographic_attribut… topogra… elev_me… Mean catch… m_asl FABDE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 02_attributes topographic_attribut… topogra… elev_me… Median cat… m_asl FABDE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> 02_attributes topographic_attribut… topogra… slope_m… Mean catch… m/km  FABDE…</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">catchments</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_geospatial.html">read_geospatial</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"catchments"</span>,</span></span>
@@ -176,7 +177,7 @@ descriptions, units, categories, source files, and data sources.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

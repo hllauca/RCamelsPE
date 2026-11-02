@@ -11,7 +11,11 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = TRUE
+  eval = TRUE,
+  fig.width = 7.5,
+  fig.height = 4,
+  out.width = "100%",
+  dpi = 96
 )
 
 camels_path <- system.file(
@@ -23,294 +27,688 @@ camels_path <- system.file(
 
 # Introduction
 
-`RCamelsPE` is an R package designed to read, process, and visualize data from the CAMELS-PE dataset: **Catchment Attributes and Meteorology for Large-sample Studies - Peru**.
+`RCamelsPE` is an R package to read, explore and visualize the CAMELS-PE dataset: **Catchment Attributes and Meteorology for Large-sample Studies - Peru**. CAMELS-PE provides, for 136 catchments in Peru:
 
-This vignette provides a practical introduction to the package using a small example dataset included in the package.
+-   station metadata, including the quality control of the observed streamflow;
+-   static catchment attributes: topography, climate, hydrological signatures, land cover, geology, soils and human intervention;
+-   annual land-cover series (1985-2024) by class and subclass;
+-   daily time series (1981-2025) of precipitation from three products, potential evapotranspiration from three formulations, temperature, solar radiation, vapour pressure, and observed and simulated streamflow;
+-   catchment boundaries and gauge locations.
 
-------------------------------------------------------------------------
+This tutorial walks through all of these components. It uses a small sample of the dataset included in the package (two catchments and one year of daily data, 1981), so every example runs without downloading the full dataset. With the full dataset, the same code works for all catchments and the full period.
 
-## Installation
-
-Install the package from CRAN when available:
-
-```{r, eval = FALSE}
-install.packages("RCamelsPE")
-```
-
-The development version can be installed from GitHub:
-
-```{r, eval = FALSE}
-# install.packages("remotes")
-remotes::install_github("hllauca/RCamelsPE")
-```
-
-Load the package:
-
-```{r setup}
+```{r setup, message = FALSE, warning = FALSE}
 library(RCamelsPE)
+library(ggplot2)
+```
+
+The examples below use a small helper that stacks several columns of a table into long format, which is convenient for plotting several variables with `ggplot2`:
+
+```{r}
+stack_columns <- function(data, cols, id_cols = c("date", "gauge_id")) {
+  out <- lapply(cols, function(col) {
+    data.frame(data[id_cols], variable = col, value = data[[col]])
+  })
+  do.call(rbind, out)
+}
 ```
 
 ------------------------------------------------------------------------
+
+# 1. Getting the data
 
 ## Download the CAMELS-PE dataset
 
-The CAMELS-PE dataset is distributed separately from the package and is available from Zenodo:
-
-<https://doi.org/10.5281/zenodo.20058779>
-
-The dataset can be downloaded automatically with:
+The dataset is distributed separately from the package through Zenodo (<https://doi.org/10.5281/zenodo.20058778>; this concept DOI always resolves to the latest version). The package is designed for CAMELS-PE v2.0, which is downloaded and extracted by default:
 
 ```{r, eval = FALSE}
-download_camels_pe(path = tempdir())
+download_camels_pe(path = "path/to/folder")
 ```
 
-This function downloads and extracts the dataset, and automatically\
-defines the CAMELS-PE dataset path for the current R session.
+`download_camels_pe()` also defines the dataset path for the current R session. Earlier versions (`version = "1.0.1"` or `"1.0"`) can be downloaded to reproduce previous studies, but they have a different file structure and variable names.
 
-------------------------------------------------------------------------
+## Set the dataset path
 
-## Set the CAMELS-PE dataset path manually
-
-If the dataset has already been downloaded manually, define the local CAMELS-PE path with:
+If the dataset was downloaded manually or in a previous session, define its location once per session. All reading functions then use this path:
 
 ```{r, eval = FALSE}
 set_camels_path("path/to/CAMELS-PE")
 ```
 
-For reproducibility, this vignette uses the small example dataset included in the package:
+This tutorial uses the sample dataset:
 
 ```{r}
 set_camels_path(camels_path)
+get_camels_path()
 ```
 
+The dataset is organized in four folders:
+
+``` text
+CAMELS-PE/
+├── 01_metadata/      stations.csv, data_dictionary.csv
+├── 02_attributes/    static attributes and annual land-cover series
+├── 03_timeseries/    timeseries.csv and by_catchment/<gauge_id>.csv
+└── 04_geospatial/    gauges and catchment boundaries (GeoPackage)
+```
 
 ------------------------------------------------------------------------
 
-## Explore the data dictionary
+# 2. The data dictionary
 
-The data dictionary describes available metadata fields, attributes, geospatial layers, time series variables, units, source files, and data sources.
+Every variable of CAMELS-PE is documented in the data dictionary, with its description, unit, category, file and data source. It is the best starting point to find a variable.
 
 ```{r}
 dict <- read_dictionary()
-head(dict)
+table(dict$category)
 ```
 
-Time series variables can be inspected with:
+Filter by category, variable or file:
 
 ```{r}
-read_dictionary(category = "timeseries")
+read_dictionary(category = "timeseries")[, c("variable", "unit", "source")]
 ```
 
-Topographic attributes can be inspected with:
+```{r}
+read_dictionary(variable = "flow_obs_flag")$description
+```
+
+Search descriptions by keyword:
 
 ```{r}
-read_dictionary(category = "topographic")
+pet_vars <- dict[grepl("evapotranspiration", dict$description), ]
+unique(pet_vars[, c("file", "variable")])
 ```
 
 ------------------------------------------------------------------------
 
-## Explore available stations
+# 3. Station metadata
 
-The station metadata table contains the available gauging stations and catchments. Each row represents a catchment identified by a unique `gauge_id`.
+The station table has one row per catchment, identified by `gauge_id`:
 
 ```{r}
 stations <- read_metadata()
-head(stations)
+names(stations)
 ```
 
-Select one basin to work with:
+Gauge coordinates correspond to the catchment outlet, and `gauge_elev` is the FABDEM elevation at that point:
 
 ```{r}
-gauge_id <- 'PE_212900'
+stations[, c("gauge_id", "gauge_name", "gauge_region",
+             "gauge_lat", "gauge_lon", "gauge_elev")]
+```
+
+The record period and completeness of the observed streamflow:
+
+```{r}
+stations[, c("gauge_id", "gauge_record_start", "gauge_record_end",
+             "gauge_perc_obs")]
+```
+
+A summary of the quality control of the observed streamflow (Sect. 9) is also stored for each gauge: the number of suspect values (kept) and of values that failed and were removed:
+
+```{r}
+stations[, c("gauge_id", "flow_obs_n_suspect", "flow_obs_n_fail",
+             "flow_obs_perc_fail")]
+```
+
+Some catchments are nested (one gauge lies upstream of another). The nesting columns identify the group and the gauges directly upstream and downstream:
+
+```{r}
+stations[, c("gauge_id", "is_nested", "nested_group_id",
+             "nested_group_size", "downstream_gauge_id",
+             "upstream_gauge_id")]
+```
+
+We select one catchment for the rest of the tutorial:
+
+```{r}
+gauge_id <- "PE_212900"
 ```
 
 ------------------------------------------------------------------------
 
-## Read geospatial data
+# 4. Geospatial data
 
-CAMELS-PE includes spatial data for catchments and gauges.
+Catchment boundaries and gauge locations are read as `sf` objects:
 
 ```{r}
 catchments <- read_geospatial("catchments")
 gauges <- read_geospatial("gauges")
+catchments
 ```
 
-## Plot catchment location
+Plot all catchments, or a single catchment with its outlet:
 
-```{r}
-plot_catchments(
-  catchments = catchments,
-  gauges = gauges,
-  gauge_id = gauge_id
-)
+```{r, fig.width = 5, fig.height = 5, out.width = "60%"}
+plot_catchments(catchments, gauges)
 ```
 
-This helps identify the basin location, geographic setting, and relation to other basins.
-
-------------------------------------------------------------------------
-
-## Explore catchment attributes
-
-CAMELS-PE includes multiple groups of attributes describing each basin.
-
-```{r}
-topo <- read_attributes("topographic")
-head(topo)
+```{r, fig.width = 5, fig.height = 5, out.width = "60%"}
+plot_catchments(catchments, gauges, gauge_id = gauge_id)
 ```
 
-```{r}
+`plot_attribute_map()` colours the catchments by any attribute (Sect. 5):
+
+```{r, fig.width = 5, fig.height = 5, out.width = "60%"}
 clim <- read_attributes("climatic")
-head(clim)
+
+plot_attribute_map(
+  catchments = catchments,
+  attributes = clim,
+  variable = "aridity_hs",
+  gauges = gauges
+)
 ```
-
-Other available attribute groups include:
-
-```{r}
-hyd <- read_attributes(type = "hydrological")
-land <- read_attributes(type = "landcover")
-geo <- read_attributes(type = "geologic")
-soil <- read_attributes(type = "soil")
-human <- read_attributes(type = "human_intervention")
-```
-
-Extract the attributes for the selected basin:
-
-```{r}
-topo_sel <- topo[topo$gauge_id == gauge_id, ]
-clim_sel <- clim[clim$gauge_id == gauge_id, ]
-
-topo_sel
-clim_sel
-```
-
-These variables help describe the hydrological system:
-
--   topography controls flow pathways and energy gradients
--   climate defines water input and atmospheric demand
 
 ------------------------------------------------------------------------
 
-## Read hydroclimatic time series
+# 5. Catchment attributes
 
-Daily time series may include precipitation, temperature, potential evapotranspiration, observed streamflow, simulated streamflow, solar radiation, and vapor pressure.
+Static attributes are organized in thematic groups, read with `read_attributes()`. All tables are keyed by `gauge_id` and can be filtered with the `gauge_id` argument.
+
+## Topography
 
 ```{r}
-ts <- read_timeseries(
+read_attributes("topographic")
+```
+
+Area and perimeter are in km2 and km, elevations in m a.s.l. and the mean slope in m/km.
+
+## Climate
+
+Climatic indices are computed from 1981 to 2025 with the reference products (PISCOp precipitation and Hargreaves-Samani PET). Mean PET and the aridity index are also given for the Priestley-Taylor (`_pt`) and Oudin (`_ou`) formulations, to show the uncertainty related to the choice of PET:
+
+```{r}
+clim[, c("gauge_id", "p_mean", "pet_mean_hs", "pet_mean_pt",
+         "pet_mean_ou", "aridity_hs", "aridity_pt", "aridity_ou")]
+```
+
+Seasonality and the frequency, duration and timing of high-precipitation and dry days:
+
+```{r}
+clim[, c("gauge_id", "p_seasonality", "high_prec_freq", "high_prec_dur",
+         "high_prec_timing", "low_prec_freq", "low_prec_dur",
+         "low_prec_timing")]
+```
+
+## Hydrological signatures
+
+Signatures are provided twice: computed from the observed streamflow after quality control (`"hydrological"`) and from the simulated streamflow (`"hydrological_sim"`). The observed signatures use only hydrological years with enough observations; the columns `q_obs_*` give the period used.
+
+```{r}
+hyd <- read_attributes("hydrological")
+hyd_sim <- read_attributes("hydrological_sim")
+
+hyd[, c("gauge_id", "q_mean", "runoff_ratio", "baseflow_index",
+        "q_obs_years", "q_obs_start", "q_obs_end")]
+```
+
+Both tables share the same column names, which makes it easy to compare observed and simulated signatures:
+
+```{r}
+sig <- c("q_mean", "runoff_ratio", "baseflow_index", "Q5", "Q95",
+         "high_q_freq", "low_q_freq")
+
+data.frame(
+  signature = sig,
+  observed = unlist(hyd[hyd$gauge_id == gauge_id, sig]),
+  simulated = unlist(hyd_sim[hyd_sim$gauge_id == gauge_id, sig]),
+  row.names = NULL
+)
+```
+
+## Land cover
+
+Static land-cover attributes refer to the year 2024 (MapBiomas Peru, Ecuador and Colombia). Glaciers and other water bodies are also given separately (`water_perc = glacier_perc + water_body_perc`):
+
+```{r}
+read_attributes("land_cover")
+```
+
+The annual series from 1985 to 2024 are described in Sect. 6.
+
+## Geology and soils
+
+```{r}
+geo <- read_attributes("geologic")
+geo[, c("gauge_id", "geol_1st_class", "glim_1st_class_perc",
+        "geol_2nd_class", "glim_2nd_class_perc", "carbonate_rocks_perc",
+        "geol_porosity", "geol_permeability")]
+```
+
+```{r}
+read_attributes("soil")
+```
+
+## Human intervention
+
+Human intervention attributes describe accredited water availability (ADH, surface water and groundwater), reservoirs, tailings dams and whether the catchment can be considered near-natural:
+
+```{r}
+human <- read_attributes("human_intervention")
+human[, c("gauge_id", "surface_adh_mm", "groundwater_adh_mm", "adh_ratio",
+          "reservoir_n", "reservoir_dor", "tailings_dam_n", "near_natural")]
+```
+
+`reservoir_dor` (degree of regulation) and `adh_ratio` are percentages of the mean annual observed streamflow volume. `near_natural` (1 = no reservoirs, no tailings dams and less than 10% of anthropic land cover) can be used to select catchments with little human influence. Both sample catchments have reservoirs, so neither is near-natural:
+
+```{r}
+table(near_natural = human$near_natural)
+```
+
+## All attributes in one table
+
+`type = "all"` joins all groups by `gauge_id` (the simulated signatures are excluded because they share column names with the observed ones):
+
+```{r}
+attrs <- read_attributes("all")
+dim(attrs)
+```
+
+This table is convenient for catchment classification or regionalization, for example to relate the runoff ratio to aridity:
+
+```{r}
+attrs[, c("gauge_id", "aridity_hs", "runoff_ratio", "baseflow_index",
+          "forest_perc", "near_natural")]
+```
+
+------------------------------------------------------------------------
+
+# 6. Annual land-cover series
+
+CAMELS-PE includes the annual land cover of each catchment from 1985 to 2024, at two levels: six aggregated **classes** (the same as in the static attributes) and the MapBiomas **subclasses**.
+
+## Legend
+
+The legend links each MapBiomas code to its subclass and class:
+
+```{r}
+legend <- read_land_cover_legend()
+head(legend, 10)
+```
+
+## Classes
+
+```{r}
+lc_class <- read_land_cover(level = "class", gauge_id = gauge_id)
+head(lc_class)
+```
+
+```{r}
+plot_land_cover(lc_class)
+```
+
+## Subclasses
+
+The long format returns one row per catchment, year and subclass, with the names from the legend:
+
+```{r}
+lc_sub <- read_land_cover(
+  level = "subclass",
   gauge_id = gauge_id,
-  vars = c("date", "gauge_id", "prec", "flow_obs")
+  format = "long"
+)
+head(lc_sub)
+```
+
+Subclasses that never exceed a given percentage of the catchment can be grouped as "Other":
+
+```{r, fig.height = 4.5}
+plot_land_cover(lc_sub, min_perc = 1)
+```
+
+## Land-cover change
+
+With the long format, the change between two years is easy to compute:
+
+```{r}
+lc_change <- read_land_cover(
+  level = "subclass",
+  years = c(1985, 2024),
+  format = "long"
 )
 
-head(ts)
-```
+change <- reshape(
+  as.data.frame(lc_change[, c("gauge_id", "subclass", "year", "perc")]),
+  idvar = c("gauge_id", "subclass"),
+  timevar = "year",
+  direction = "wide"
+)
+change$diff <- change$perc.2024 - change$perc.1985
 
-### Plot precipitation
-
-```{r}
-plot_timeseries(ts, variable = "prec", linewidth = 0.4)
-```
-
-### Plot streamflow
-
-```{r}
-plot_timeseries(ts, variable = "flow_obs")
-```
-
-------------------------------------------------------------------------
-
-## Units of streamflow
-
-In CAMELS-PE, observed and simulated streamflow (`flow_obs` and `flow_sim`) are expressed in **mm/day**.
-
-This unit represents runoff depth over the catchment area and allows comparison between basins of different sizes.
-
-In many applications, streamflow is required in **m3/s**. To convert from mm/day to m3/s, the catchment area must be used:
-
-$$
-Q_{m3/s} = \frac{Q_{mm/day} \times A_{km2} \times 10^6}{1000 \times 86400}
-$$
-
-where:
-
--   $Q_{mm/day}$ is streamflow in mm/day
--   $A_{km2}$ is catchment area in km2
--   86400 is the number of seconds per day
-
-```{r}
-area_km2 <- topo_sel$area
-
-ts$flow_m3s <- ts$flow_obs * area_km2 * 1e6 / (1000 * 86400)
-
-plot_timeseries(ts, variable = "flow_m3s")
+# Largest changes (percentage points of the catchment area)
+change <- change[order(-abs(change$diff)), ]
+head(change, 8)
 ```
 
 ------------------------------------------------------------------------
 
-## Compare multiple catchments
+# 7. Daily time series
+
+## Available variables
+
+```{r}
+ts_dict <- read_dictionary(file = "timeseries.csv")
+ts_dict[, c("variable", "unit", "source")]
+```
+
+The time series include:
+
+-   **precipitation** from three products: `prec_pisco` (PISCOp v3.0, reference), `prec_chirps` (CHIRPS v3) and `prec_era5land` (ERA5-Land), plus the spatial standard deviation of PISCOp within the catchment (`prec_sd_pisco`);
+-   **potential evapotranspiration** from three formulations: `pet_hs` (Hargreaves-Samani, reference), `pet_pt` (Priestley-Taylor) and `pet_ou` (Oudin);
+-   **temperature** (`tmin`, `tmean`, `tmax`), **solar radiation** (`srad`) and **vapour pressure** (`vprp`);
+-   **observed streamflow** after quality control (`flow_obs`, `flow_obs_m3s`), before quality control (`flow_obs_raw`) and its quality-control flag and test (`flow_obs_flag`, `flow_obs_qc_test`);
+-   **simulated streamflow** (`flow_sim`, `flow_sim_m3s`).
+
+## Reading modes
+
+The recommended mode reads one file per catchment, so only the requested catchments are loaded:
+
+```{r}
+ts <- read_timeseries(gauge_id = gauge_id)
+dim(ts)
+```
+
+The global mode reads `timeseries.csv`, which contains all catchments. With `vars`, only the requested columns are read, which saves time and memory with the full dataset:
+
+```{r}
+ts_global <- read_timeseries(
+  global = TRUE,
+  vars = c("date", "gauge_id", "prec_pisco", "flow_obs")
+)
+head(ts_global)
+```
+
+Both modes accept several gauges and a selection of variables:
 
 ```{r}
 ts_multi <- read_timeseries(
-  gauge_id = stations$gauge_id[1:2],
-  vars = c("date", "gauge_id", "prec")
+  gauge_id = stations$gauge_id,
+  vars = c("date", "gauge_id", "prec_pisco", "pet_hs", "flow_obs")
 )
+table(ts_multi$gauge_id)
 ```
 
+`plot_timeseries()` plots one variable, with one panel per gauge:
+
 ```{r}
-plot_timeseries(ts_multi, variable = "prec", facet = TRUE)
+plot_timeseries(ts_multi, variable = "prec_pisco", linewidth = 0.4)
 ```
 
 ------------------------------------------------------------------------
 
-## Filter a specific catchment
+# 8. Meteorological forcing
+
+## Precipitation products
+
+The three precipitation products can be compared directly:
 
 ```{r}
-plot_timeseries(
-  ts_multi,
-  variable = "prec",
-  gauge_id = stations$gauge_id[1]
-)
+prec_cols <- c("prec_pisco", "prec_chirps", "prec_era5land")
+
+colSums(ts[, prec_cols], na.rm = TRUE)
+```
+
+Cumulative precipitation shows where the products diverge:
+
+```{r}
+prec_long <- stack_columns(ts, prec_cols)
+prec_long$value[is.na(prec_long$value)] <- 0
+prec_long$cumulative <- ave(prec_long$value, prec_long$variable, FUN = cumsum)
+
+ggplot(prec_long, aes(date, cumulative, colour = variable)) +
+  geom_line() +
+  labs(x = NULL, y = "Cumulative precipitation (mm)", colour = NULL) +
+  theme_bw()
+```
+
+Monthly totals of each product:
+
+```{r}
+prec_long$month <- as.Date(format(prec_long$date, "%Y-%m-01"))
+prec_month <- aggregate(value ~ month + variable, data = prec_long, FUN = sum)
+
+ggplot(prec_month, aes(month, value, fill = variable)) +
+  geom_col(position = "dodge") +
+  labs(x = NULL, y = "Monthly precipitation (mm)", fill = NULL) +
+  theme_bw()
+```
+
+The spatial standard deviation of PISCOp (`prec_sd_pisco`) describes how variable precipitation is within the catchment on each day:
+
+```{r}
+ggplot(ts, aes(date)) +
+  geom_ribbon(
+    aes(ymin = pmax(prec_pisco - prec_sd_pisco, 0),
+        ymax = prec_pisco + prec_sd_pisco),
+    fill = "grey80"
+  ) +
+  geom_line(aes(y = prec_pisco), colour = "#1f78b4", linewidth = 0.4) +
+  labs(x = NULL, y = "Precipitation (mm/day)",
+       subtitle = "PISCOp catchment mean +/- spatial standard deviation") +
+  theme_bw()
+```
+
+## Potential evapotranspiration
+
+The three PET formulations differ mainly in their level:
+
+```{r}
+pet_cols <- c("pet_hs", "pet_pt", "pet_ou")
+
+colMeans(ts[, pet_cols], na.rm = TRUE)
+```
+
+```{r}
+pet_long <- stack_columns(ts, pet_cols)
+
+ggplot(pet_long, aes(date, value, colour = variable)) +
+  geom_line(linewidth = 0.4) +
+  labs(x = NULL, y = "PET (mm/day)", colour = NULL) +
+  theme_bw()
+```
+
+The choice of the precipitation product and of the PET formulation changes the aridity index (PET / P). For the sample year:
+
+```{r}
+p <- colMeans(ts[, prec_cols], na.rm = TRUE)
+e <- colMeans(ts[, pet_cols], na.rm = TRUE)
+
+aridity <- outer(e, p, "/")
+round(aridity, 2)
+```
+
+## Temperature, radiation and vapour pressure
+
+```{r}
+temp_long <- stack_columns(ts, c("tmin", "tmean", "tmax"))
+
+ggplot(temp_long, aes(date, value, colour = variable)) +
+  geom_line(linewidth = 0.4) +
+  scale_colour_manual(values = c(tmin = "#2c7bb6", tmean = "grey30",
+                                 tmax = "#d7191c")) +
+  labs(x = NULL, y = "Air temperature (degrees C)", colour = NULL) +
+  theme_bw()
+```
+
+```{r}
+plot_timeseries(ts, variable = "srad")
+plot_timeseries(ts, variable = "vprp")
 ```
 
 ------------------------------------------------------------------------
 
-# Typical workflow
+# 9. Observed streamflow and quality control
+
+## Units
+
+Streamflow is given in **mm/day** (`flow_obs`, `flow_sim`), which allows the comparison of catchments of different size and with precipitation and PET, and in **m3/s** (`flow_obs_m3s`, `flow_sim_m3s`):
+
+```{r}
+plot_timeseries(ts, variable = "flow_obs_m3s")
+```
+
+## Quality-control flags
+
+The observed streamflow went through an automatic quality control based on the QARTOD tests (gross range, spike, flat line and detection of linearly interpolated values). Each daily value has a flag:
+
+| `flow_obs_flag` | Meaning                                                          |
+|-----------------|------------------------------------------------------------------|
+| 1               | pass                                                             |
+| 3               | suspect: kept in `flow_obs`, but worth checking                  |
+| 4               | fail: removed from `flow_obs` (set to `NA`), kept in `flow_obs_raw` |
+| 9               | missing                                                          |
+
+`flow_obs_qc_test` names the test that raised the flag (only for flags 3 and 4), for example `flat_line_suspect` (constant values during 7 to 30 days) or `flat_line` (more than 30 days, removed).
+
+```{r}
+table(flag = ts$flow_obs_flag, useNA = "ifany")
+table(test = ts$flow_obs_qc_test, useNA = "ifany")
+```
+
+Plot the flagged values on top of the series:
+
+```{r}
+flags <- ts[ts$flow_obs_flag %in% c(3, 4), ]
+flags$flag <- factor(flags$flow_obs_flag, levels = c(3, 4),
+                     labels = c("suspect (3)", "fail (4)"))
+
+ggplot(ts, aes(date, flow_obs_raw)) +
+  geom_line(colour = "grey40", linewidth = 0.4) +
+  geom_point(
+    data = flags,
+    aes(colour = flag),
+    size = 1.2
+  ) +
+  scale_colour_manual(values = c("suspect (3)" = "#fdae61",
+                                 "fail (4)" = "#d7191c"),
+                      drop = FALSE) +
+  labs(x = NULL, y = "Observed streamflow (mm/day)", colour = NULL) +
+  theme_bw()
+```
+
+## Using the flags
+
+`flow_obs` is ready to use: values that failed are already removed. Users who prefer a stricter selection can also remove suspect values:
+
+```{r}
+ts$flow_obs_strict <- ifelse(ts$flow_obs_flag == 1, ts$flow_obs, NA)
+
+c(
+  flow_obs = sum(!is.na(ts$flow_obs)),
+  flow_obs_strict = sum(!is.na(ts$flow_obs_strict))
+)
+```
+
+The original record is kept in `flow_obs_raw`, so the effect of the quality control can always be checked:
+
+```{r}
+changed <- which(ts$flow_obs_raw != ts$flow_obs |
+                   (is.na(ts$flow_obs) & !is.na(ts$flow_obs_raw)))
+length(changed)
+```
+
+For the full dataset, the number of suspect and failed values per gauge is summarized in the station table (Sect. 3).
+
+------------------------------------------------------------------------
+
+# 10. Observed and simulated streamflow
+
+Simulated streamflow is available for all catchments and days, also where observations are missing:
+
+```{r}
+q_long <- stack_columns(ts, c("flow_obs", "flow_sim"))
+
+ggplot(q_long, aes(date, value, colour = variable)) +
+  geom_line(linewidth = 0.4) +
+  scale_colour_manual(values = c(flow_obs = "black", flow_sim = "#e31a1c")) +
+  labs(x = NULL, y = "Streamflow (mm/day)", colour = NULL) +
+  theme_bw()
+```
+
+Performance of the simulation on the days with observations, for example with the Nash-Sutcliffe and Kling-Gupta efficiencies:
+
+```{r}
+ok <- !is.na(ts$flow_obs) & !is.na(ts$flow_sim)
+obs <- ts$flow_obs[ok]
+sim <- ts$flow_sim[ok]
+
+nse <- 1 - sum((sim - obs)^2) / sum((obs - mean(obs))^2)
+kge <- 1 - sqrt((cor(sim, obs) - 1)^2 +
+                  (sd(sim) / sd(obs) - 1)^2 +
+                  (mean(sim) / mean(obs) - 1)^2)
+
+round(c(NSE = nse, KGE = kge), 3)
+```
+
+------------------------------------------------------------------------
+
+# 11. A simple water balance
+
+Because precipitation, PET and streamflow are all in mm/day, a water balance can be computed directly. Using only the days with observed streamflow:
+
+```{r}
+ok <- !is.na(ts$flow_obs)
+
+balance <- data.frame(
+  product = prec_cols,
+  P = colMeans(ts[ok, prec_cols]),
+  Q = mean(ts$flow_obs[ok]),
+  row.names = NULL
+)
+balance$runoff_ratio <- balance$Q / balance$P
+balance$aridity_hs <- mean(ts$pet_hs[ok]) / balance$P
+balance
+```
+
+A runoff ratio close to or above 1 points to an underestimation of precipitation by the product, a common issue in high mountain catchments.
+
+------------------------------------------------------------------------
+
+# 12. Typical workflow with the full dataset
 
 ```{r, eval = FALSE}
 library(RCamelsPE)
 
-# Optional: download dataset from Zenodo
-# download_camels_pe(path = tempdir())
-
+# Download once, or set the path of a local copy
+# download_camels_pe(path = "path/to/folder")
 set_camels_path("path/to/CAMELS-PE")
 
-read_dictionary(category = "timeseries")
-
+# Select near-natural catchments in the Pacific region
 stations <- read_metadata()
+attrs <- read_attributes("all")
+sel <- attrs$gauge_id[attrs$near_natural == 1]
+sel <- intersect(sel, stations$gauge_id[stations$gauge_region == "Pacific"])
 
-gauge_id <- stations$gauge_id[1]
-
+# Read their forcing and streamflow
 ts <- read_timeseries(
-  gauge_id = gauge_id,
-  vars = c("date", "gauge_id", "prec", "flow_obs")
+  gauge_id = sel,
+  vars = c("date", "gauge_id", "prec_pisco", "prec_chirps",
+           "prec_era5land", "pet_hs", "flow_obs", "flow_obs_flag")
 )
 
-plot_timeseries(ts, variable = "flow_obs")
+# Annual land-cover change in the selected catchments
+lc <- read_land_cover("class", gauge_id = sel, format = "long")
+plot_land_cover(lc)
 ```
 
 # Summary
 
-With `RCamelsPE`, users can:
+| Function                   | Purpose                                         |
+|----------------------------|-------------------------------------------------|
+| `download_camels_pe()`     | Download the dataset from Zenodo                |
+| `set_camels_path()`        | Define the location of the dataset              |
+| `read_dictionary()`        | Variable descriptions, units and sources        |
+| `read_metadata()`          | Station metadata and quality-control summary    |
+| `read_geospatial()`        | Catchment boundaries and gauge locations        |
+| `read_attributes()`        | Static catchment attributes                     |
+| `read_land_cover()`        | Annual land-cover series (class or subclass)    |
+| `read_land_cover_legend()` | Land-cover legend                               |
+| `read_timeseries()`        | Daily time series                               |
+| `plot_timeseries()`        | Time series plot                                |
+| `plot_catchments()`        | Map of catchments and gauges                    |
+| `plot_attribute_map()`     | Map of an attribute                             |
+| `plot_land_cover()`        | Annual land-cover plot                          |
 
--   access hydroclimatic data
--   explore basin characteristics
--   visualize time series and spatial data
--   compare multiple catchments
-
-This makes the package suitable for hydrological analysis, teaching, model development, and large-sample hydrology studies.
-
-# Notes
-
-To run the examples with real data, download the CAMELS-PE dataset using `download_camels_pe()` or manually from Zenodo.
-
-The `download_camels_pe()` function automatically defines the dataset path for the current R session.
-
-If the dataset was downloaded manually, or in a previous R session, define the local dataset path using `set_camels_path()`.
+To run this tutorial with the full dataset, download CAMELS-PE with `download_camels_pe()` or from Zenodo, and define its location with `set_camels_path()`.

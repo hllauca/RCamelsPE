@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCamelsPE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_camels_pe</span><span class="op">(</span></span>
 <span>  <span class="va">path</span>,</span>
-<span>  version <span class="op">=</span> <span class="st">"1.0"</span>,</span>
+<span>  version <span class="op">=</span> <span class="st">"2.0"</span>,</span>
 <span>  unzip <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  set_path <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -82,7 +82,11 @@ argument is required. In examples, use <code><a href="https://rdrr.io/r/base/tem
 
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
-<dd><p>Character. Dataset version. Default is <code>"1.0"</code>.</p></dd>
+<dd><p>Character. Dataset version: <code>"2.0"</code> (default, latest),
+<code>"1.0.1"</code> or <code>"1.0"</code>. The reading functions of this package
+are designed for version 2.0; earlier versions are available only for
+reproducibility of previous studies and have a different file
+structure and variable names.</p></dd>
 
 
 <dt id="arg-unzip">unzip<a class="anchor" aria-label="anchor" href="#arg-unzip"></a></dt>
@@ -107,9 +111,14 @@ root directory using <code><a href="set_camels_path.html">set_camels_path()</a><
     <div id="details">
     <h2>Details</h2>
     <p>The CAMELS-PE dataset is distributed separately from the package through
-Zenodo:</p>
-<p><a href="https://doi.org/10.5281/zenodo.20058779" class="external-link">doi:10.5281/zenodo.20058779</a></p>
-    </div>
+Zenodo. The concept DOI <a href="https://doi.org/10.5281/zenodo.20058778" class="external-link">doi:10.5281/zenodo.20058778</a>
+ refers to all
+versions and resolves to the latest one. The DOIs of the individual
+versions are:</p>
+<ul><li><p>v2.0: <a href="https://doi.org/10.5281/zenodo.23890227" class="external-link">doi:10.5281/zenodo.23890227</a></p></li>
+<li><p>v1.0.1: <a href="https://doi.org/10.5281/zenodo.21195425" class="external-link">doi:10.5281/zenodo.21195425</a></p></li>
+<li><p>v1.0: <a href="https://doi.org/10.5281/zenodo.20058779" class="external-link">doi:10.5281/zenodo.20058779</a></p></li>
+</ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -134,7 +143,7 @@ Zenodo:</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

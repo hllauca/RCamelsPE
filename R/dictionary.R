@@ -14,7 +14,7 @@
 #' @param category Character vector or \code{NULL}. Optional category
 #'   filter. Examples include \code{"metadata"},
 #'   \code{"topographic"}, \code{"climatic"},
-#'   \code{"hydrological"}, \code{"landcover"},
+#'   \code{"hydrological"}, \code{"land_cover"},
 #'   \code{"geologic"}, \code{"soil"},
 #'   \code{"human_intervention"}, \code{"timeseries"},
 #'   and \code{"geospatial"}.
@@ -94,7 +94,8 @@ read_dictionary <- function(category = NULL,
 
   dict <- readr::read_csv(
     dictionary_file,
-    show_col_types = FALSE
+    show_col_types = FALSE,
+    num_threads = 1
   )
 
   required_cols <- c(

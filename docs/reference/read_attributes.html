@@ -19,7 +19,7 @@ land cover, geology, soil, and human intervention."><!-- mathjax --><script src=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCamelsPE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -77,8 +77,9 @@ land cover, geology, soil, and human intervention.</p>
 <dl><dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>Character string. Attribute group to read. One of
 <code>"topographic"</code>, <code>"climatic"</code>, <code>"hydrological"</code>,
-<code>"landcover"</code>, <code>"geologic"</code>, <code>"soil"</code>,
-<code>"human_intervention"</code>, or <code>"all"</code>. Default is <code>"all"</code>.</p></dd>
+<code>"hydrological_sim"</code>, <code>"land_cover"</code>, <code>"geologic"</code>,
+<code>"soil"</code>, <code>"human_intervention"</code>, or <code>"all"</code>. Default is
+<code>"all"</code>.</p></dd>
 
 
 <dt id="arg-gauge-id">gauge_id<a class="anchor" aria-label="anchor" href="#arg-gauge-id"></a></dt>
@@ -110,13 +111,20 @@ sources.</p>
 <p>Available attribute groups are:</p>
 <ul><li><p><code>"topographic"</code>: topographic and physiographic attributes.</p></li>
 <li><p><code>"climatic"</code>: climatic indices and long-term climate descriptors.</p></li>
-<li><p><code>"hydrological"</code>: hydrological signatures.</p></li>
-<li><p><code>"landcover"</code>: land-cover attributes.</p></li>
+<li><p><code>"hydrological"</code>: hydrological signatures computed from
+observed streamflow.</p></li>
+<li><p><code>"hydrological_sim"</code>: hydrological signatures computed from
+simulated streamflow.</p></li>
+<li><p><code>"land_cover"</code>: land-cover attributes (reference year 2024).</p></li>
 <li><p><code>"geologic"</code>: geological attributes.</p></li>
 <li><p><code>"soil"</code>: soil attributes.</p></li>
 <li><p><code>"human_intervention"</code>: human intervention and regulation attributes.</p></li>
-<li><p><code>"all"</code>: all available attribute groups joined by <code>gauge_id</code>.</p></li>
-</ul><p>Attribute files are expected to be stored in <code>02_attributes/</code>. Each
+<li><p><code>"all"</code>: all available attribute groups joined by <code>gauge_id</code>,
+except <code>"hydrological_sim"</code>, whose column names are the same as
+those of <code>"hydrological"</code>.</p></li>
+</ul><p>The annual land-cover series (1985-2024) are read with
+<code><a href="read_land_cover.html">read_land_cover()</a></code>.</p>
+<p>Attribute files are expected to be stored in <code>02_attributes/</code>. Each
 attribute file must contain a <code>gauge_id</code> column. When
 <code>type = "all"</code>, missing attribute files are skipped with a warning and
 all available files are joined. If no valid attribute files are found, the
@@ -125,7 +133,8 @@ function stops with an error.</p>
 <ul><li><p><code>topographic_attributes.csv</code></p></li>
 <li><p><code>climatic_indices.csv</code></p></li>
 <li><p><code>hydrological_signatures.csv</code></p></li>
-<li><p><code>landcover_attributes.csv</code></p></li>
+<li><p><code>hydrological_signatures_sim.csv</code></p></li>
+<li><p><code>land_cover_attributes.csv</code></p></li>
 <li><p><code>geologic_attributes.csv</code></p></li>
 <li><p><code>soil_attributes.csv</code></p></li>
 <li><p><code>human_intervention_attributes.csv</code></p></li>
@@ -149,12 +158,12 @@ function stops with an error.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   folder        file                  category variable description unit  source</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 02_attributes topographic_attribut… topogra… area     Catchment … km2   FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 02_attributes topographic_attribut… topogra… perimet… Catchment … km    FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 02_attributes topographic_attribut… topogra… elev_min Catchment … m_asl FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 02_attributes topographic_attribut… topogra… elev_max Catchment … m_asl FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 02_attributes topographic_attribut… topogra… elev_me… Catchment … m_asl FABDE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 02_attributes topographic_attribut… topogra… elev_me… Catchment … m_asl FABDE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 02_attributes topographic_attribut… topogra… gauge_id Unique gau… -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 02_attributes topographic_attribut… topogra… area     Catchment … km2   Catch…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 02_attributes topographic_attribut… topogra… perimet… Catchment … km    Catch…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 02_attributes topographic_attribut… topogra… elev_min Minimum ca… m_asl FABDE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 02_attributes topographic_attribut… topogra… elev_max Maximum ca… m_asl FABDE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 02_attributes topographic_attribut… topogra… elev_me… Mean catch… m_asl FABDE…</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Read topographic attributes</span></span></span>
 <span class="r-in"><span><span class="va">topo</span> <span class="op">&lt;-</span> <span class="fu">read_attributes</span><span class="op">(</span></span></span>
@@ -166,6 +175,12 @@ function stops with an error.</p>
 <span class="r-in"><span><span class="va">clim</span> <span class="op">&lt;-</span> <span class="fu">read_attributes</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"climatic"</span>,</span></span>
 <span class="r-in"><span>  gauge_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PE_212900"</span>, <span class="st">"PE_200907"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  path <span class="op">=</span> <span class="va">path</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Read signatures computed from simulated streamflow</span></span></span>
+<span class="r-in"><span><span class="va">hyd_sim</span> <span class="op">&lt;-</span> <span class="fu">read_attributes</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"hydrological_sim"</span>,</span></span>
 <span class="r-in"><span>  path <span class="op">=</span> <span class="va">path</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -188,7 +203,7 @@ function stops with an error.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

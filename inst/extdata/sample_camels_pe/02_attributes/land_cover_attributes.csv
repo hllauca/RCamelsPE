@@ -1,0 +1,3 @@
+gauge_id,forest_perc,agricul_perc,non_forest_perc,non_veget_perc,water_perc,non_identi_perc,glacier_perc,water_body_perc,land_dominant_class
+PE_212900,5.046,7.148,68.347,18.617,0.842,0,0.402,0.44,non_forest
+PE_200907,22.496,49.696,24.011,3.554,0.243,0,0,0.243,agricul

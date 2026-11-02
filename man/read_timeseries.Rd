@@ -24,8 +24,9 @@ catchment files from \code{03_timeseries/by_catchment/}. Default is
 
 \item{vars}{Character vector or \code{NULL}. Optional variable names to keep
 in the returned table. If \code{NULL}, all available variables are returned.
-Use \code{read_dictionary(category = "timeseries")} to inspect available
-variables.}
+Only the requested columns are read from disk, which speeds up reading
+the global file. Use \code{read_dictionary(category = "timeseries")} to
+inspect available variables.}
 
 \item{path}{Character string. Optional path to the CAMELS-PE root directory.
 If not provided, the path set by \code{set_camels_path()} is used.}
@@ -53,22 +54,33 @@ The dataset must be available in a local directory previously defined with
 \code{set_camels_path()}, or supplied directly through the \code{path}
 argument.
 
-Available variables typically include:
+Available variables include:
 
 \itemize{
 \item \code{"date"}: date of observation.
-\item \code{"gauge_id"}: catchment identifier.
-\item \code{"prec"}: precipitation (mm/day).
-\item \code{"prec_var"}: precipitation variability or variance
-(mm2/day2).
-\item \code{"flow_obs"}: observed streamflow (mm/day).
-\item \code{"flow_sim"}: simulated streamflow (mm/day).
-\item \code{"tmean"}: mean air temperature (degrees C).
-\item \code{"tmax"}: maximum air temperature (degrees C).
-\item \code{"tmin"}: minimum air temperature (degrees C).
-\item \code{"pet"}: potential evapotranspiration (mm/day).
+\item \code{"gauge_id"}: catchment identifier (global file only; added
+from the file name in by-catchment mode).
+\item \code{"prec_pisco"}, \code{"prec_chirps"}, \code{"prec_era5land"}:
+precipitation from PISCOp, CHIRPS and ERA5-Land (mm/day).
+\item \code{"prec_sd_pisco"}: spatial standard deviation of PISCOp
+precipitation within the catchment (mm/day).
+\item \code{"pet_hs"}, \code{"pet_pt"}, \code{"pet_ou"}: potential
+evapotranspiration from Hargreaves-Samani, Priestley-Taylor and Oudin
+(mm/day).
+\item \code{"tmin"}, \code{"tmean"}, \code{"tmax"}: air temperature
+(degrees C).
 \item \code{"srad"}: solar radiation (MJ/m2/day).
 \item \code{"vprp"}: vapor pressure (hPa).
+\item \code{"flow_obs"}, \code{"flow_obs_m3s"}: observed streamflow after
+quality control (mm/day and m3/s).
+\item \code{"flow_obs_raw"}: observed streamflow before quality control
+(mm/day).
+\item \code{"flow_obs_flag"}: quality-control flag (1 = pass,
+3 = suspect, 4 = fail, 9 = missing).
+\item \code{"flow_obs_qc_test"}: quality-control test that raised the
+flag.
+\item \code{"flow_sim"}, \code{"flow_sim_m3s"}: simulated streamflow
+(mm/day and m3/s).
 }
 
 Available variables may differ depending on the CAMELS-PE dataset version.
@@ -106,7 +118,7 @@ ts1 <- read_timeseries(
 # Read selected variables for multiple catchments
 ts2 <- read_timeseries(
   gauge_id = c("PE_212900", "PE_200907"),
-  vars = c("date", "gauge_id", "prec", "flow_obs"),
+  vars = c("date", "gauge_id", "prec_pisco", "flow_obs", "flow_obs_flag"),
   path = path
 )
 

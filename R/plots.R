@@ -38,7 +38,7 @@
 #'   vars = c(
 #'     "date",
 #'     "gauge_id",
-#'     "prec",
+#'     "prec_pisco",
 #'     "flow_obs",
 #'     "flow_sim",
 #'     "tmean"
@@ -47,7 +47,7 @@
 #' )
 #'
 #' plot_timeseries(ts, variable = "flow_obs")
-#' plot_timeseries(ts, variable = "prec", linewidth = 0.4)
+#' plot_timeseries(ts, variable = "prec_pisco", linewidth = 0.4)
 #' plot_timeseries(ts, variable = "flow_obs", facet = FALSE)
 #' plot_timeseries(ts, variable = "flow_obs", gauge_id = "PE_212900")
 #' @export

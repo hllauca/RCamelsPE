@@ -1,0 +1,3 @@
+gauge_id,q_mean,runoff_ratio,stream_elas,baseflow_index,slope_fdc,hfd_mean,Q5,Q95,high_q_freq,high_q_dur,low_q_freq,low_q_dur,zero_q_freq,q_sim_years,q_sim_start,q_sim_end
+PE_212900,0.639,0.513,1.371,0.595,6.206,189.795,0.03,2.638,79.432,24.964,182.386,75.708,0,44,1981-09-01,2025-08-31
+PE_200907,1.316,0.541,1.027,0.616,3.263,193.864,0.156,4.24,3.273,4.8,62.705,14.754,0.019,44,1981-09-01,2025-08-31

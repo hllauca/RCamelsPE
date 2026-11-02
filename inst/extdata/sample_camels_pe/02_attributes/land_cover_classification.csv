@@ -1,0 +1,30 @@
+mapbiomas_id,class,class_code,subclass,subclass_code
+3,Forest formation,forest,Forest Formation,forest_formation
+4,Forest formation,forest,Dry forest,dry_forest
+5,Forest formation,forest,Mangrove,mangrove
+6,Forest formation,forest,Flooded forest,flooded_forest
+9,Agricultural area,agricul,Planted forest,planted_forest
+15,Agricultural area,agricul,Pasture,pasture
+21,Agricultural area,agricul,Mosaic of agriculture and pasture,mosaic_agri_pasture
+35,Agricultural area,agricul,Oil palm,oil_palm
+40,Agricultural area,agricul,Rice,rice
+72,Agricultural area,agricul,Other crops,other_crops
+12,Natural non-forest formation,non_forest,Grassland / Herbaceous,grassland_herbaceous
+13,Natural non-forest formation,non_forest,Other non-forest formation,other_non_forest
+29,Natural non-forest formation,non_forest,Rock outcrop,rock_outcrop
+66,Natural non-forest formation,non_forest,Scrubland,scrubland
+11,Natural non-forest formation,non_forest,Swamp or flooded Grassland,swamp_flooded_grassland
+70,Natural non-forest formation,non_forest,Fog oasis,fog_oasis
+81,Natural non-forest formation,non_forest,Andean herbs and shrubs,andean_herbs_shrubs
+82,Natural non-forest formation,non_forest,Flooded Andean herbs,flooded_andean_herbs
+23,Non-vegetated area,non_veget,Beach,beach
+24,Non-vegetated area,non_veget,Urban infrastructure,urban
+25,Non-vegetated area,non_veget,Other non vegetated area,other_non_veget
+30,Non-vegetated area,non_veget,Mining,mining
+61,Non-vegetated area,non_veget,Salt flat,salt_flat
+68,Non-vegetated area,non_veget,Other natural non vegetated area,other_natural_non_veget
+75,Non-vegetated area,non_veget,Solar parks,solar_parks
+31,Water body,water,Aquaculture,aquaculture
+33,Water body,water,"River, lake or ocean",river_lake_ocean
+34,Water body,water,Glacier,glacier
+27,Not observed,non_identi,Not observed,not_observed

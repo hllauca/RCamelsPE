@@ -51,7 +51,8 @@ read_metadata <- function(path = get_camels_path()) {
 
   data <- readr::read_csv(
     file,
-    show_col_types = FALSE
+    show_col_types = FALSE,
+    num_threads = 1
   )
 
   if (!"gauge_id" %in% names(data)) {

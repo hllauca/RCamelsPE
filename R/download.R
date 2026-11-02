@@ -4,7 +4,11 @@
 #'
 #' @param path Character. Directory where the dataset will be stored. This
 #'   argument is required. In examples, use \code{tempdir()}.
-#' @param version Character. Dataset version. Default is \code{"1.0"}.
+#' @param version Character. Dataset version: \code{"2.0"} (default, latest),
+#'   \code{"1.0.1"} or \code{"1.0"}. The reading functions of this package
+#'   are designed for version 2.0; earlier versions are available only for
+#'   reproducibility of previous studies and have a different file
+#'   structure and variable names.
 #' @param unzip Logical. If \code{TRUE}, the downloaded ZIP file is
 #'   automatically extracted.
 #' @param overwrite Logical. If \code{TRUE}, existing ZIP files will be
@@ -16,9 +20,15 @@
 #'
 #' @details
 #' The CAMELS-PE dataset is distributed separately from the package through
-#' Zenodo:
+#' Zenodo. The concept DOI \doi{10.5281/zenodo.20058778} refers to all
+#' versions and resolves to the latest one. The DOIs of the individual
+#' versions are:
 #'
-#' \doi{10.5281/zenodo.20058779}
+#' \itemize{
+#'   \item v2.0: \doi{10.5281/zenodo.23890227}
+#'   \item v1.0.1: \doi{10.5281/zenodo.21195425}
+#'   \item v1.0: \doi{10.5281/zenodo.20058779}
+#' }
 #'
 #' @examples
 #' \dontrun{
@@ -30,7 +40,7 @@
 #'
 #' @export
 download_camels_pe <- function(path,
-                               version = "1.0",
+                               version = "2.0",
                                unzip = TRUE,
                                overwrite = FALSE,
                                set_path = TRUE) {
@@ -56,22 +66,26 @@ download_camels_pe <- function(path,
     mustWork = TRUE
   )
 
-  urls <- c(
-    "1.0" = paste0(
-      "https://zenodo.org/records/20058779/files/",
-      "CAMELS-PE_v1.0.zip?download=1"
-    )
+  # Zenodo record of each version
+  records <- c(
+    "2.0" = "23890227",
+    "1.0.1" = "21195425",
+    "1.0" = "20058779"
   )
 
-  if (!version %in% names(urls)) {
+  if (!is.character(version) || length(version) != 1L ||
+      !version %in% names(records)) {
     stop(
       "Unsupported CAMELS-PE version. Available versions: ",
-      paste(names(urls), collapse = ", "),
+      paste(names(records), collapse = ", "),
       call. = FALSE
     )
   }
 
-  url <- urls[[version]]
+  url <- paste0(
+    "https://zenodo.org/records/", records[[version]],
+    "/files/CAMELS-PE_v", version, ".zip?download=1"
+  )
 
   zip_file <- file.path(
     path,

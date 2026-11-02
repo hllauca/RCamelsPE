@@ -14,18 +14,27 @@
 #' \itemize{
 #'   \item \code{"topographic"}: topographic and physiographic attributes.
 #'   \item \code{"climatic"}: climatic indices and long-term climate descriptors.
-#'   \item \code{"hydrological"}: hydrological signatures.
-#'   \item \code{"landcover"}: land-cover attributes.
+#'   \item \code{"hydrological"}: hydrological signatures computed from
+#'   observed streamflow.
+#'   \item \code{"hydrological_sim"}: hydrological signatures computed from
+#'   simulated streamflow.
+#'   \item \code{"land_cover"}: land-cover attributes (reference year 2024).
 #'   \item \code{"geologic"}: geological attributes.
 #'   \item \code{"soil"}: soil attributes.
 #'   \item \code{"human_intervention"}: human intervention and regulation attributes.
-#'   \item \code{"all"}: all available attribute groups joined by \code{gauge_id}.
+#'   \item \code{"all"}: all available attribute groups joined by \code{gauge_id},
+#'   except \code{"hydrological_sim"}, whose column names are the same as
+#'   those of \code{"hydrological"}.
 #' }
+#'
+#' The annual land-cover series (1985-2024) are read with
+#' \code{read_land_cover()}.
 #'
 #' @param type Character string. Attribute group to read. One of
 #'   \code{"topographic"}, \code{"climatic"}, \code{"hydrological"},
-#'   \code{"landcover"}, \code{"geologic"}, \code{"soil"},
-#'   \code{"human_intervention"}, or \code{"all"}. Default is \code{"all"}.
+#'   \code{"hydrological_sim"}, \code{"land_cover"}, \code{"geologic"},
+#'   \code{"soil"}, \code{"human_intervention"}, or \code{"all"}. Default is
+#'   \code{"all"}.
 #' @param gauge_id Character vector or \code{NULL}. Optional gauge identifiers
 #'   used to filter the returned attributes, for example \code{"PE_212900"} or
 #'   \code{c("PE_212900", "PE_200907")}. If \code{NULL}, all available catchments
@@ -52,7 +61,8 @@
 #'   \item \code{topographic_attributes.csv}
 #'   \item \code{climatic_indices.csv}
 #'   \item \code{hydrological_signatures.csv}
-#'   \item \code{landcover_attributes.csv}
+#'   \item \code{hydrological_signatures_sim.csv}
+#'   \item \code{land_cover_attributes.csv}
 #'   \item \code{geologic_attributes.csv}
 #'   \item \code{soil_attributes.csv}
 #'   \item \code{human_intervention_attributes.csv}
@@ -86,6 +96,12 @@
 #'   path = path
 #' )
 #'
+#' # Read signatures computed from simulated streamflow
+#' hyd_sim <- read_attributes(
+#'   type = "hydrological_sim",
+#'   path = path
+#' )
+#'
 #' # Read all available attribute groups
 #' attr_all <- read_attributes(
 #'   type = "all",
@@ -100,7 +116,8 @@ read_attributes <- function(type = "all",
     topographic = "topographic_attributes.csv",
     climatic = "climatic_indices.csv",
     hydrological = "hydrological_signatures.csv",
-    landcover = "landcover_attributes.csv",
+    hydrological_sim = "hydrological_signatures_sim.csv",
+    land_cover = "land_cover_attributes.csv",
     geologic = "geologic_attributes.csv",
     soil = "soil_attributes.csv",
     human_intervention = "human_intervention_attributes.csv"
@@ -118,7 +135,10 @@ read_attributes <- function(type = "all",
 
   if (type == "all") {
 
-    data_list <- lapply(names(files), function(attribute_type) {
+    # Simulated signatures share column names with the observed ones
+    all_types <- setdiff(names(files), "hydrological_sim")
+
+    data_list <- lapply(all_types, function(attribute_type) {
       file <- file.path(attr_path, files[[attribute_type]])
 
       if (!file.exists(file)) {
@@ -130,7 +150,7 @@ read_attributes <- function(type = "all",
         return(NULL)
       }
 
-      data <- readr::read_csv(file, show_col_types = FALSE)
+      data <- readr::read_csv(file, show_col_types = FALSE, num_threads = 1)
 
       if (!"gauge_id" %in% names(data)) {
         stop(
@@ -161,7 +181,7 @@ read_attributes <- function(type = "all",
       stop("Attribute file not found: ", files[[type]], call. = FALSE)
     }
 
-    data <- readr::read_csv(file, show_col_types = FALSE)
+    data <- readr::read_csv(file, show_col_types = FALSE, num_threads = 1)
 
     if (!"gauge_id" %in% names(data)) {
       stop(
@@ -173,7 +193,7 @@ read_attributes <- function(type = "all",
   }
 
   if (!is.null(gauge_id)) {
-    data <- dplyr::filter(data, .data$gauge_id %in% gauge_id)
+    data <- dplyr::filter(data, .data$gauge_id %in% .env$gauge_id)
   }
 
   data

@@ -15,7 +15,7 @@ read_dictionary(
 \item{category}{Character vector or \code{NULL}. Optional category
 filter. Examples include \code{"metadata"},
 \code{"topographic"}, \code{"climatic"},
-\code{"hydrological"}, \code{"landcover"},
+\code{"hydrological"}, \code{"land_cover"},
 \code{"geologic"}, \code{"soil"},
 \code{"human_intervention"}, \code{"timeseries"},
 and \code{"geospatial"}.}

@@ -15,7 +15,10 @@ applications.
 The `RCamelsPE` package does not include the CAMELS-PE dataset.
 
 Dataset files can be downloaded separately from Zenodo using
-`download_camels_pe()` or manually from: https://doi.org/10.5281/zenodo.20058779
+`download_camels_pe()` or manually from: https://doi.org/10.5281/zenodo.20058778
+(concept DOI, always resolves to the latest version).
+
+This version of the package is designed for CAMELS-PE v2.0.
 
 The dataset must be stored locally before using the package.
 
@@ -25,6 +28,7 @@ The dataset must be stored locally before using the package.
 
 -   Efficient reading of time series by catchment
 -   Access to metadata and catchment attributes
+-   Annual land-cover series by class and subclass (1985-2024)
 -   Access to data dictionaries and variable descriptions
 -   Integration with geospatial data (gauges and catchments)
 -   Time series visualization
@@ -70,7 +74,11 @@ CAMELS-PE/
 │   ├── topographic_attributes.csv
 │   ├── climatic_indices.csv
 │   ├── hydrological_signatures.csv
-│   ├── landcover_attributes.csv
+│   ├── hydrological_signatures_sim.csv
+│   ├── land_cover_attributes.csv
+│   ├── land_cover_class_annual.csv
+│   ├── land_cover_subclass_annual.csv
+│   ├── land_cover_classification.csv
 │   ├── geologic_attributes.csv
 │   ├── soil_attributes.csv
 │   └── human_intervention_attributes.csv
@@ -121,7 +129,7 @@ stations <- read_metadata(path = path)
 # Read time series
 ts <- read_timeseries(
   gauge_id = "PE_212900",
-  vars = c("date", "flow_obs", "prec"),
+  vars = c("date", "flow_obs", "prec_pisco"),
   path = path
 )
 
@@ -130,6 +138,16 @@ plot_timeseries(
   ts,
   variable = "flow_obs"
 )
+
+# Annual land-cover subclasses (1985-2024)
+lc <- read_land_cover(
+  level = "subclass",
+  gauge_id = "PE_212900",
+  format = "long",
+  path = path
+)
+
+plot_land_cover(lc, min_perc = 1)
 ```
 
 ------------------------------------------------------------------------
@@ -164,8 +182,8 @@ If you use CAMELS-PE or the RCamelsPE package, please cite:
 
 Llauca, H., Montesinos-Caceres, C., Gutierrez-Reynaga, M., &
 Lavado-Casimiro, W. (2026). *CAMELS-PE: Catchment Attributes and
-Meteorology for Large-sample Studies in Peru* (Version 1.0) [Dataset].
-Zenodo. <https://doi.org/10.5281/zenodo.20058778>
+Meteorology for Large-sample Studies in Peru* (Version 2.0) [Dataset].
+Zenodo. <https://doi.org/10.5281/zenodo.23890227>
 
 ### RCamelsPE package
 

@@ -18,7 +18,7 @@ function supports two reading modes:"><!-- mathjax --><script src="https://cdnjs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCamelsPE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -94,8 +94,9 @@ catchment files from <code>03_timeseries/by_catchment/</code>. Default is
 <dt id="arg-vars">vars<a class="anchor" aria-label="anchor" href="#arg-vars"></a></dt>
 <dd><p>Character vector or <code>NULL</code>. Optional variable names to keep
 in the returned table. If <code>NULL</code>, all available variables are returned.
-Use <code>read_dictionary(category = "timeseries")</code> to inspect available
-variables.</p></dd>
+Only the requested columns are read from disk, which speeds up reading
+the global file. Use <code>read_dictionary(category = "timeseries")</code> to
+inspect available variables.</p></dd>
 
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
@@ -121,20 +122,31 @@ mode for large datasets because only the requested catchments are loaded.</p></l
 </ul><p>The dataset must be available in a local directory previously defined with
 <code><a href="set_camels_path.html">set_camels_path()</a></code>, or supplied directly through the <code>path</code>
 argument.</p>
-<p>Available variables typically include:</p>
+<p>Available variables include:</p>
 <ul><li><p><code>"date"</code>: date of observation.</p></li>
-<li><p><code>"gauge_id"</code>: catchment identifier.</p></li>
-<li><p><code>"prec"</code>: precipitation (mm/day).</p></li>
-<li><p><code>"prec_var"</code>: precipitation variability or variance
-(mm2/day2).</p></li>
-<li><p><code>"flow_obs"</code>: observed streamflow (mm/day).</p></li>
-<li><p><code>"flow_sim"</code>: simulated streamflow (mm/day).</p></li>
-<li><p><code>"tmean"</code>: mean air temperature (degrees C).</p></li>
-<li><p><code>"tmax"</code>: maximum air temperature (degrees C).</p></li>
-<li><p><code>"tmin"</code>: minimum air temperature (degrees C).</p></li>
-<li><p><code>"pet"</code>: potential evapotranspiration (mm/day).</p></li>
+<li><p><code>"gauge_id"</code>: catchment identifier (global file only; added
+from the file name in by-catchment mode).</p></li>
+<li><p><code>"prec_pisco"</code>, <code>"prec_chirps"</code>, <code>"prec_era5land"</code>:
+precipitation from PISCOp, CHIRPS and ERA5-Land (mm/day).</p></li>
+<li><p><code>"prec_sd_pisco"</code>: spatial standard deviation of PISCOp
+precipitation within the catchment (mm/day).</p></li>
+<li><p><code>"pet_hs"</code>, <code>"pet_pt"</code>, <code>"pet_ou"</code>: potential
+evapotranspiration from Hargreaves-Samani, Priestley-Taylor and Oudin
+(mm/day).</p></li>
+<li><p><code>"tmin"</code>, <code>"tmean"</code>, <code>"tmax"</code>: air temperature
+(degrees C).</p></li>
 <li><p><code>"srad"</code>: solar radiation (MJ/m2/day).</p></li>
 <li><p><code>"vprp"</code>: vapor pressure (hPa).</p></li>
+<li><p><code>"flow_obs"</code>, <code>"flow_obs_m3s"</code>: observed streamflow after
+quality control (mm/day and m3/s).</p></li>
+<li><p><code>"flow_obs_raw"</code>: observed streamflow before quality control
+(mm/day).</p></li>
+<li><p><code>"flow_obs_flag"</code>: quality-control flag (1 = pass,
+3 = suspect, 4 = fail, 9 = missing).</p></li>
+<li><p><code>"flow_obs_qc_test"</code>: quality-control test that raised the
+flag.</p></li>
+<li><p><code>"flow_sim"</code>, <code>"flow_sim_m3s"</code>: simulated streamflow
+(mm/day and m3/s).</p></li>
 </ul><p>Available variables may differ depending on the CAMELS-PE dataset version.
 Use <code>read_dictionary(category = "timeseries")</code> to inspect the complete
 list of available variables, descriptions, units, and data sources.</p>
@@ -160,21 +172,20 @@ stops with an error.</p>
 <span class="r-in"><span>  category <span class="op">=</span> <span class="st">"timeseries"</span>,</span></span>
 <span class="r-in"><span>  path <span class="op">=</span> <span class="va">path</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    folder        file           category   variable description     unit  source</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 03_timeseries timeseries.csv timeseries date     Date (YYYY-MM-… <span style="color: #BB0000;">NA</span>    Deriv…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 03_timeseries timeseries.csv timeseries gauge_id Unique gauge i… <span style="color: #BB0000;">NA</span>    SENAM…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 03_timeseries timeseries.csv timeseries prec     Daily precipit… mm/d… PISCO…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 03_timeseries timeseries.csv timeseries prec_var Precipitation … mm2/… PISCO…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 03_timeseries timeseries.csv timeseries flow_obs Observed strea… mm/d… Obser…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 03_timeseries timeseries.csv timeseries flow_sim Simulated stre… mm/d… PISCO…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 03_timeseries timeseries.csv timeseries pet      Potential evap… mm/d… PISCO…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 03_timeseries timeseries.csv timeseries tmin     Minimum air te… degC  PISCO…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 03_timeseries timeseries.csv timeseries tmean    Mean air tempe… degC  PISCO…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 03_timeseries timeseries.csv timeseries tmax     Maximum air te… degC  PISCO…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 03_timeseries timeseries.csv timeseries srad     Surface solar … MJ/m… ERA5-…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 03_timeseries timeseries.csv timeseries vprp     Vapor pressure  hPa   ERA5-…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 41 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    folder        file           category   variable     description unit  source</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 03_timeseries timeseries.csv timeseries date         Date. Prec… YYYY… -     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 03_timeseries timeseries.csv timeseries gauge_id     Unique gau… -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 03_timeseries timeseries.csv timeseries prec_pisco   Catchment … mm/d… PISCO…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 03_timeseries timeseries.csv timeseries prec_sd_pis… Spatial st… mm/d… PISCO…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 03_timeseries timeseries.csv timeseries prec_chirps  Catchment … mm/d… CHIRP…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 03_timeseries timeseries.csv timeseries prec_era5la… Catchment … mm/d… ERA5-…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 03_timeseries timeseries.csv timeseries pet_hs       Potential … mm/d… Hargr…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 03_timeseries timeseries.csv timeseries pet_pt       Potential … mm/d… PISCO…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 03_timeseries timeseries.csv timeseries pet_ou       Potential … mm/d… PISCO…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 03_timeseries timeseries.csv timeseries tmin         Catchment … degC  PISCO…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 31 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Read all variables for one catchment</span></span></span>
 <span class="r-in"><span><span class="va">ts1</span> <span class="op">&lt;-</span> <span class="fu">read_timeseries</span><span class="op">(</span></span></span>
@@ -185,7 +196,7 @@ stops with an error.</p>
 <span class="r-in"><span><span class="co"># Read selected variables for multiple catchments</span></span></span>
 <span class="r-in"><span><span class="va">ts2</span> <span class="op">&lt;-</span> <span class="fu">read_timeseries</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  gauge_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PE_212900"</span>, <span class="st">"PE_200907"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"gauge_id"</span>, <span class="st">"prec"</span>, <span class="st">"flow_obs"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"gauge_id"</span>, <span class="st">"prec_pisco"</span>, <span class="st">"flow_obs"</span>, <span class="st">"flow_obs_flag"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  path <span class="op">=</span> <span class="va">path</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -215,7 +226,7 @@ stops with an error.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

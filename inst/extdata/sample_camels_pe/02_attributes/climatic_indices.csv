@@ -1,3 +1,3 @@
-gauge_id,p_mean,pet_mean,aridity,p_seasonality,high_prec_freq,high_prec_dur,high_prec_timing,low_prec_freq,low_prec_dur,low_prec_timing
-PE_212900,1.573,3.479,2.211,0.938,14.694,1.791,DJF,238.806,14.621,JJA
-PE_200907,3.007,3.192,1.061,0.997,11.75,1.417,MAM,177.472,4.82,JJA
+gauge_id,p_mean,pet_mean_hs,aridity_hs,pet_mean_pt,pet_mean_ou,aridity_pt,aridity_ou,p_seasonality,high_prec_freq,high_prec_dur,high_prec_timing,low_prec_freq,low_prec_dur,low_prec_timing
+PE_212900,1.244,3.473,2.792,4.217,2.515,3.39,2.022,1.312,16.956,2.068,DJF,252.359,15.263,JJA
+PE_200907,2.437,3.603,1.479,4.027,3.133,1.652,1.286,0.714,11.667,1.601,MAM,192.603,5.36,JJA

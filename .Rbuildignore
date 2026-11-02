@@ -7,3 +7,4 @@
 ^\.positai$
 ^\.claude$
 ^cran-comments\.md$
+^inst/extdata/sample_camels_pe/04_geospatial/by_catchment$

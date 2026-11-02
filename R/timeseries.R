@@ -15,22 +15,33 @@
 #' \code{set_camels_path()}, or supplied directly through the \code{path}
 #' argument.
 #'
-#' Available variables typically include:
+#' Available variables include:
 #'
 #' \itemize{
 #'   \item \code{"date"}: date of observation.
-#'   \item \code{"gauge_id"}: catchment identifier.
-#'   \item \code{"prec"}: precipitation (mm/day).
-#'   \item \code{"prec_var"}: precipitation variability or variance
-#'   (mm2/day2).
-#'   \item \code{"flow_obs"}: observed streamflow (mm/day).
-#'   \item \code{"flow_sim"}: simulated streamflow (mm/day).
-#'   \item \code{"tmean"}: mean air temperature (degrees C).
-#'   \item \code{"tmax"}: maximum air temperature (degrees C).
-#'   \item \code{"tmin"}: minimum air temperature (degrees C).
-#'   \item \code{"pet"}: potential evapotranspiration (mm/day).
+#'   \item \code{"gauge_id"}: catchment identifier (global file only; added
+#'   from the file name in by-catchment mode).
+#'   \item \code{"prec_pisco"}, \code{"prec_chirps"}, \code{"prec_era5land"}:
+#'   precipitation from PISCOp, CHIRPS and ERA5-Land (mm/day).
+#'   \item \code{"prec_sd_pisco"}: spatial standard deviation of PISCOp
+#'   precipitation within the catchment (mm/day).
+#'   \item \code{"pet_hs"}, \code{"pet_pt"}, \code{"pet_ou"}: potential
+#'   evapotranspiration from Hargreaves-Samani, Priestley-Taylor and Oudin
+#'   (mm/day).
+#'   \item \code{"tmin"}, \code{"tmean"}, \code{"tmax"}: air temperature
+#'   (degrees C).
 #'   \item \code{"srad"}: solar radiation (MJ/m2/day).
 #'   \item \code{"vprp"}: vapor pressure (hPa).
+#'   \item \code{"flow_obs"}, \code{"flow_obs_m3s"}: observed streamflow after
+#'   quality control (mm/day and m3/s).
+#'   \item \code{"flow_obs_raw"}: observed streamflow before quality control
+#'   (mm/day).
+#'   \item \code{"flow_obs_flag"}: quality-control flag (1 = pass,
+#'   3 = suspect, 4 = fail, 9 = missing).
+#'   \item \code{"flow_obs_qc_test"}: quality-control test that raised the
+#'   flag.
+#'   \item \code{"flow_sim"}, \code{"flow_sim_m3s"}: simulated streamflow
+#'   (mm/day and m3/s).
 #' }
 #'
 #' Available variables may differ depending on the CAMELS-PE dataset version.
@@ -47,8 +58,9 @@
 #'   \code{FALSE}.
 #' @param vars Character vector or \code{NULL}. Optional variable names to keep
 #'   in the returned table. If \code{NULL}, all available variables are returned.
-#'   Use \code{read_dictionary(category = "timeseries")} to inspect available
-#'   variables.
+#'   Only the requested columns are read from disk, which speeds up reading
+#'   the global file. Use \code{read_dictionary(category = "timeseries")} to
+#'   inspect available variables.
 #' @param path Character string. Optional path to the CAMELS-PE root directory.
 #'   If not provided, the path set by \code{set_camels_path()} is used.
 #'
@@ -89,7 +101,7 @@
 #' # Read selected variables for multiple catchments
 #' ts2 <- read_timeseries(
 #'   gauge_id = c("PE_212900", "PE_200907"),
-#'   vars = c("date", "gauge_id", "prec", "flow_obs"),
+#'   vars = c("date", "gauge_id", "prec_pisco", "flow_obs", "flow_obs_flag"),
 #'   path = path
 #' )
 #'
@@ -127,10 +139,10 @@ read_timeseries <- function(gauge_id = NULL,
       stop("Global file 'timeseries.csv' not found.", call. = FALSE)
     }
 
-    data <- readr::read_csv(file, show_col_types = FALSE)
+    data <- read_ts_file(file, vars)
 
     if (!is.null(gauge_id)) {
-      data <- dplyr::filter(data, .data$gauge_id %in% gauge_id)
+      data <- dplyr::filter(data, .data$gauge_id %in% .env$gauge_id)
     }
 
   } else {
@@ -160,7 +172,7 @@ read_timeseries <- function(gauge_id = NULL,
 
     data <- dplyr::bind_rows(lapply(files, function(f) {
 
-      x <- readr::read_csv(f, show_col_types = FALSE)
+      x <- read_ts_file(f, vars, num_threads = 1)
 
       if (!"gauge_id" %in% names(x)) {
         x$gauge_id <- tools::file_path_sans_ext(basename(f))
@@ -192,4 +204,47 @@ read_timeseries <- function(gauge_id = NULL,
   }
 
   data
+}
+
+
+# Read one time series file with fixed column types. Columns that are almost
+# always NA (e.g. flow_obs_qc_test) would otherwise be guessed as logical.
+# Several threads only pay off for the large global file.
+read_ts_file <- function(file, vars = NULL,
+                         num_threads = readr::readr_threads()) {
+
+  header <- names(readr::read_csv(
+    file,
+    n_max = 0,
+    show_col_types = FALSE,
+    num_threads = 1
+  ))
+
+  types <- list(
+    date = readr::col_date(),
+    gauge_id = readr::col_character(),
+    flow_obs_flag = readr::col_integer(),
+    flow_obs_qc_test = readr::col_character()
+  )
+  types <- types[names(types) %in% header]
+
+  col_types <- do.call(
+    readr::cols,
+    c(types, list(.default = readr::col_double()))
+  )
+
+  # Keep date and gauge_id for filtering; the final selection is done later
+  keep <- header
+  if (!is.null(vars)) {
+    keep <- intersect(header, unique(c("date", "gauge_id", vars)))
+  }
+
+  readr::read_csv(
+    file,
+    col_types = col_types,
+    col_select = dplyr::all_of(keep),
+    show_col_types = FALSE,
+    progress = FALSE,
+    num_threads = num_threads
+  )
 }

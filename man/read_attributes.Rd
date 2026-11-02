@@ -9,8 +9,9 @@ read_attributes(type = "all", gauge_id = NULL, path = get_camels_path())
 \arguments{
 \item{type}{Character string. Attribute group to read. One of
 \code{"topographic"}, \code{"climatic"}, \code{"hydrological"},
-\code{"landcover"}, \code{"geologic"}, \code{"soil"},
-\code{"human_intervention"}, or \code{"all"}. Default is \code{"all"}.}
+\code{"hydrological_sim"}, \code{"land_cover"}, \code{"geologic"},
+\code{"soil"}, \code{"human_intervention"}, or \code{"all"}. Default is
+\code{"all"}.}
 
 \item{gauge_id}{Character vector or \code{NULL}. Optional gauge identifiers
 used to filter the returned attributes, for example \code{"PE_212900"} or
@@ -43,13 +44,21 @@ Available attribute groups are:
 \itemize{
 \item \code{"topographic"}: topographic and physiographic attributes.
 \item \code{"climatic"}: climatic indices and long-term climate descriptors.
-\item \code{"hydrological"}: hydrological signatures.
-\item \code{"landcover"}: land-cover attributes.
+\item \code{"hydrological"}: hydrological signatures computed from
+observed streamflow.
+\item \code{"hydrological_sim"}: hydrological signatures computed from
+simulated streamflow.
+\item \code{"land_cover"}: land-cover attributes (reference year 2024).
 \item \code{"geologic"}: geological attributes.
 \item \code{"soil"}: soil attributes.
 \item \code{"human_intervention"}: human intervention and regulation attributes.
-\item \code{"all"}: all available attribute groups joined by \code{gauge_id}.
+\item \code{"all"}: all available attribute groups joined by \code{gauge_id},
+except \code{"hydrological_sim"}, whose column names are the same as
+those of \code{"hydrological"}.
 }
+
+The annual land-cover series (1985-2024) are read with
+\code{read_land_cover()}.
 
 Attribute files are expected to be stored in \code{02_attributes/}. Each
 attribute file must contain a \code{gauge_id} column. When
@@ -63,7 +72,8 @@ Expected files are:
 \item \code{topographic_attributes.csv}
 \item \code{climatic_indices.csv}
 \item \code{hydrological_signatures.csv}
-\item \code{landcover_attributes.csv}
+\item \code{hydrological_signatures_sim.csv}
+\item \code{land_cover_attributes.csv}
 \item \code{geologic_attributes.csv}
 \item \code{soil_attributes.csv}
 \item \code{human_intervention_attributes.csv}
@@ -94,6 +104,12 @@ topo <- read_attributes(
 clim <- read_attributes(
   type = "climatic",
   gauge_id = c("PE_212900", "PE_200907"),
+  path = path
+)
+
+# Read signatures computed from simulated streamflow
+hyd_sim <- read_attributes(
+  type = "hydrological_sim",
   path = path
 )
 

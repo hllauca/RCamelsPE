@@ -19,7 +19,7 @@ and catchment boundaries. The data are stored as GeoPackage files in the
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCamelsPE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -111,11 +111,12 @@ geospatial layers, descriptions, and data sources.</p>
 <span class="r-in"><span>  category <span class="op">=</span> <span class="st">"geospatial"</span>,</span></span>
 <span class="r-in"><span>  path <span class="op">=</span> <span class="va">path</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   folder        file                  category variable description unit  source</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 04_geospatial camels_pe_gauges.gpkg geospat… gauges   Geospatial… <span style="color: #BB0000;">NA</span>    Deriv…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 04_geospatial camels_pe_catchments… geospat… catchme… Geospatial… <span style="color: #BB0000;">NA</span>    Deriv…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 04_geospatial camels_pe_gauges.gpkg geospat… gauges   Gauge loca… -     SENAM…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 04_geospatial camels_pe_catchments… geospat… catchme… Catchment … -     SRTM …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 04_geospatial by_catchment/PE_xxxx… geospat… PE_xxxx… Gauge loca… -     Deriv…</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Read gauges</span></span></span>
 <span class="r-in"><span><span class="va">gauges</span> <span class="op">&lt;-</span> <span class="fu">read_geospatial</span><span class="op">(</span></span></span>
@@ -147,7 +148,7 @@ geospatial layers, descriptions, and data sources.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

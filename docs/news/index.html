@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCamelsPE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -58,6 +58,32 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="1.1.0" id="rcamelspe-110">RCamelsPE 1.1.0<a class="anchor" aria-label="anchor" href="#rcamelspe-110"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h3>
+<ul><li>
+<code><a href="../reference/read_land_cover.html">read_land_cover()</a></code> reads the annual land-cover series (1985-2024) at the class or subclass level, in wide or long format.</li>
+<li>
+<code><a href="../reference/read_land_cover_legend.html">read_land_cover_legend()</a></code> reads the land-cover legend (MapBiomas code, subclass and class).</li>
+<li>
+<code><a href="../reference/plot_land_cover.html">plot_land_cover()</a></code> plots the annual land-cover series as stacked areas.</li>
+<li>
+<code>read_attributes(type = "hydrological_sim")</code> reads the hydrological signatures computed from simulated streamflow.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-1-1-0">Changes<a class="anchor" aria-label="anchor" href="#changes-1-1-0"></a></h3>
+<ul><li>The package now works with CAMELS-PE v2.0 (<a href="doi:10.5281/zenodo.23890227" class="uri">doi:10.5281/zenodo.23890227</a>). <code><a href="../reference/download_camels_pe.html">download_camels_pe()</a></code> downloads v2.0 by default; versions 1.0.1 and 1.0 remain available through the <code>version</code> argument.</li>
+<li>References to the dataset use the Zenodo concept DOI (<a href="doi:10.5281/zenodo.20058778" class="uri">doi:10.5281/zenodo.20058778</a>), which resolves to the latest version.</li>
+<li>Documentation updated to the new CAMELS-PE variable names (e.g. <code>prec_pisco</code>, <code>prec_sd_pisco</code>, <code>pet_hs</code>, <code>flow_obs_flag</code>, <code>flow_sim_m3s</code>).</li>
+<li>
+<code><a href="../reference/read_timeseries.html">read_timeseries()</a></code> reads columns with fixed types, so the quality-control columns (<code>flow_obs_flag</code>, <code>flow_obs_qc_test</code>) are always read correctly, and only reads the columns requested in <code>vars</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-1-0"></a></h3>
+<ul><li>The <code>gauge_id</code> filter of <code>read_timeseries(global = TRUE)</code> and <code><a href="../reference/read_attributes.html">read_attributes()</a></code> returned all catchments.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="rcamelspe-100">RCamelsPE 1.0.0<a class="anchor" aria-label="anchor" href="#rcamelspe-100"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
@@ -81,7 +107,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>
