@@ -1,3 +1,3 @@
-gauge_id,inceptisols_perc,entisols_perc,alfisols_perc,ultisols_perc,aridisols_perc,gelisols_perc,oxisols_perc,mollisols_perc,vertisols_perc,soil_dominant_class
-PE_212900,66.18,30.24,3.01,0.29,0.18,0.07,0.04,0,0,inceptisols
-PE_200907,25.75,5.31,6.33,61.08,0,0.03,1.45,0,0.05,ultisols
+gauge_id,inceptisols_perc,entisols_perc,alfisols_perc,ultisols_perc,aridisols_perc,gelisols_perc,oxisols_perc,mollisols_perc,vertisols_perc,soil_dominant_class,soil_suborder_dominant_class,soil_suborder_dominant_perc,soil_great_group_dominant_class,soil_great_group_dominant_perc,soil_texture_h1_dominant_class,soil_texture_h1_dominant_perc,soil_texture_h2_dominant_class,soil_texture_h2_dominant_perc,soil_texture_h3_dominant_class,soil_texture_h3_dominant_perc
+PE_212900,66.18,30.24,3.01,0.29,0.18,0.07,0.04,0,0,inceptisols,ochrepts,66.18,cryochrepts,66.18,loam,66.37,loam,67.44,loam,64.4
+PE_200907,25.75,5.31,6.33,61.08,0,0.03,1.45,0,0.05,ultisols,udults,61.07,tropudults,58.77,clay_loam,60.36,clay_loam,63.16,clay_loam,69.35

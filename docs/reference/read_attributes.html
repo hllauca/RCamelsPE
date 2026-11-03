@@ -117,13 +117,15 @@ observed streamflow.</p></li>
 simulated streamflow.</p></li>
 <li><p><code>"land_cover"</code>: land-cover attributes (reference year 2024).</p></li>
 <li><p><code>"geologic"</code>: geological attributes.</p></li>
-<li><p><code>"soil"</code>: soil attributes.</p></li>
+<li><p><code>"soil"</code>: soil attributes (percentage of each soil order, and
+dominant order, suborder, great group and texture of three horizons).</p></li>
 <li><p><code>"human_intervention"</code>: human intervention and regulation attributes.</p></li>
 <li><p><code>"all"</code>: all available attribute groups joined by <code>gauge_id</code>,
 except <code>"hydrological_sim"</code>, whose column names are the same as
 those of <code>"hydrological"</code>.</p></li>
 </ul><p>The annual land-cover series (1985-2024) are read with
-<code><a href="read_land_cover.html">read_land_cover()</a></code>.</p>
+<code><a href="read_land_cover.html">read_land_cover()</a></code>, and the percentages of all soil suborders, great
+groups and horizon texture classes with <code><a href="read_soil_classes.html">read_soil_classes()</a></code>.</p>
 <p>Attribute files are expected to be stored in <code>02_attributes/</code>. Each
 attribute file must contain a <code>gauge_id</code> column. When
 <code>type = "all"</code>, missing attribute files are skipped with a warning and

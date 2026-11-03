@@ -154,7 +154,7 @@ this path:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/set_camels_path.html">set_camels_path</a></span><span class="op">(</span><span class="va">camels_path</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_camels_path.html">get_camels_path</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "C:/Users/hllauca/AppData/Local/Temp/RtmpYLDDoS/temp_libpath5dd4230a2d9e/RCamelsPE/extdata/sample_camels_pe"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "C:/Users/hllauca/AppData/Local/Temp/RtmpEPHALG/temp_libpath875072166d2/RCamelsPE/extdata/sample_camels_pe"</span></span></code></pre></div>
 <p>The dataset is organized in four folders:</p>
 <pre class="text"><code>CAMELS-PE/
 ├── 01_metadata/      stations.csv, data_dictionary.csv
@@ -177,7 +177,7 @@ best starting point to find a variable.</p>
 <span><span class="co">#&gt;           climatic           geologic         geospatial human_intervention </span></span>
 <span><span class="co">#&gt;                 15                 24                  3                 17 </span></span>
 <span><span class="co">#&gt;       hydrological         land_cover           metadata               soil </span></span>
-<span><span class="co">#&gt;                 35                 55                 18                 11 </span></span>
+<span><span class="co">#&gt;                 35                 55                 18                 30 </span></span>
 <span><span class="co">#&gt;         timeseries        topographic </span></span>
 <span><span class="co">#&gt;                 41                  8</span></span></code></pre></div>
 <p>Filter by category, variable or file:</p>
@@ -449,16 +449,60 @@ separately
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_2009… vi                            42.0 py                            38.1</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: carbonate_rocks_perc &lt;dbl&gt;, geol_porosity &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   geol_permeability &lt;dbl&gt;</span></span></span></code></pre></div>
+<p>Soil attributes (DSOLMap, USDA Soil Taxonomy) give the percentage of
+each soil order and the dominant order, suborder, great group and
+texture class of each of the three horizons (<code>h1</code> shallowest,
+<code>h3</code> deepest):</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_attributes.html">read_attributes</a></span><span class="op">(</span><span class="st">"soil"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 11</span></span></span>
-<span><span class="co">#&gt;   gauge_id  inceptisols_perc entisols_perc alfisols_perc ultisols_perc</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900             66.2         30.2           3.01          0.29</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907             25.8          5.31          6.33         61.1 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6 more variables: aridisols_perc &lt;dbl&gt;, gelisols_perc &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   oxisols_perc &lt;dbl&gt;, mollisols_perc &lt;dbl&gt;, vertisols_perc &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   soil_dominant_class &lt;chr&gt;</span></span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">soil</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_attributes.html">read_attributes</a></span><span class="op">(</span><span class="st">"soil"</span><span class="op">)</span></span>
+<span><span class="va">soil</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gauge_id"</span>, <span class="st">"soil_dominant_class"</span>, <span class="st">"soil_suborder_dominant_class"</span>,</span>
+<span>         <span class="st">"soil_great_group_dominant_class"</span>, <span class="st">"soil_texture_h1_dominant_class"</span>,</span>
+<span>         <span class="st">"soil_texture_h3_dominant_class"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
+<span><span class="co">#&gt;   gauge_id  soil_dominant_class soil_suborder_dominant_…¹ soil_great_group_dom…²</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900 inceptisols         ochrepts                  cryochrepts           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907 ultisols            udults                    tropudults            </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ abbreviated names: ¹​soil_suborder_dominant_class,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​soil_great_group_dominant_class</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: soil_texture_h1_dominant_class &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   soil_texture_h3_dominant_class &lt;chr&gt;</span></span></span></code></pre></div>
+<p>The percentages of all suborders, great groups and horizon texture
+classes are read with <code><a href="../reference/read_soil_classes.html">read_soil_classes()</a></code>, which adds the
+names, order and suborder from the legend
+(<code><a href="../reference/read_soil_legend.html">read_soil_legend()</a></code>):</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sub</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_soil_classes.html">read_soil_classes</a></span><span class="op">(</span>level <span class="op">=</span> <span class="st">"suborder"</span><span class="op">)</span></span>
+<span><span class="va">sub</span><span class="op">[</span><span class="va">sub</span><span class="op">$</span><span class="va">perc</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 22 × 7</span></span></span>
+<span><span class="co">#&gt;    gauge_id  level    class     name      order       suborder  perc</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> PE_212900 suborder udalfs    Udalfs    Alfisols    <span style="color: #BB0000;">NA</span>        1.55</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> PE_212900 suborder ustalfs   Ustalfs   Alfisols    <span style="color: #BB0000;">NA</span>        1.46</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> PE_212900 suborder argids    Argids    Aridisols   <span style="color: #BB0000;">NA</span>        0.18</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> PE_212900 suborder fluvents  Fluvents  Entisols    <span style="color: #BB0000;">NA</span>        8.82</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> PE_212900 suborder orthents  Orthents  Entisols    <span style="color: #BB0000;">NA</span>        1.27</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> PE_212900 suborder psamments Psamments Entisols    <span style="color: #BB0000;">NA</span>       20.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> PE_212900 suborder orthels   Orthels   Gelisols    <span style="color: #BB0000;">NA</span>        0.07</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> PE_212900 suborder ochrepts  Ochrepts  Inceptisols <span style="color: #BB0000;">NA</span>       66.2 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> PE_212900 suborder orthox    Orthox    Oxisols     <span style="color: #BB0000;">NA</span>        0.02</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> PE_212900 suborder ustox     Ustox     Oxisols     <span style="color: #BB0000;">NA</span>        0.02</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 12 more rows</span></span></span></code></pre></div>
+<p>With <code>format = "wide"</code>, one level is returned with one
+column per class, for example the texture of the shallowest horizon:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_soil_classes.html">read_soil_classes</a></span><span class="op">(</span>level <span class="op">=</span> <span class="st">"texture_h1"</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 13</span></span></span>
+<span><span class="co">#&gt;   gauge_id  sand_perc loamy_sand_perc sandy_loam_perc loam_perc silt_loam_perc</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900         0               0           24.9       66.4              0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907         0               0            5.47      29.2              0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7 more variables: silt_perc &lt;dbl&gt;, sandy_clay_loam_perc &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   clay_loam_perc &lt;dbl&gt;, silty_clay_loam_perc &lt;dbl&gt;, sandy_clay_perc &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   silty_clay_perc &lt;dbl&gt;, clay_perc &lt;dbl&gt;</span></span></span></code></pre></div>
+<p>The suborders and great groups follow the DSOLMap legend, which uses
+names of the USDA Soil Taxonomy prior to 1999 (e.g. Ochrepts); the
+source does not give the depth of the horizons.</p>
 </div>
 <div class="section level3">
 <h3 id="human-intervention">Human intervention<a class="anchor" aria-label="anchor" href="#human-intervention"></a>
@@ -466,7 +510,7 @@ separately
 <p>Human intervention attributes describe accredited water availability
 (ADH, surface water and groundwater), reservoirs, tailings dams and
 whether the catchment can be considered near-natural:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">human</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_attributes.html">read_attributes</a></span><span class="op">(</span><span class="st">"human_intervention"</span><span class="op">)</span></span>
 <span><span class="va">human</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gauge_id"</span>, <span class="st">"surface_adh_mm"</span>, <span class="st">"groundwater_adh_mm"</span>, <span class="st">"adh_ratio"</span>,</span>
 <span>          <span class="st">"reservoir_n"</span>, <span class="st">"reservoir_dor"</span>, <span class="st">"tailings_dam_n"</span>, <span class="st">"near_natural"</span><span class="op">)</span><span class="op">]</span></span>
@@ -482,7 +526,7 @@ streamflow volume. <code>near_natural</code> (1 = no reservoirs, no
 tailings dams and less than 10% of anthropic land cover) can be used to
 select catchments with little human influence. Both sample catchments
 have reservoirs, so neither is near-natural:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span>near_natural <span class="op">=</span> <span class="va">human</span><span class="op">$</span><span class="va">near_natural</span><span class="op">)</span></span>
 <span><span class="co">#&gt; near_natural</span></span>
 <span><span class="co">#&gt; 0 </span></span>
@@ -494,13 +538,13 @@ have reservoirs, so neither is near-natural:</p>
 <p><code>type = "all"</code> joins all groups by <code>gauge_id</code>
 (the simulated signatures are excluded because they share column names
 with the observed ones):</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">attrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_attributes.html">read_attributes</a></span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">attrs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]  2 97</span></span></code></pre></div>
+<span><span class="co">#&gt; [1]   2 107</span></span></code></pre></div>
 <p>This table is convenient for catchment classification or
 regionalization, for example to relate the runoff ratio to aridity:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">attrs</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gauge_id"</span>, <span class="st">"aridity_hs"</span>, <span class="st">"runoff_ratio"</span>, <span class="st">"baseflow_index"</span>,</span>
 <span>          <span class="st">"forest_perc"</span>, <span class="st">"near_natural"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
@@ -522,7 +566,7 @@ same as in the static attributes) and the MapBiomas
 <h3 id="legend">Legend<a class="anchor" aria-label="anchor" href="#legend"></a>
 </h3>
 <p>The legend links each MapBiomas code to its subclass and class:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">legend</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_land_cover_legend.html">read_land_cover_legend</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">legend</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
@@ -542,7 +586,7 @@ same as in the static attributes) and the MapBiomas
 <div class="section level3">
 <h3 id="classes">Classes<a class="anchor" aria-label="anchor" href="#classes"></a>
 </h3>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lc_class</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_land_cover.html">read_land_cover</a></span><span class="op">(</span>level <span class="op">=</span> <span class="st">"class"</span>, gauge_id <span class="op">=</span> <span class="va">gauge_id</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lc_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
@@ -556,16 +600,16 @@ same as in the static attributes) and the MapBiomas
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> PE_212900  <span style="text-decoration: underline;">1</span>990        6.21         7.07            65.8           19.7</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: water_perc &lt;dbl&gt;, non_identi_perc &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   land_dominant_class &lt;chr&gt;</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_land_cover.html">plot_land_cover</a></span><span class="op">(</span><span class="va">lc_class</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-34-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-36-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="subclasses">Subclasses<a class="anchor" aria-label="anchor" href="#subclasses"></a>
 </h3>
 <p>The long format returns one row per catchment, year and subclass,
 with the names from the legend:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lc_sub</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_land_cover.html">read_land_cover</a></span><span class="op">(</span></span>
 <span>  level <span class="op">=</span> <span class="st">"subclass"</span>,</span>
 <span>  gauge_id <span class="op">=</span> <span class="va">gauge_id</span>,</span>
@@ -583,16 +627,16 @@ with the names from the legend:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> PE_212900  <span style="text-decoration: underline;">1</span>985 pasture          Pasture   agricul    Agri…           15 0</span></span></code></pre></div>
 <p>Subclasses that never exceed a given percentage of the catchment can
 be grouped as “Other”:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_land_cover.html">plot_land_cover</a></span><span class="op">(</span><span class="va">lc_sub</span>, min_perc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-36-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-38-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="land-cover-change">Land-cover change<a class="anchor" aria-label="anchor" href="#land-cover-change"></a>
 </h3>
 <p>With the long format, the change between two years is easy to
 compute:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lc_change</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_land_cover.html">read_land_cover</a></span><span class="op">(</span></span>
 <span>  level <span class="op">=</span> <span class="st">"subclass"</span>,</span>
 <span>  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1985</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
@@ -628,7 +672,7 @@ compute:</p>
 <div class="section level3">
 <h3 id="available-variables">Available variables<a class="anchor" aria-label="anchor" href="#available-variables"></a>
 </h3>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ts_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dictionary.html">read_dictionary</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"timeseries.csv"</span><span class="op">)</span></span>
 <span><span class="va">ts_dict</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"variable"</span>, <span class="st">"unit"</span>, <span class="st">"source"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 21 × 3</span></span></span>
@@ -677,14 +721,14 @@ test (<code>flow_obs_flag</code>, <code>flow_obs_qc_test</code>);</li>
 </h3>
 <p>The recommended mode reads one file per catchment, so only the
 requested catchments are loaded:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_timeseries.html">read_timeseries</a></span><span class="op">(</span>gauge_id <span class="op">=</span> <span class="va">gauge_id</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 365  21</span></span></code></pre></div>
 <p>The global mode reads <code>timeseries.csv</code>, which contains all
 catchments. With <code>vars</code>, only the requested columns are read,
 which saves time and memory with the full dataset:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ts_global</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_timeseries.html">read_timeseries</a></span><span class="op">(</span></span>
 <span>  global <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"gauge_id"</span>, <span class="st">"prec_pisco"</span>, <span class="st">"flow_obs"</span><span class="op">)</span></span>
@@ -700,7 +744,7 @@ which saves time and memory with the full dataset:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1981-01-05 PE_200907      0.169    0.475</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1981-01-06 PE_200907      0.585    0.450</span></span></code></pre></div>
 <p>Both modes accept several gauges and a selection of variables:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ts_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_timeseries.html">read_timeseries</a></span><span class="op">(</span></span>
 <span>  gauge_id <span class="op">=</span> <span class="va">stations</span><span class="op">$</span><span class="va">gauge_id</span>,</span>
 <span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"gauge_id"</span>, <span class="st">"prec_pisco"</span>, <span class="st">"pet_hs"</span>, <span class="st">"flow_obs"</span><span class="op">)</span></span>
@@ -711,9 +755,9 @@ which saves time and memory with the full dataset:</p>
 <span><span class="co">#&gt;       365       365</span></span></code></pre></div>
 <p><code><a href="../reference/plot_timeseries.html">plot_timeseries()</a></code> plots one variable, with one panel per
 gauge:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts_multi</span>, variable <span class="op">=</span> <span class="st">"prec_pisco"</span>, linewidth <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-42-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-44-1.png" class="r-plt" alt="" width="100%"></p>
 <hr>
 </div>
 </div>
@@ -724,14 +768,14 @@ gauge:</p>
 <h3 id="precipitation-products">Precipitation products<a class="anchor" aria-label="anchor" href="#precipitation-products"></a>
 </h3>
 <p>The three precipitation products can be compared directly:</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prec_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prec_pisco"</span>, <span class="st">"prec_chirps"</span>, <span class="st">"prec_era5land"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">ts</span><span class="op">[</span>, <span class="va">prec_cols</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    prec_pisco   prec_chirps prec_era5land </span></span>
 <span><span class="co">#&gt;       500.937       451.056      1338.894</span></span></code></pre></div>
 <p>Cumulative precipitation shows where the products diverge:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prec_long</span> <span class="op">&lt;-</span> <span class="fu">stack_columns</span><span class="op">(</span><span class="va">ts</span>, <span class="va">prec_cols</span><span class="op">)</span></span>
 <span><span class="va">prec_long</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">prec_long</span><span class="op">$</span><span class="va">value</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">prec_long</span><span class="op">$</span><span class="va">cumulative</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ave.html" class="external-link">ave</a></span><span class="op">(</span><span class="va">prec_long</span><span class="op">$</span><span class="va">value</span>, <span class="va">prec_long</span><span class="op">$</span><span class="va">variable</span>, FUN <span class="op">=</span> <span class="va">cumsum</span><span class="op">)</span></span>
@@ -740,9 +784,9 @@ gauge:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Cumulative precipitation (mm)"</span>, colour <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-44-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" alt="" width="100%"></p>
 <p>Monthly totals of each product:</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prec_long</span><span class="op">$</span><span class="va">month</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">prec_long</span><span class="op">$</span><span class="va">date</span>, <span class="st">"%Y-%m-01"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">prec_month</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">month</span> <span class="op">+</span> <span class="va">variable</span>, data <span class="op">=</span> <span class="va">prec_long</span>, FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span></span>
 <span></span>
@@ -750,11 +794,11 @@ gauge:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Monthly precipitation (mm)"</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-45-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-47-1.png" class="r-plt" alt="" width="100%"></p>
 <p>The spatial standard deviation of PISCOp (<code>prec_sd_pisco</code>)
 describes how variable precipitation is within the catchment on each
 day:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ts</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="va">prec_pisco</span> <span class="op">-</span> <span class="va">prec_sd_pisco</span>, <span class="fl">0</span><span class="op">)</span>,</span>
@@ -765,29 +809,29 @@ day:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Precipitation (mm/day)"</span>,</span>
 <span>       subtitle <span class="op">=</span> <span class="st">"PISCOp catchment mean +/- spatial standard deviation"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-48-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="potential-evapotranspiration">Potential evapotranspiration<a class="anchor" aria-label="anchor" href="#potential-evapotranspiration"></a>
 </h3>
 <p>The three PET formulations differ mainly in their level:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pet_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pet_hs"</span>, <span class="st">"pet_pt"</span>, <span class="st">"pet_ou"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">ts</span><span class="op">[</span>, <span class="va">pet_cols</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   pet_hs   pet_pt   pet_ou </span></span>
 <span><span class="co">#&gt; 3.410310 4.163825 2.429370</span></span></code></pre></div>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pet_long</span> <span class="op">&lt;-</span> <span class="fu">stack_columns</span><span class="op">(</span><span class="va">ts</span>, <span class="va">pet_cols</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">pet_long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, colour <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"PET (mm/day)"</span>, colour <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-48-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-50-1.png" class="r-plt" alt="" width="100%"></p>
 <p>The choice of the precipitation product and of the PET formulation
 changes the aridity index (PET / P). For the sample year:</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">ts</span><span class="op">[</span>, <span class="va">prec_cols</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">ts</span><span class="op">[</span>, <span class="va">pet_cols</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -801,7 +845,7 @@ changes the aridity index (PET / P). For the sample year:</p>
 <div class="section level3">
 <h3 id="temperature-radiation-and-vapour-pressure">Temperature, radiation and vapour pressure<a class="anchor" aria-label="anchor" href="#temperature-radiation-and-vapour-pressure"></a>
 </h3>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_long</span> <span class="op">&lt;-</span> <span class="fu">stack_columns</span><span class="op">(</span><span class="va">ts</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tmin"</span>, <span class="st">"tmean"</span>, <span class="st">"tmax"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">temp_long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, colour <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -810,13 +854,13 @@ changes the aridity index (PET / P). For the sample year:</p>
 <span>                                 tmax <span class="op">=</span> <span class="st">"#d7191c"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Air temperature (degrees C)"</span>, colour <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-50-1.png" class="r-plt" alt="" width="100%"></p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-52-1.png" class="r-plt" alt="" width="100%"></p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"srad"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-51-1.png" class="r-plt" alt="" width="100%"></p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-53-1.png" class="r-plt" alt="" width="100%"></p>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"vprp"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-51-2.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-53-2.png" class="r-plt" alt="" width="100%"></p>
 <hr>
 </div>
 </div>
@@ -831,9 +875,9 @@ changes the aridity index (PET / P). For the sample year:</p>
 comparison of catchments of different size and with precipitation and
 PET, and in <strong>m3/s</strong> (<code>flow_obs_m3s</code>,
 <code>flow_sim_m3s</code>):</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_timeseries.html">plot_timeseries</a></span><span class="op">(</span><span class="va">ts</span>, variable <span class="op">=</span> <span class="st">"flow_obs_m3s"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-52-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-54-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="quality-control-flags">Quality-control flags<a class="anchor" aria-label="anchor" href="#quality-control-flags"></a>
@@ -875,7 +919,7 @@ kept in <code>flow_obs_raw</code>
 (only for flags 3 and 4), for example <code>flat_line_suspect</code>
 (constant values during 7 to 30 days) or <code>flat_line</code> (more
 than 30 days, removed).</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span>flag <span class="op">=</span> <span class="va">ts</span><span class="op">$</span><span class="va">flow_obs_flag</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; flag</span></span>
 <span><span class="co">#&gt;   1   3   9 </span></span>
@@ -885,7 +929,7 @@ than 30 days, removed).</p>
 <span><span class="co">#&gt; flat_line_suspect              &lt;NA&gt; </span></span>
 <span><span class="co">#&gt;                22               343</span></span></code></pre></div>
 <p>Plot the flagged values on top of the series:</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flags</span> <span class="op">&lt;-</span> <span class="va">ts</span><span class="op">[</span><span class="va">ts</span><span class="op">$</span><span class="va">flow_obs_flag</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">flags</span><span class="op">$</span><span class="va">flag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">flags</span><span class="op">$</span><span class="va">flow_obs_flag</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
 <span>                     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"suspect (3)"</span>, <span class="st">"fail (4)"</span><span class="op">)</span><span class="op">)</span></span>
@@ -902,7 +946,7 @@ than 30 days, removed).</p>
 <span>                      drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Observed streamflow (mm/day)"</span>, colour <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-54-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-56-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="using-the-flags">Using the flags<a class="anchor" aria-label="anchor" href="#using-the-flags"></a>
@@ -910,7 +954,7 @@ than 30 days, removed).</p>
 <p><code>flow_obs</code> is ready to use: values that failed are already
 removed. Users who prefer a stricter selection can also remove suspect
 values:</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ts</span><span class="op">$</span><span class="va">flow_obs_strict</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">flow_obs_flag</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">ts</span><span class="op">$</span><span class="va">flow_obs</span>, <span class="cn">NA</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -921,7 +965,7 @@ values:</p>
 <span><span class="co">#&gt;             364             342</span></span></code></pre></div>
 <p>The original record is kept in <code>flow_obs_raw</code>, so the
 effect of the quality control can always be checked:</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">changed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">flow_obs_raw</span> <span class="op">!=</span> <span class="va">ts</span><span class="op">$</span><span class="va">flow_obs</span> <span class="op">|</span></span>
 <span>                   <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">flow_obs</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">flow_obs_raw</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">changed</span><span class="op">)</span></span>
@@ -936,7 +980,7 @@ gauge is summarized in the station table (Sect. 3).</p>
 </h2>
 <p>Simulated streamflow is available for all catchments and days, also
 where observations are missing:</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">q_long</span> <span class="op">&lt;-</span> <span class="fu">stack_columns</span><span class="op">(</span><span class="va">ts</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"flow_obs"</span>, <span class="st">"flow_sim"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">q_long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, colour <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -944,10 +988,10 @@ where observations are missing:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>flow_obs <span class="op">=</span> <span class="st">"black"</span>, flow_sim <span class="op">=</span> <span class="st">"#e31a1c"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Streamflow (mm/day)"</span>, colour <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="rcamelspe_files/figure-html/unnamed-chunk-57-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="rcamelspe_files/figure-html/unnamed-chunk-59-1.png" class="r-plt" alt="" width="100%"></p>
 <p>Performance of the simulation on the days with observations, for
 example with the Nash-Sutcliffe and Kling-Gupta efficiencies:</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ok</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">flow_obs</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">flow_sim</span><span class="op">)</span></span>
 <span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="va">ts</span><span class="op">$</span><span class="va">flow_obs</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span></span>
 <span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">ts</span><span class="op">$</span><span class="va">flow_sim</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span></span>
@@ -968,7 +1012,7 @@ example with the Nash-Sutcliffe and Kling-Gupta efficiencies:</p>
 <p>Because precipitation, PET and streamflow are all in mm/day, a water
 balance can be computed directly. Using only the days with observed
 streamflow:</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ok</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">flow_obs</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">balance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -992,7 +1036,7 @@ catchments.</p>
 <div class="section level2">
 <h2 id="typical-workflow-with-the-full-dataset">12. Typical workflow with the full dataset<a class="anchor" aria-label="anchor" href="#typical-workflow-with-the-full-dataset"></a>
 </h2>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hllauca/RCamelsPE" class="external-link">RCamelsPE</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Download once, or set the path of a local copy</span></span>
@@ -1060,6 +1104,14 @@ catchments.</p>
 <tr class="even">
 <td><code><a href="../reference/read_land_cover_legend.html">read_land_cover_legend()</a></code></td>
 <td>Land-cover legend</td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/read_soil_classes.html">read_soil_classes()</a></code></td>
+<td>Soil suborders, great groups, horizon textures</td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/read_soil_legend.html">read_soil_legend()</a></code></td>
+<td>Soil legend</td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/read_timeseries.html">read_timeseries()</a></code></td>

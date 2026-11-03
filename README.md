@@ -29,6 +29,7 @@ The dataset must be stored locally before using the package.
 -   Efficient reading of time series by catchment
 -   Access to metadata and catchment attributes
 -   Annual land-cover series by class and subclass (1985-2024)
+-   Soil orders, suborders, great groups and horizon textures
 -   Access to data dictionaries and variable descriptions
 -   Integration with geospatial data (gauges and catchments)
 -   Time series visualization
@@ -81,6 +82,8 @@ CAMELS-PE/
 │   ├── land_cover_classification.csv
 │   ├── geologic_attributes.csv
 │   ├── soil_attributes.csv
+│   ├── soil_classes.csv
+│   ├── soil_classification.csv
 │   └── human_intervention_attributes.csv
 │
 ├── 03_timeseries/
@@ -148,6 +151,10 @@ lc <- read_land_cover(
 )
 
 plot_land_cover(lc, min_perc = 1)
+
+# Soil suborders and texture of the shallowest horizon
+read_soil_classes(level = "suborder", gauge_id = "PE_212900", path = path)
+read_soil_classes(level = "texture_h1", format = "wide", path = path)
 ```
 
 ------------------------------------------------------------------------

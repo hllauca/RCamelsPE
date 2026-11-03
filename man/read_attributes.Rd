@@ -50,7 +50,8 @@ observed streamflow.
 simulated streamflow.
 \item \code{"land_cover"}: land-cover attributes (reference year 2024).
 \item \code{"geologic"}: geological attributes.
-\item \code{"soil"}: soil attributes.
+\item \code{"soil"}: soil attributes (percentage of each soil order, and
+dominant order, suborder, great group and texture of three horizons).
 \item \code{"human_intervention"}: human intervention and regulation attributes.
 \item \code{"all"}: all available attribute groups joined by \code{gauge_id},
 except \code{"hydrological_sim"}, whose column names are the same as
@@ -58,7 +59,8 @@ those of \code{"hydrological"}.
 }
 
 The annual land-cover series (1985-2024) are read with
-\code{read_land_cover()}.
+\code{read_land_cover()}, and the percentages of all soil suborders, great
+groups and horizon texture classes with \code{read_soil_classes()}.
 
 Attribute files are expected to be stored in \code{02_attributes/}. Each
 attribute file must contain a \code{gauge_id} column. When

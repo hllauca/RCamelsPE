@@ -43,3 +43,28 @@ test_that("annual land cover is read at class and subclass level", {
 
   expect_s3_class(plot_land_cover(lc_long, min_perc = 1), "ggplot")
 })
+
+test_that("soil classes are read in long and wide format", {
+  soil <- read_soil_classes(gauge_id = "PE_212900", path = sample_path)
+  expect_setequal(unique(soil$level), c("suborder", "great_group",
+                                        "texture_h1", "texture_h2",
+                                        "texture_h3"))
+  expect_false(anyNA(soil$name))
+  totals <- tapply(soil$perc, soil$level, sum)
+  expect_true(all(abs(totals - 100) < 0.1))
+
+  gg <- soil[soil$level == "great_group", ]
+  expect_false(anyNA(gg$order) || anyNA(gg$suborder))
+
+  wide <- read_soil_classes("texture_h1", format = "wide", path = sample_path)
+  expect_equal(nrow(wide), 2L)
+  expect_true(all(abs(rowSums(wide[, -1]) - 100) < 0.1))
+  expect_error(read_soil_classes(format = "wide", path = sample_path))
+  expect_error(read_soil_classes("order", path = sample_path))
+
+  attr_soil <- read_attributes("soil", path = sample_path)
+  expect_true("soil_suborder_dominant_class" %in% names(attr_soil))
+
+  legend <- read_soil_legend(path = sample_path)
+  expect_setequal(unique(legend$level), c("suborder", "great_group", "texture"))
+})

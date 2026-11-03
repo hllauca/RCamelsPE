@@ -7,6 +7,13 @@
 * `read_land_cover_legend()` reads the land-cover legend (MapBiomas code,
   subclass and class).
 * `plot_land_cover()` plots the annual land-cover series as stacked areas.
+* `read_soil_classes()` reads the areal percentages of the soil suborders,
+  great groups and texture classes of three horizons (DSOLMap), in long or
+  wide format.
+* `read_soil_legend()` reads the soil legend (order > suborder > great group,
+  and USDA texture classes).
+* `read_attributes(type = "soil")` also returns the dominant soil suborder,
+  great group and horizon textures.
 * `read_attributes(type = "hydrological_sim")` reads the hydrological
   signatures computed from simulated streamflow.
 

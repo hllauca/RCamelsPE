@@ -16,7 +16,8 @@ Description: Provides tools to read, process, visualize, and download
     designed to work with externally stored CAMELS-PE data and does
     not include the dataset itself. Functions support reading daily
     time series, catchment attributes, station metadata, metadata
-    dictionaries, annual land-cover series, geospatial layers, and
+    dictionaries, annual land-cover series, soil classes (suborders,
+    great groups and horizon textures), geospatial layers, and
     basic visualization of time series, land cover and catchment
     boundaries. CAMELS-PE data are available at
     <doi:10.5281/zenodo.20058778> and package documentation is

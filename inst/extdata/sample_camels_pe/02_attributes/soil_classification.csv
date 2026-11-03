@@ -1,0 +1,54 @@
+level,class,name,order,suborder
+suborder,udalfs,Udalfs,Alfisols,NA
+suborder,ustalfs,Ustalfs,Alfisols,NA
+suborder,xeralfs,Xeralfs,Alfisols,NA
+suborder,argids,Argids,Aridisols,NA
+suborder,fluvents,Fluvents,Entisols,NA
+suborder,orthents,Orthents,Entisols,NA
+suborder,psamments,Psamments,Entisols,NA
+suborder,orthels,Orthels,Gelisols,NA
+suborder,aquepts,Aquepts,Inceptisols,NA
+suborder,ochrepts,Ochrepts,Inceptisols,NA
+suborder,aquolls,Aquolls,Mollisols,NA
+suborder,udolls,Udolls,Mollisols,NA
+suborder,ustolls,Ustolls,Mollisols,NA
+suborder,xerolls,Xerolls,Mollisols,NA
+suborder,orthox,Orthox,Oxisols,NA
+suborder,ustox,Ustox,Oxisols,NA
+suborder,udults,Udults,Ultisols,NA
+suborder,usterts,Usterts,Vertisols,NA
+great_group,hapludalfs,hapludalfs,Alfisols,Udalfs
+great_group,haplustalfs,haplustalfs,Alfisols,Ustalfs
+great_group,paleustalfs,paleustalfs,Alfisols,Ustalfs
+great_group,natrixeralfs,natrixeralfs,Alfisols,Xeralfs
+great_group,haplargids,haplargids,Aridisols,Argids
+great_group,torrifluvents,torrifluvents,Entisols,Fluvents
+great_group,torriorthents,torriorthents,Entisols,Orthents
+great_group,torripsamments,torripsamments,Entisols,Psamments
+great_group,anhyorthels,anhyorthels,Gelisols,Orthels
+great_group,cryaquepts,cryaquepts,Inceptisols,Aquepts
+great_group,cryochrepts,cryochrepts,Inceptisols,Ochrepts
+great_group,xerochrepts,xerochrepts,Inceptisols,Ochrepts
+great_group,calciaquolls,calciaquolls,Mollisols,Aquolls
+great_group,endoaquolls,endoaquolls,Mollisols,Aquolls
+great_group,argiudolls,argiudolls,Mollisols,Udolls
+great_group,haplustolls,haplustolls,Mollisols,Ustolls
+great_group,calcixerolls,calcixerolls,Mollisols,Xerolls
+great_group,haplorthox,haplorthox,Oxisols,Orthox
+great_group,acrustox,acrustox,Oxisols,Ustox
+great_group,paleudults,paleudults,Ultisols,Udults
+great_group,tropudults,tropudults,Ultisols,Udults
+great_group,chromusterts,chromusterts,Vertisols,Usterts
+great_group,haplusterts,haplusterts,Vertisols,Usterts
+texture,sand,sand,NA,NA
+texture,loamy_sand,loamy sand,NA,NA
+texture,sandy_loam,sandy loam,NA,NA
+texture,loam,loam,NA,NA
+texture,silt_loam,silt loam,NA,NA
+texture,silt,silt,NA,NA
+texture,sandy_clay_loam,sandy clay loam,NA,NA
+texture,clay_loam,clay loam,NA,NA
+texture,silty_clay_loam,silty clay loam,NA,NA
+texture,sandy_clay,sandy clay,NA,NA
+texture,silty_clay,silty clay,NA,NA
+texture,clay,clay,NA,NA

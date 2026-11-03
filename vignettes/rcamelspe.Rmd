@@ -277,9 +277,29 @@ geo[, c("gauge_id", "geol_1st_class", "glim_1st_class_perc",
         "geol_porosity", "geol_permeability")]
 ```
 
+Soil attributes (DSOLMap, USDA Soil Taxonomy) give the percentage of each soil order and the dominant order, suborder, great group and texture class of each of the three horizons (`h1` shallowest, `h3` deepest):
+
 ```{r}
-read_attributes("soil")
+soil <- read_attributes("soil")
+soil[, c("gauge_id", "soil_dominant_class", "soil_suborder_dominant_class",
+         "soil_great_group_dominant_class", "soil_texture_h1_dominant_class",
+         "soil_texture_h3_dominant_class")]
 ```
+
+The percentages of all suborders, great groups and horizon texture classes are read with `read_soil_classes()`, which adds the names, order and suborder from the legend (`read_soil_legend()`):
+
+```{r}
+sub <- read_soil_classes(level = "suborder")
+sub[sub$perc > 0, ]
+```
+
+With `format = "wide"`, one level is returned with one column per class, for example the texture of the shallowest horizon:
+
+```{r}
+read_soil_classes(level = "texture_h1", format = "wide")
+```
+
+The suborders and great groups follow the DSOLMap legend, which uses names of the USDA Soil Taxonomy prior to 1999 (e.g. Ochrepts); the source does not give the depth of the horizons.
 
 ## Human intervention
 
@@ -705,6 +725,8 @@ plot_land_cover(lc)
 | `read_attributes()`        | Static catchment attributes                     |
 | `read_land_cover()`        | Annual land-cover series (class or subclass)    |
 | `read_land_cover_legend()` | Land-cover legend                               |
+| `read_soil_classes()`      | Soil suborders, great groups, horizon textures  |
+| `read_soil_legend()`       | Soil legend                                     |
 | `read_timeseries()`        | Daily time series                               |
 | `plot_timeseries()`        | Time series plot                                |
 | `plot_catchments()`        | Map of catchments and gauges                    |

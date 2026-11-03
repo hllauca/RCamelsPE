@@ -20,7 +20,8 @@
 #'   simulated streamflow.
 #'   \item \code{"land_cover"}: land-cover attributes (reference year 2024).
 #'   \item \code{"geologic"}: geological attributes.
-#'   \item \code{"soil"}: soil attributes.
+#'   \item \code{"soil"}: soil attributes (percentage of each soil order, and
+#'   dominant order, suborder, great group and texture of three horizons).
 #'   \item \code{"human_intervention"}: human intervention and regulation attributes.
 #'   \item \code{"all"}: all available attribute groups joined by \code{gauge_id},
 #'   except \code{"hydrological_sim"}, whose column names are the same as
@@ -28,7 +29,8 @@
 #' }
 #'
 #' The annual land-cover series (1985-2024) are read with
-#' \code{read_land_cover()}.
+#' \code{read_land_cover()}, and the percentages of all soil suborders, great
+#' groups and horizon texture classes with \code{read_soil_classes()}.
 #'
 #' @param type Character string. Attribute group to read. One of
 #'   \code{"topographic"}, \code{"climatic"}, \code{"hydrological"},
