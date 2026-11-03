@@ -165,9 +165,9 @@ folder,file,category,variable,description,unit,source
 02_attributes,soil_attributes.csv,soil,mollisols_perc,Percentage of the catchment covered by mollisols,%,DSOLMap
 02_attributes,soil_attributes.csv,soil,vertisols_perc,Percentage of the catchment covered by vertisols,%,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_dominant_class,Soil order with the largest area,-,DSOLMap
-02_attributes,soil_attributes.csv,soil,soil_suborder_dominant_class,"Soil suborder with the largest area (USDA Soil Taxonomy as given in the DSOLMap legend, which uses pre-1999 names such as Ochrepts; see soil_classification.csv)",-,DSOLMap
+02_attributes,soil_attributes.csv,soil,soil_suborder_dominant_class,"Soil suborder with the largest area (USDA Soil Taxonomy as given in the DSOLMap legend, which uses pre-1999 names such as Ochrepts; see soil_classification.csv); determined independently of the dominant order, so it may belong to a different order",-,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_suborder_dominant_perc,Percentage of the catchment covered by the dominant soil suborder,%,DSOLMap
-02_attributes,soil_attributes.csv,soil,soil_great_group_dominant_class,"Soil great group with the largest area (USDA Soil Taxonomy as given in the DSOLMap legend, which uses pre-1999 names such as Ochrepts; see soil_classification.csv)",-,DSOLMap
+02_attributes,soil_attributes.csv,soil,soil_great_group_dominant_class,"Soil great group with the largest area (USDA Soil Taxonomy as given in the DSOLMap legend, which uses pre-1999 names such as Ochrepts; see soil_classification.csv); determined independently of the dominant order, so it may belong to a different order",-,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_great_group_dominant_perc,Percentage of the catchment covered by the dominant soil great group,%,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_texture_h1_dominant_class,"USDA texture class with the largest area in horizon 1 (horizons 1 to 3 of the DSOLMap soil profile, from the shallowest (h1) to the deepest (h3))",-,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_texture_h1_dominant_perc,Percentage of the catchment covered by the dominant texture class of horizon 1,%,DSOLMap
