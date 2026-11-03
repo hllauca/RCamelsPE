@@ -40,8 +40,8 @@
 #' classes of each level sum to 100\% in each catchment.
 #'
 #' The suborders and great groups follow the DSOLMap legend, which uses names
-#' of the USDA Soil Taxonomy prior to 1999 (e.g. Ochrepts). DSOLMap does not
-#' give the depth of the horizons.
+#' of the USDA Soil Taxonomy prior to 1999 (e.g. Ochrepts). For the horizons,
+#' only the USDA texture class is provided.
 #'
 #' In long format, the columns are \code{gauge_id}, \code{level},
 #' \code{class}, \code{name}, \code{order}, \code{suborder} and \code{perc}.

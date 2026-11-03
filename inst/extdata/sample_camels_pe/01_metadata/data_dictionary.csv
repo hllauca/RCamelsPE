@@ -169,11 +169,11 @@ folder,file,category,variable,description,unit,source
 02_attributes,soil_attributes.csv,soil,soil_suborder_dominant_perc,Percentage of the catchment covered by the dominant soil suborder,%,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_great_group_dominant_class,"Soil great group with the largest area (USDA Soil Taxonomy as given in the DSOLMap legend, which uses pre-1999 names such as Ochrepts; see soil_classification.csv)",-,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_great_group_dominant_perc,Percentage of the catchment covered by the dominant soil great group,%,DSOLMap
-02_attributes,soil_attributes.csv,soil,soil_texture_h1_dominant_class,"USDA texture class with the largest area in horizon 1 (DSOLMap describes each soil unit by the texture of three horizons, from the shallowest (h1) to the deepest (h3); horizon depths are not given by the source)",-,DSOLMap
+02_attributes,soil_attributes.csv,soil,soil_texture_h1_dominant_class,"USDA texture class with the largest area in horizon 1 (horizons 1 to 3 of the DSOLMap soil profile, from the shallowest (h1) to the deepest (h3))",-,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_texture_h1_dominant_perc,Percentage of the catchment covered by the dominant texture class of horizon 1,%,DSOLMap
-02_attributes,soil_attributes.csv,soil,soil_texture_h2_dominant_class,"USDA texture class with the largest area in horizon 2 (DSOLMap describes each soil unit by the texture of three horizons, from the shallowest (h1) to the deepest (h3); horizon depths are not given by the source)",-,DSOLMap
+02_attributes,soil_attributes.csv,soil,soil_texture_h2_dominant_class,"USDA texture class with the largest area in horizon 2 (horizons 1 to 3 of the DSOLMap soil profile, from the shallowest (h1) to the deepest (h3))",-,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_texture_h2_dominant_perc,Percentage of the catchment covered by the dominant texture class of horizon 2,%,DSOLMap
-02_attributes,soil_attributes.csv,soil,soil_texture_h3_dominant_class,"USDA texture class with the largest area in horizon 3 (DSOLMap describes each soil unit by the texture of three horizons, from the shallowest (h1) to the deepest (h3); horizon depths are not given by the source)",-,DSOLMap
+02_attributes,soil_attributes.csv,soil,soil_texture_h3_dominant_class,"USDA texture class with the largest area in horizon 3 (horizons 1 to 3 of the DSOLMap soil profile, from the shallowest (h1) to the deepest (h3))",-,DSOLMap
 02_attributes,soil_attributes.csv,soil,soil_texture_h3_dominant_perc,Percentage of the catchment covered by the dominant texture class of horizon 3,%,DSOLMap
 02_attributes,soil_classes.csv,soil,gauge_id,Unique gauge identifier (PE_xxxxx),-,SENAMHI
 02_attributes,soil_classes.csv,soil,level,"Classification level: suborder, great_group, texture_h1, texture_h2 or texture_h3 (texture of horizons 1 to 3, from the shallowest to the deepest)",-,DSOLMap

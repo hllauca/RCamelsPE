@@ -299,7 +299,7 @@ With `format = "wide"`, one level is returned with one column per class, for exa
 read_soil_classes(level = "texture_h1", format = "wide")
 ```
 
-The suborders and great groups follow the DSOLMap legend, which uses names of the USDA Soil Taxonomy prior to 1999 (e.g. Ochrepts); the source does not give the depth of the horizons.
+The suborders and great groups follow the DSOLMap legend, which uses names of the USDA Soil Taxonomy prior to 1999 (e.g. Ochrepts). For the horizons, only the USDA texture class is provided.
 
 ## Human intervention
 
