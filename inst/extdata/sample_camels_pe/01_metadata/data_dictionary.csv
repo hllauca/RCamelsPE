@@ -27,12 +27,8 @@ folder,file,category,variable,description,unit,source
 02_attributes,topographic_attributes.csv,topographic,slope_mean,"Mean catchment slope (pixel slope at 30 m, 1000 tan(slope), averaged over the catchment)",m/km,FABDEM v1.2
 02_attributes,climatic_indices.csv,climatic,gauge_id,Unique gauge identifier (PE_xxxxx),-,SENAMHI
 02_attributes,climatic_indices.csv,climatic,p_mean,Mean daily precipitation (1981-2025),mm/day,PISCOp v3.0
-02_attributes,climatic_indices.csv,climatic,pet_mean_hs,"Mean daily potential evapotranspiration, Hargreaves-Samani (reference; 1981-2025)",mm/day,Hargreaves-Samani (FAO-56 Eq. 52) from PISCOt v1.2
-02_attributes,climatic_indices.csv,climatic,aridity_hs,Aridity index: pet_mean_hs / p_mean (reference),-,PISCOp v3.0 and PISCOt v1.2
-02_attributes,climatic_indices.csv,climatic,pet_mean_pt,"Mean daily potential evapotranspiration, Priestley-Taylor (1981-2025)",mm/day,PISCOt v1.2 and ERA5-Land
-02_attributes,climatic_indices.csv,climatic,pet_mean_ou,"Mean daily potential evapotranspiration, Oudin (1981-2025)",mm/day,PISCOt v1.2
-02_attributes,climatic_indices.csv,climatic,aridity_pt,Aridity index: pet_mean_pt / p_mean,-,"PISCOp v3.0, PISCOt v1.2 and ERA5-Land"
-02_attributes,climatic_indices.csv,climatic,aridity_ou,Aridity index: pet_mean_ou / p_mean,-,PISCOp v3.0 and PISCOt v1.2
+02_attributes,climatic_indices.csv,climatic,pet_mean,"Mean daily potential evapotranspiration, Hargreaves-Samani (reference; 1981-2025)",mm/day,Hargreaves-Samani (FAO-56 Eq. 52) from PISCOt v1.2
+02_attributes,climatic_indices.csv,climatic,aridity,Aridity index: pet_mean / p_mean,-,PISCOp v3.0 and PISCOt v1.2
 02_attributes,climatic_indices.csv,climatic,p_seasonality,"Seasonality and timing of precipitation (positive: precipitation peaks in phase with temperature, i.e. in summer; negative: in winter; Woods, 2009)",-,PISCOp v3.0
 02_attributes,climatic_indices.csv,climatic,high_prec_freq,Frequency of high-precipitation days (>= 5 times p_mean),days/year,PISCOp v3.0
 02_attributes,climatic_indices.csv,climatic,high_prec_dur,Average duration of high-precipitation events (consecutive days >= 5 times p_mean),days,PISCOp v3.0

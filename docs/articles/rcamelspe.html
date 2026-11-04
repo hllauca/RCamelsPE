@@ -154,7 +154,7 @@ this path:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/set_camels_path.html">set_camels_path</a></span><span class="op">(</span><span class="va">camels_path</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_camels_path.html">get_camels_path</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "C:/Users/hllauca/AppData/Local/Temp/RtmpSYJWMD/temp_libpath2dd4371a3455/RCamelsPE/extdata/sample_camels_pe"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "C:/Users/hllauca/AppData/Local/Temp/claude/G--Mi-unidad-Papers-PAPER-CAMELS-PE/be42cc40-8784-431b-8684-59076803c6b3/scratchpad/rlib/RCamelsPE/extdata/sample_camels_pe"</span></span></code></pre></div>
 <p>The dataset is organized in four folders:</p>
 <pre class="text"><code>CAMELS-PE/
 ├── 01_metadata/      stations.csv, data_dictionary.csv
@@ -175,7 +175,7 @@ best starting point to find a variable.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">dict</span><span class="op">$</span><span class="va">category</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           climatic           geologic         geospatial human_intervention </span></span>
-<span><span class="co">#&gt;                 15                 24                  3                 17 </span></span>
+<span><span class="co">#&gt;                 11                 24                  3                 17 </span></span>
 <span><span class="co">#&gt;       hydrological         land_cover           metadata               soil </span></span>
 <span><span class="co">#&gt;                 35                 55                 18                 30 </span></span>
 <span><span class="co">#&gt;         timeseries        topographic </span></span>
@@ -205,18 +205,16 @@ best starting point to find a variable.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pet_vars</span> <span class="op">&lt;-</span> <span class="va">dict</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"evapotranspiration"</span>, <span class="va">dict</span><span class="op">$</span><span class="va">description</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pet_vars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"file"</span>, <span class="st">"variable"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 2</span></span></span>
-<span><span class="co">#&gt;   file                      variable   </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> climatic_indices.csv      pet_mean_hs</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> climatic_indices.csv      pet_mean_pt</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> climatic_indices.csv      pet_mean_ou</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> timeseries.csv            pet_hs     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> timeseries.csv            pet_pt     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> timeseries.csv            pet_ou     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> by_catchment/PE_xxxxx.csv pet_hs     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> by_catchment/PE_xxxxx.csv pet_pt     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> by_catchment/PE_xxxxx.csv pet_ou</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 2</span></span></span>
+<span><span class="co">#&gt;   file                      variable</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> climatic_indices.csv      pet_mean</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> timeseries.csv            pet_hs  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> timeseries.csv            pet_pt  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> timeseries.csv            pet_ou  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> by_catchment/PE_xxxxx.csv pet_hs  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> by_catchment/PE_xxxxx.csv pet_pt  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> by_catchment/PE_xxxxx.csv pet_ou</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -319,7 +317,7 @@ attribute (Sect. 5):</p>
 <span><span class="fu"><a href="../reference/plot_attribute_map.html">plot_attribute_map</a></span><span class="op">(</span></span>
 <span>  catchments <span class="op">=</span> <span class="va">catchments</span>,</span>
 <span>  attributes <span class="op">=</span> <span class="va">clim</span>,</span>
-<span>  variable <span class="op">=</span> <span class="st">"aridity_hs"</span>,</span>
+<span>  variable <span class="op">=</span> <span class="st">"aridity"</span>,</span>
 <span>  gauges <span class="op">=</span> <span class="va">gauges</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="rcamelspe_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="60%"></p>
@@ -349,19 +347,16 @@ mean slope in m/km.</p>
 <h3 id="climate">Climate<a class="anchor" aria-label="anchor" href="#climate"></a>
 </h3>
 <p>Climatic indices are computed from 1981 to 2025 with the reference
-products (PISCOp precipitation and Hargreaves-Samani PET). Mean PET and
-the aridity index are also given for the Priestley-Taylor
-(<code>_pt</code>) and Oudin (<code>_ou</code>) formulations, to show
-the uncertainty related to the choice of PET:</p>
+products only (PISCOp precipitation and Hargreaves-Samani PET). The
+alternative precipitation and PET products are provided as time
+series:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">clim</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gauge_id"</span>, <span class="st">"p_mean"</span>, <span class="st">"pet_mean_hs"</span>, <span class="st">"pet_mean_pt"</span>,</span>
-<span>         <span class="st">"pet_mean_ou"</span>, <span class="st">"aridity_hs"</span>, <span class="st">"aridity_pt"</span>, <span class="st">"aridity_ou"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
-<span><span class="co">#&gt;   gauge_id  p_mean pet_mean_hs pet_mean_pt pet_mean_ou aridity_hs aridity_pt</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900   1.24        3.47        4.22        2.52       2.79       3.39</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907   2.44        3.60        4.03        3.13       1.48       1.65</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: aridity_ou &lt;dbl&gt;</span></span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">clim</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gauge_id"</span>, <span class="st">"p_mean"</span>, <span class="st">"pet_mean"</span>, <span class="st">"aridity"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;   gauge_id  p_mean pet_mean aridity</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900   1.24     3.47    2.79</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907   2.44     3.60    1.48</span></span></code></pre></div>
 <p>Seasonality and the frequency, duration and timing of
 high-precipitation and dry days:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -541,17 +536,17 @@ with the observed ones):</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">attrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_attributes.html">read_attributes</a></span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">attrs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]   2 107</span></span></code></pre></div>
+<span><span class="co">#&gt; [1]   2 103</span></span></code></pre></div>
 <p>This table is convenient for catchment classification or
 regionalization, for example to relate the runoff ratio to aridity:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">attrs</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gauge_id"</span>, <span class="st">"aridity_hs"</span>, <span class="st">"runoff_ratio"</span>, <span class="st">"baseflow_index"</span>,</span>
+<code class="sourceCode R"><span><span class="va">attrs</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gauge_id"</span>, <span class="st">"aridity"</span>, <span class="st">"runoff_ratio"</span>, <span class="st">"baseflow_index"</span>,</span>
 <span>          <span class="st">"forest_perc"</span>, <span class="st">"near_natural"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
-<span><span class="co">#&gt;   gauge_id  aridity_hs runoff_ratio baseflow_index forest_perc near_natural</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900       2.79        0.54           0.573        5.05            0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907       1.48        0.538          0.631       22.5             0</span></span></code></pre></div>
+<span><span class="co">#&gt;   gauge_id  aridity runoff_ratio baseflow_index forest_perc near_natural</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PE_212900    2.79        0.54           0.573        5.05            0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PE_200907    1.48        0.538          0.631       22.5             0</span></span></code></pre></div>
 <hr>
 </div>
 </div>
@@ -1022,12 +1017,12 @@ streamflow:</p>
 <span>  row.names <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">balance</span><span class="op">$</span><span class="va">runoff_ratio</span> <span class="op">&lt;-</span> <span class="va">balance</span><span class="op">$</span><span class="va">Q</span> <span class="op">/</span> <span class="va">balance</span><span class="op">$</span><span class="va">P</span></span>
-<span><span class="va">balance</span><span class="op">$</span><span class="va">aridity_hs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">pet_hs</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="va">balance</span><span class="op">$</span><span class="va">P</span></span>
+<span><span class="va">balance</span><span class="op">$</span><span class="va">aridity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ts</span><span class="op">$</span><span class="va">pet_hs</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="va">balance</span><span class="op">$</span><span class="va">P</span></span>
 <span><span class="va">balance</span></span>
-<span><span class="co">#&gt;         product        P         Q runoff_ratio aridity_hs</span></span>
-<span><span class="co">#&gt; 1    prec_pisco 1.375481 0.5634122    0.4096111  2.4793629</span></span>
-<span><span class="co">#&gt; 2   prec_chirps 1.238451 0.5634122    0.4549332  2.7536957</span></span>
-<span><span class="co">#&gt; 3 prec_era5land 3.667580 0.5634122    0.1536196  0.9298546</span></span></code></pre></div>
+<span><span class="co">#&gt;         product        P         Q runoff_ratio   aridity</span></span>
+<span><span class="co">#&gt; 1    prec_pisco 1.375481 0.5634122    0.4096111 2.4793629</span></span>
+<span><span class="co">#&gt; 2   prec_chirps 1.238451 0.5634122    0.4549332 2.7536957</span></span>
+<span><span class="co">#&gt; 3 prec_era5land 3.667580 0.5634122    0.1536196 0.9298546</span></span></code></pre></div>
 <p>A runoff ratio close to or above 1 points to an underestimation of
 precipitation by the product, a common issue in high mountain
 catchments.</p>

@@ -196,7 +196,7 @@ clim <- read_attributes("climatic")
 plot_attribute_map(
   catchments = catchments,
   attributes = clim,
-  variable = "aridity_hs",
+  variable = "aridity",
   gauges = gauges
 )
 ```
@@ -217,11 +217,10 @@ Area and perimeter are in km2 and km, elevations in m a.s.l. and the mean slope 
 
 ## Climate
 
-Climatic indices are computed from 1981 to 2025 with the reference products (PISCOp precipitation and Hargreaves-Samani PET). Mean PET and the aridity index are also given for the Priestley-Taylor (`_pt`) and Oudin (`_ou`) formulations, to show the uncertainty related to the choice of PET:
+Climatic indices are computed from 1981 to 2025 with the reference products only (PISCOp precipitation and Hargreaves-Samani PET). The alternative precipitation and PET products are provided as time series:
 
 ```{r}
-clim[, c("gauge_id", "p_mean", "pet_mean_hs", "pet_mean_pt",
-         "pet_mean_ou", "aridity_hs", "aridity_pt", "aridity_ou")]
+clim[, c("gauge_id", "p_mean", "pet_mean", "aridity")]
 ```
 
 Seasonality and the frequency, duration and timing of high-precipitation and dry days:
@@ -329,7 +328,7 @@ dim(attrs)
 This table is convenient for catchment classification or regionalization, for example to relate the runoff ratio to aridity:
 
 ```{r}
-attrs[, c("gauge_id", "aridity_hs", "runoff_ratio", "baseflow_index",
+attrs[, c("gauge_id", "aridity", "runoff_ratio", "baseflow_index",
           "forest_perc", "near_natural")]
 ```
 
@@ -678,7 +677,7 @@ balance <- data.frame(
   row.names = NULL
 )
 balance$runoff_ratio <- balance$Q / balance$P
-balance$aridity_hs <- mean(ts$pet_hs[ok]) / balance$P
+balance$aridity <- mean(ts$pet_hs[ok]) / balance$P
 balance
 ```
 

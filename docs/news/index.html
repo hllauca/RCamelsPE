@@ -85,7 +85,7 @@
 <code><a href="../reference/download_camels_pe.html">download_camels_pe()</a></code> fails gracefully: if Zenodo cannot be reached, it reports the problem with a message and returns <code>NULL</code> instead of an error.</li>
 <li>
 <code>utils</code> added to <code>Imports</code> (used through <code><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">utils::download.file()</a></code>, <code><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">utils::unzip()</a></code> and <code><a href="https://rdrr.io/r/utils/globalVariables.html" class="external-link">utils::globalVariables()</a></code>).</li>
-<li>Documentation updated to the new CAMELS-PE variable names (e.g. <code>prec_pisco</code>, <code>prec_sd_pisco</code>, <code>pet_hs</code>, <code>flow_obs_flag</code>, <code>flow_sim_m3s</code>).</li>
+<li>Documentation updated to the new CAMELS-PE variable names (e.g. <code>prec_pisco</code>, <code>prec_sd_pisco</code>, <code>pet_hs</code>, <code>flow_obs_flag</code>, <code>flow_sim_m3s</code>). The climatic indices are computed from the reference products only (<code>pet_mean</code> and <code>aridity</code>, Hargreaves-Samani PET), as in other CAMELS datasets; the alternative PET formulations are available as time series (<code>pet_pt</code>, <code>pet_ou</code>).</li>
 <li>
 <code><a href="../reference/read_timeseries.html">read_timeseries()</a></code> reads columns with fixed types, so the quality-control columns (<code>flow_obs_flag</code>, <code>flow_obs_qc_test</code>) are always read correctly, and only reads the columns requested in <code>vars</code>.</li>
 </ul></div>

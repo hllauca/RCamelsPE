@@ -32,6 +32,10 @@
   `utils::unzip()` and `utils::globalVariables()`).
 * Documentation updated to the new CAMELS-PE variable names (e.g.
   `prec_pisco`, `prec_sd_pisco`, `pet_hs`, `flow_obs_flag`, `flow_sim_m3s`).
+  The climatic indices are computed from the reference products only
+  (`pet_mean` and `aridity`, Hargreaves-Samani PET), as in other CAMELS
+  datasets; the alternative PET formulations are available as time series
+  (`pet_pt`, `pet_ou`).
 * `read_timeseries()` reads columns with fixed types, so the quality-control
   columns (`flow_obs_flag`, `flow_obs_qc_test`) are always read correctly,
   and only reads the columns requested in `vars`.
